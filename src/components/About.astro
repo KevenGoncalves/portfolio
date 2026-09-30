@@ -1,17 +1,43 @@
+---
+// Rainbow hover for "video games" (full class names so Tailwind picks them up)
+const gameColors = [
+   "group-hover/games:text-red-400",
+   "group-hover/games:text-orange-400",
+   "group-hover/games:text-yellow-400",
+   "group-hover/games:text-lime-400",
+   "group-hover/games:text-green-400",
+   "group-hover/games:text-emerald-400",
+   "group-hover/games:text-cyan-400",
+   "group-hover/games:text-sky-400",
+   "group-hover/games:text-blue-400",
+   "group-hover/games:text-indigo-400",
+   "group-hover/games:text-violet-400",
+];
+const gameLetters = [..."video games"];
+---
+
 <section id="about" class="mb-16 scroll-mt-16 md:mb-24 lg:mb-36 lg:scroll-mt-24" aria-label="About me">
    <div class="sticky top-0 z-20 -mx-6 mb-4 bg-zinc-900/75 px-6 py-5 backdrop-blur md:-mx-12 md:px-12 lg:sr-only lg:relative lg:top-auto lg:mx-auto lg:w-full lg:px-0 lg:py-0 lg:opacity-0">
       <h2 class="text-sm font-bold uppercase tracking-widest text-zinc-100 lg:sr-only">About</h2>
    </div>
    <div>
-      <p class="mb-4">I’m a developer passionate about crafting accessible, pixel-perfect user interfaces that blend thoughtful design with robust engineering. My favorite work lies at the intersection of design and development, creating experiences that not only look great but are meticulously built for performance and usability.</p>
       <p class="mb-4">
-         Currently, I'm a Senior Front-End Engineer at{" "} <a class="font-medium text-zinc-100 hover:text-white focus-visible:text-white" href="https://www.klaviyo.com/" target="_blank" rel="noreferrer noopener" aria-label="Klaviyo (opens in a new tab)">Klaviyo</a>, specializing in accessibility. I contribute to the creation and maintenance of UI components that power Klaviyo’s frontend, ensuring our platform meets web accessibility standards and best practices to deliver an inclusive user experience.
+         I’m a developer driven by curiosity about how things really work — from the low-level details all the way up to the high-level design. I love digging deep to understand a system inside and out, then using that knowledge to build great things for great people.
       </p>
       <p class="mb-4">
-         In the past, I've had the opportunity to develop software across a variety of settings — from{" "} <a class="font-medium text-zinc-100 hover:text-white focus-visible:text-white" href="https://us.mullenlowe.com/" target="_blank" rel="noreferrer noopener" aria-label="advertising agency (opens in a new tab)">advertising agencies</a> {" "}and{" "} <a class="font-medium text-zinc-100 hover:text-white focus-visible:text-white" href="https://www.apple.com/apple-music/" target="_blank" rel="noreferrer noopener" aria-label="huge corporation (opens in a new tab)">large corporations</a> {" "}to{" "} <a class="font-medium text-zinc-100 hover:text-white focus-visible:text-white" href="https://starry.com/" target="_blank" rel="noreferrer noopener" aria-label="start-up (opens in a new tab)">start-ups</a> {" "}and{" "} <a class="font-medium text-zinc-100 hover:text-white focus-visible:text-white" href="https://upstatement.com/" target="_blank" rel="noreferrer noopener" aria-label="digital product studio (opens in a new tab)">small digital product studios</a>. Additionally, I also released a{" "} <a class="font-medium text-zinc-100 hover:text-white focus-visible:text-white" href="https://www.newline.co/courses/build-a-spotify-connected-app" target="_blank" rel="noreferrer noopener" aria-label="online video course (opens in a new tab)">comprehensive video course</a> {" "}a few years ago, guiding learners through building a web app with the Spotify API.
+         Currently, I’m a Software Developer at{" "}<span class="font-medium text-zinc-100">Cornelder de Moçambique</span>, focused on mobile development with native technologies, building fast, reliable apps that feel right at home on every device.
+      </p>
+      <p class="mb-4">
+         In the past, I worked mainly as a{" "}<span class="font-medium text-zinc-100">full-stack developer</span>{" "}for both{" "}<span class="font-medium text-zinc-100">established companies</span>{" "}and{" "}<span class="font-medium text-zinc-100">startups</span>, taking features from the database all the way to the interface.
       </p>
       <p>
-         In my spare time, I’m usually climbing, playing tennis, hanging out with my wife and two cats, or running around Hyrule searching for{" "} <span class="group/korok inline-flex lg:cursor-[url('/images/koroks/Elma.png'),_pointer] lg:font-medium lg:text-zinc-100"><span class="sr-only">Korok seeds</span><span class="group-hover/korok:text-red-400 transition duration-75 group-hover/korok:-tranzinc-y-px delay-[50ms]" aria-hidden="true">K</span><span class="group-hover/korok:text-orange-400 transition duration-75 group-hover/korok:-tranzinc-y-px delay-[75ms]" aria-hidden="true">o</span><span class="group-hover/korok:text-yellow-400 transition duration-75 group-hover/korok:-tranzinc-y-px delay-[100ms]" aria-hidden="true">r</span><span class="group-hover/korok:text-lime-400 transition duration-75 group-hover/korok:-tranzinc-y-px delay-[125ms]" aria-hidden="true">o</span><span class="group-hover/korok:text-green-400 transition duration-75 group-hover/korok:-tranzinc-y-px delay-[150ms]" aria-hidden="true">k</span><span class="group-hover/korok:text-blue-400 transition duration-75 group-hover/korok:-tranzinc-y-px delay-[175ms]" aria-hidden="true">&nbsp;</span><span class="group-hover/korok:text-cyan-400 transition duration-75 group-hover/korok:-tranzinc-y-px delay-[200ms]" aria-hidden="true">s</span><span class="group-hover/korok:text-sky-400 transition duration-75 group-hover/korok:-tranzinc-y-px delay-[225ms]" aria-hidden="true">e</span><span class="group-hover/korok:text-blue-400 transition duration-75 group-hover/korok:-tranzinc-y-px delay-[250ms]" aria-hidden="true">e</span><span class="group-hover/korok:text-indigo-400 transition duration-75 group-hover/korok:-tranzinc-y-px delay-[275ms]" aria-hidden="true">d</span><span class="group-hover/korok:text-violet-400 transition duration-75 group-hover/korok:-tranzinc-y-px delay-[300ms]" aria-hidden="true">s</span></span>.
+         Outside of work, I spend my free time with my family and playing my beloved{" "}<span class="group/games inline-flex lg:font-medium lg:text-zinc-100"><span class="sr-only">video games</span>{gameLetters.map((letter, i) => (
+            <span
+               class={`transition duration-75 group-hover/games:-translate-y-px motion-reduce:transition-none ${gameColors[i]}`}
+               style={`transition-delay: ${50 + i * 25}ms`}
+               aria-hidden="true"
+            >{letter === " " ? " " : letter}</span>
+         ))}</span>.
       </p>
    </div>
 </section>
