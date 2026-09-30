@@ -3,11 +3,11 @@ import ProfileImage from "../assets/profile.png";
 import { Image } from "astro:assets";
 ---
 
-<header class="lg:sticky lg:top-0 lg:flex lg:max-h-screen lg:w-[48%] lg:flex-col lg:justify-between lg:py-24">
+<header class="lg:sticky lg:top-0 lg:flex lg:max-h-screen lg:w-[48%] lg:flex-col lg:justify-between lg:overflow-y-auto lg:py-[clamp(3rem,8vh,6rem)]">
   <div>
-    <div class="relative max-w-72 mb-10 sm:mb-auto">
-        <div class="absolute inset-0 border border-neutral-500 translate-x-4 translate-y-4"></div>
-        <div class="relative bg-neutral-200">
+    <div class="relative mb-10 max-w-56 sm:max-w-64 lg:mb-8 lg:max-w-[min(18rem,26vh)] lg:short:max-w-40">
+        <div class="absolute inset-0 border border-zinc-500 translate-x-4 translate-y-4"></div>
+        <div class="relative bg-zinc-200">
           <Image
             src={ProfileImage}
             alt="Portrait"
@@ -20,20 +20,20 @@ import { Image } from "astro:assets";
     <h1 class="text-4xl font-bold tracking-tight text-zinc-100 sm:text-5xl font-[Oxanium]"><a href="/">Keven Gonçalves</a></h1>
     <h2 class="mt-3 text-lg font-medium tracking-tight text-zinc-100 sm:text-xl flex items-center">
       <span class="flex items-center gap-1">
-        <svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="24px" fill="#e3e3e3"><path d="M305-208 32-480l273-273 90 89-184 184 183 183-89 89Zm350 1-90-89 184-184-183-183 89-89 273 272-273 273Z"/></svg>
+        <svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="24px" fill="currentColor"><path d="M305-208 32-480l273-273 90 89-184 184 183 183-89 89Zm350 1-90-89 184-184-183-183 89-89 273 272-273 273Z"/></svg>
         Backend & Mobile Developer
       </span>
     </h2>
 
     <p class="mt-8 max-w-xs leading-normal">
-      I make <span class="text-red-400 font-[Oxanium] font-bold">sauce</span>, but not in the kitchen
+      I make <span class="text-white font-[Oxanium] font-bold">sauce</span>, but not in the kitchen
     </p>
      <nav class="nav hidden lg:block" aria-label="In-page jump links">
-        <ul class="mt-12 w-max">
-           <li><a class="group flex items-center py-3 " href="#about"><span class="nav-indicator mr-4 h-px w-8 bg-zinc-600 transition-all group-hover:w-16 group-hover:bg-zinc-200 group-focus-visible:w-16 group-focus-visible:bg-zinc-200 motion-reduce:transition-none"></span><span class="nav-text text-xs font-bold uppercase tracking-widest text-zinc-500 group-hover:text-zinc-100 group-focus-visible:text-zinc-100">About</span></a></li>
-           <li><a class="group flex items-center py-3" href="#experience"><span class="nav-indicator mr-4 h-px w-8 bg-zinc-600 transition-all group-hover:w-16 group-hover:bg-zinc-200 group-focus-visible:w-16 group-focus-visible:bg-zinc-200 motion-reduce:transition-none"></span><span class="nav-text text-xs font-bold uppercase tracking-widest text-zinc-500 group-hover:text-zinc-100 group-focus-visible:text-zinc-100">Experience</span></a></li>
-           <li><a class="group flex items-center py-3 active" href="#projects"><span class="nav-indicator mr-4 h-px w-8 bg-zinc-600 transition-all group-hover:w-16 group-hover:bg-zinc-200 group-focus-visible:w-16 group-focus-visible:bg-zinc-200 motion-reduce:transition-none"></span><span class="nav-text text-xs font-bold uppercase tracking-widest text-zinc-500 group-hover:text-zinc-100 group-focus-visible:text-zinc-100">Projects</span></a></li>
-           <li><a class="group flex items-center py-3 " href="#contact"><span class="nav-indicator mr-4 h-px w-8 bg-zinc-600 transition-all group-hover:w-16 group-hover:bg-zinc-200 group-focus-visible:w-16 group-focus-visible:bg-zinc-200 motion-reduce:transition-none"></span><span class="nav-text text-xs font-bold uppercase tracking-widest text-zinc-500 group-hover:text-zinc-100 group-focus-visible:text-zinc-100">Contact</span></a></li>
+        <ul class="mt-12 w-max lg:short:mt-8">
+           <li><a class="group flex items-center py-3 lg:short:py-2" href="#about"><span class="nav-indicator mr-4 h-px w-8 bg-zinc-600 transition-all group-hover:w-16 group-hover:bg-zinc-200 group-focus-visible:w-16 group-focus-visible:bg-zinc-200 motion-reduce:transition-none"></span><span class="nav-text text-xs font-bold uppercase tracking-widest text-zinc-500 group-hover:text-zinc-100 group-focus-visible:text-zinc-100">About</span></a></li>
+           <li><a class="group flex items-center py-3 lg:short:py-2" href="#experience"><span class="nav-indicator mr-4 h-px w-8 bg-zinc-600 transition-all group-hover:w-16 group-hover:bg-zinc-200 group-focus-visible:w-16 group-focus-visible:bg-zinc-200 motion-reduce:transition-none"></span><span class="nav-text text-xs font-bold uppercase tracking-widest text-zinc-500 group-hover:text-zinc-100 group-focus-visible:text-zinc-100">Experience</span></a></li>
+           <li><a class="group flex items-center py-3 lg:short:py-2 active" href="#projects"><span class="nav-indicator mr-4 h-px w-8 bg-zinc-600 transition-all group-hover:w-16 group-hover:bg-zinc-200 group-focus-visible:w-16 group-focus-visible:bg-zinc-200 motion-reduce:transition-none"></span><span class="nav-text text-xs font-bold uppercase tracking-widest text-zinc-500 group-hover:text-zinc-100 group-focus-visible:text-zinc-100">Projects</span></a></li>
+           <li><a class="group flex items-center py-3 lg:short:py-2" href="#contact"><span class="nav-indicator mr-4 h-px w-8 bg-zinc-600 transition-all group-hover:w-16 group-hover:bg-zinc-200 group-focus-visible:w-16 group-focus-visible:bg-zinc-200 motion-reduce:transition-none"></span><span class="nav-text text-xs font-bold uppercase tracking-widest text-zinc-500 group-hover:text-zinc-100 group-focus-visible:text-zinc-100">Contact</span></a></li>
         </ul>
      </nav>
   </div>

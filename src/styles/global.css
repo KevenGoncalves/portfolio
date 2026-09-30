@@ -1,4 +1,7 @@
 @import "tailwindcss";
+
+/* Short viewports (e.g. 1280x720 laptops) where the sticky header needs to be more compact */
+@custom-variant short (@media (max-height: 52rem));
 @theme {
   --font-sans: "Poppins";
 }
