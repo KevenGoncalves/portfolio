@@ -1,6 +1,7 @@
 ---
 import ProfileImage from "../assets/profile.png";
 import { Image } from "astro:assets";
+import Sauce from "./Sauce.astro";
 ---
 
 <header class="lg:sticky lg:top-0 lg:flex lg:max-h-screen lg:w-[48%] lg:flex-col lg:justify-between lg:overflow-y-auto lg:py-[clamp(3rem,8vh,6rem)]">
@@ -26,7 +27,7 @@ import { Image } from "astro:assets";
     </h2>
 
     <p class="mt-8 max-w-xs leading-normal">
-      I make <span class="text-white font-[Oxanium] font-bold">sauce</span>, but not in the kitchen
+      I make <Sauce />, but not in the kitchen
     </p>
      <nav class="nav hidden lg:block" aria-label="In-page jump links">
         <ul class="mt-12 w-max lg:short:mt-8">

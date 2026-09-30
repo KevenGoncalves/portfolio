@@ -1,0 +1,122 @@
+<span class="sauce font-[Oxanium] font-bold">
+  <span class="sauce-text">sauce</span>
+  <span class="drip drip-1" aria-hidden="true"></span>
+  <span class="drip drip-2" aria-hidden="true"></span>
+  <span class="drip drip-3" aria-hidden="true"></span>
+</span>
+
+<style>
+.sauce {
+  --sauce: #f87171; /* red-400 */
+  --sauce-dark: #ef4444; /* red-500 */
+  --sauce-shine: #fecaca; /* red-200 */
+  position: relative;
+  display: inline-block;
+  color: var(--sauce);
+}
+
+/* Glossy highlight sweeping across the letters */
+.sauce-text {
+  display: inline-block;
+  background: linear-gradient(
+    110deg,
+    var(--sauce) 0%,
+    var(--sauce) 40%,
+    var(--sauce-shine) 50%,
+    var(--sauce) 60%,
+    var(--sauce) 100%
+  );
+  background-size: 250% 100%;
+  background-clip: text;
+  -webkit-background-clip: text;
+  color: transparent;
+  animation: sauce-gloss 4s ease-in-out infinite;
+}
+
+.sauce:hover .sauce-text {
+  animation:
+    sauce-gloss 4s ease-in-out infinite,
+    sauce-wobble 0.7s ease-in-out;
+}
+
+/* Drips: a strand stretches from the letter, then a droplet falls off */
+.drip {
+  position: absolute;
+  top: 80%;
+  width: 3px;
+  pointer-events: none;
+}
+
+.drip::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 0;
+  border-radius: 0 0 3px 3px;
+  background: var(--sauce-dark);
+  animation: sauce-stretch var(--duration) ease-in infinite var(--delay);
+}
+
+.drip::after {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: -0.5px;
+  width: 4px;
+  height: 5px;
+  border-radius: 50% 50% 50% 50% / 40% 40% 60% 60%;
+  background: var(--sauce-dark);
+  opacity: 0;
+  animation: sauce-fall var(--duration) ease-in infinite var(--delay);
+}
+
+.drip-1 { left: 14%; --duration: 3.2s; --delay: 0s; }
+.drip-2 { left: 52%; --duration: 4.1s; --delay: 1.3s; }
+.drip-3 { left: 83%; --duration: 3.6s; --delay: 2.4s; }
+
+.sauce:hover .drip::before,
+.sauce:hover .drip::after {
+  animation-duration: calc(var(--duration) / 2);
+}
+
+@keyframes sauce-gloss {
+  0%, 20% { background-position: 100% 0; }
+  60%, 100% { background-position: 0% 0; }
+}
+
+@keyframes sauce-wobble {
+  0%, 100% { transform: skewX(0) scaleY(1); }
+  20% { transform: skewX(-8deg) scaleY(1.06); }
+  40% { transform: skewX(6deg) scaleY(0.96); }
+  60% { transform: skewX(-4deg) scaleY(1.03); }
+  80% { transform: skewX(2deg) scaleY(0.99); }
+}
+
+@keyframes sauce-stretch {
+  0% { height: 0; }
+  45% { height: 6px; }
+  55% { height: 8px; }
+  65% { height: 3px; }
+  80%, 100% { height: 0; }
+}
+
+@keyframes sauce-fall {
+  0%, 52% { opacity: 0; transform: translateY(4px); }
+  56% { opacity: 1; transform: translateY(6px); }
+  85% { opacity: 1; transform: translateY(18px) scaleY(1.2); }
+  100% { opacity: 0; transform: translateY(24px) scaleY(1.2); }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .sauce-text,
+  .sauce:hover .sauce-text {
+    animation: none;
+  }
+
+  .drip {
+    display: none;
+  }
+}
+</style>
