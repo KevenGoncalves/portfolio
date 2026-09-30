@@ -10,6 +10,20 @@ import { experience } from "../data/experience";
       <div class="timeline relative" data-timeline>
          <span class="timeline-track" aria-hidden="true"></span>
          <span class="timeline-progress" aria-hidden="true"></span>
+         <span class="timeline-pad" aria-hidden="true">
+            <svg viewBox="0 0 28 12" fill="none">
+               <rect x="2" y="4.5" width="24" height="3" rx="1.5" fill="#d4d4d8" />
+               <rect x="7" y="7" width="1.5" height="5" rx="0.75" fill="#71717a" />
+               <rect x="19.5" y="7" width="1.5" height="5" rx="0.75" fill="#71717a" />
+               <circle class="pad-beacon" cx="14" cy="2" r="1.6" fill="#ef4444" />
+            </svg>
+         </span>
+         <p class="timeline-hint" aria-hidden="true">
+            Scroll to launch
+            <svg viewBox="0 0 20 20" fill="currentColor" class="hint-arrow">
+               <path fill-rule="evenodd" d="M10 3a.75.75 0 01.75.75v10.638l3.96-4.158a.75.75 0 111.08 1.04l-5.25 5.5a.75.75 0 01-1.08 0l-5.25-5.5a.75.75 0 111.08-1.04l3.96 4.158V3.75A.75.75 0 0110 3z" clip-rule="evenodd" />
+            </svg>
+         </p>
          <span class="timeline-rocket" aria-hidden="true">
             <svg viewBox="0 0 24 44" fill="none">
                <defs>
@@ -33,7 +47,7 @@ import { experience } from "../data/experience";
                <circle cx="12" cy="13.5" r="2.6" fill="#09090b" stroke="#d4d4d8" stroke-width="0.9" />
             </svg>
          </span>
-         <ol class="group/list">
+         <ol class="timeline-list group/list">
 
          {experience.map((job) => (
             <li class="timeline-item relative mb-12 pl-9 last:mb-0 sm:pl-11" data-timeline-item>
@@ -41,7 +55,7 @@ import { experience } from "../data/experience";
                <div class="group relative pb-1 transition-all lg:hover:!opacity-100 lg:group-hover/list:opacity-50">
                   <div class="absolute -inset-x-4 -inset-y-4 z-0 hidden rounded-md transition motion-reduce:transition-none lg:-inset-x-6 lg:block lg:group-hover:bg-zinc-800/50 lg:group-hover:shadow-[inset_0_1px_0_0_rgba(212,212,216,0.1)] lg:group-hover:drop-shadow-lg"></div>
                   <div class="relative z-10">
-                     <p class="text-xs font-semibold uppercase tracking-wide text-zinc-500" aria-label={job.periodLabel}>{job.period}</p>
+                     <p class="timeline-period text-xs font-semibold uppercase tracking-wide text-zinc-500" aria-label={job.periodLabel}>{job.period}</p>
                      <h3 class="mt-2 font-medium leading-snug text-zinc-100">
                         <a class="group/link inline-flex items-baseline text-base font-medium leading-tight text-zinc-100 hover:text-white focus-visible:text-white" href={job.url} target="_blank" rel="noreferrer noopener" aria-label={`${job.title} at ${job.company} (opens in a new tab)`}>
                            <span class="absolute -inset-x-4 -inset-y-2.5 hidden rounded md:-inset-x-6 md:-inset-y-4 lg:block"></span>
@@ -58,10 +72,10 @@ import { experience } from "../data/experience";
                      </h3>
 
                      {job.previousTitles && (
-                        <ul class="mt-1 space-y-0.5" aria-label="Previous roles">
+                        <ul class="relative mt-2 space-y-1 pl-4 before:absolute before:top-2 before:bottom-2 before:left-[3px] before:w-px before:bg-zinc-700" aria-label="Previous roles">
                            {job.previousTitles.map((title) => (
-                              <li class="flex items-center gap-2 text-sm text-zinc-500">
-                                 <span class="h-px w-3 bg-zinc-700" aria-hidden="true"></span>
+                              <li class="relative text-sm text-zinc-500">
+                                 <span class="absolute top-1/2 -left-4 size-[7px] -translate-y-1/2 rounded-full border border-zinc-600 bg-zinc-950" aria-hidden="true"></span>
                                  {title}
                               </li>
                            ))}
@@ -117,43 +131,117 @@ import { experience } from "../data/experience";
 </section>
 
 <style>
+/* --start is where the rail begins: just below the launch pad, at the docked rocket's nose */
+.timeline {
+  --start: 52px;
+}
+
+/* Launch pad at the top of the rail, with a blinking beacon */
+.timeline-pad {
+  position: absolute;
+  top: 0;
+  left: 7.5px;
+  width: 28px;
+  translate: -50% 0;
+  pointer-events: none;
+}
+
+.timeline-pad svg {
+  display: block;
+  width: 100%;
+  height: auto;
+}
+
+.pad-beacon {
+  animation: pad-blink 1.6s ease-in-out infinite;
+}
+
+/* "Scroll to launch" hint, only while the rocket is docked */
+.timeline-hint {
+  position: absolute;
+  top: 22px;
+  left: 2.25rem;
+  display: flex;
+  align-items: center;
+  gap: 0.375rem;
+  font-size: 0.75rem;
+  font-weight: 600;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: #71717a; /* zinc-500 */
+  opacity: 0;
+  translate: 0 -4px;
+  transition: opacity 0.4s ease, translate 0.4s ease;
+  pointer-events: none;
+}
+
+.is-docked .timeline-hint {
+  opacity: 1;
+  translate: 0 0;
+}
+
+.hint-arrow {
+  width: 0.875rem;
+  height: 0.875rem;
+  animation: hint-bob 1.4s ease-in-out infinite;
+}
+
+.timeline-list {
+  padding-top: calc(var(--start) + 1.75rem);
+}
+
+@media (min-width: 40rem) {
+  .timeline-hint {
+    left: 2.75rem;
+  }
+}
+
 /* Rail: a faint track, plus a bright line that fills as you scroll */
 .timeline-track,
 .timeline-progress {
   position: absolute;
-  top: 0.45rem;
   left: 7px;
   width: 1px;
   pointer-events: none;
 }
 
 .timeline-track {
+  top: 12px;
   bottom: 0;
-  background: linear-gradient(to bottom, #27272a 0%, #27272a 85%, transparent 100%); /* zinc-800 */
+  background: linear-gradient(to bottom, #3f3f46 0%, #27272a 12%, #27272a 85%, transparent 100%); /* zinc-700 → zinc-800 */
 }
 
 .timeline-progress {
-  height: calc(var(--progress, 0) * (100% - 0.45rem));
+  top: var(--start);
+  height: calc(var(--progress, 0) * (100% - var(--start)));
   background: linear-gradient(to bottom, #52525b, #f4f4f5); /* zinc-600 → zinc-100 */
 }
 
 /* Rocket flying down the rail, nose at the tip of the progress line */
 .timeline-rocket {
   position: absolute;
-  top: calc(0.45rem + var(--progress, 0) * (100% - 0.45rem));
+  top: calc(var(--start) + var(--progress, 0) * (100% - var(--start)));
   left: 7.5px;
   z-index: 2;
   width: 20px;
   transform: translate(-50%, -100%) rotate(180deg);
-  opacity: var(--rocket, 0);
   filter: drop-shadow(0 0 6px rgb(250 250 250 / 0.35));
-  transition: opacity 0.3s ease, transform 0.35s ease;
+  transition: transform 0.35s ease;
   pointer-events: none;
 }
 
 /* Scrolling up: nose points up, still anchored at the tip of the line */
 .is-reversing .timeline-rocket {
   transform: translate(-50%, 0) rotate(0deg);
+}
+
+/* Docked under the pad: always nose-down, gently bobbing, engine idling */
+.is-docked .timeline-rocket {
+  transform: translate(-50%, -100%) rotate(180deg);
+}
+
+.is-docked .timeline-rocket svg {
+  animation: rocket-bob 2s ease-in-out infinite;
 }
 
 .timeline-rocket svg {
@@ -171,18 +259,17 @@ import { experience } from "../data/experience";
   transition: transform 0.25s ease-out;
 }
 
+.is-docked .rocket-thrust {
+  transform: scaleY(0.35) scaleX(0.8);
+}
+
 .rocket-flame {
   transform-box: fill-box;
   transform-origin: top center;
   animation: rocket-flicker 0.12s ease-in-out infinite alternate;
 }
 
-@keyframes rocket-flicker {
-  from { transform: scale(1, 1); opacity: 1; }
-  to { transform: scale(0.85, 0.8); opacity: 0.85; }
-}
-
-/* Milestone dots light up once the progress line reaches them */
+/* Milestone bullets: a ring with a dim core that lights up when the rocket passes */
 .timeline-dot {
   position: absolute;
   top: 0.05rem;
@@ -190,7 +277,7 @@ import { experience } from "../data/experience";
   z-index: 1;
   width: 15px;
   height: 15px;
-  border: 2px solid #3f3f46; /* zinc-700 */
+  border: 1.5px solid #3f3f46; /* zinc-700 */
   border-radius: 9999px;
   background: #09090b; /* zinc-950 */
   transition: border-color 0.4s ease, box-shadow 0.4s ease;
@@ -199,46 +286,87 @@ import { experience } from "../data/experience";
 .timeline-dot::before {
   content: "";
   position: absolute;
-  inset: 2px;
+  inset: 3.5px;
   border-radius: inherit;
-  background: #f4f4f5; /* zinc-100 */
-  transform: scale(0);
-  transition: transform 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
+  background: #3f3f46; /* zinc-700 */
+  transition: background-color 0.4s ease, transform 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+
+.timeline-dot::after {
+  content: "";
+  position: absolute;
+  inset: -1.5px;
+  border: 1.5px solid #f4f4f5; /* zinc-100 */
+  border-radius: inherit;
+  opacity: 0;
+  pointer-events: none;
 }
 
 .is-reached .timeline-dot {
-  border-color: #e4e4e7; /* zinc-200 */
-  box-shadow: 0 0 12px rgb(244 244 245 / 0.25);
+  border-color: #d4d4d8; /* zinc-300 */
+  box-shadow: 0 0 12px rgb(244 244 245 / 0.2);
 }
 
 .is-reached .timeline-dot::before {
-  transform: scale(1);
+  background: #fafafa; /* zinc-50 */
+  transform: scale(1.15);
 }
 
-/* Current role: sauce-red dot with a pulse */
+/* One-time ripple when the rocket reaches a bullet */
+.is-reached .timeline-dot::after {
+  animation: dot-ping 0.9s ease-out;
+}
+
+.timeline-period {
+  transition: color 0.4s ease;
+}
+
+.is-reached .timeline-period {
+  color: #d4d4d8; /* zinc-300 */
+}
+
+/* Current role: sauce-red bullet with a continuous pulse */
 .timeline-dot.is-current {
   border-color: #ef4444; /* red-500 */
+  box-shadow: 0 0 14px rgb(239 68 68 / 0.4);
 }
 
 .timeline-dot.is-current::before {
   background: #ef4444;
-  transform: scale(1);
+  transform: scale(1.15);
 }
 
 .timeline-dot.is-current::after {
-  content: "";
-  position: absolute;
-  inset: -2px;
-  border: 2px solid #ef4444;
-  border-radius: inherit;
-  animation: timeline-pulse 2s ease-out infinite;
+  border-color: #ef4444;
+  animation: dot-pulse 2s ease-out infinite;
 }
 
-.is-reached .timeline-dot.is-current {
-  box-shadow: 0 0 14px rgb(239 68 68 / 0.45);
+@keyframes pad-blink {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.25; }
 }
 
-@keyframes timeline-pulse {
+@keyframes hint-bob {
+  0%, 100% { translate: 0 -1px; }
+  50% { translate: 0 2px; }
+}
+
+@keyframes rocket-bob {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(2px); }
+}
+
+@keyframes rocket-flicker {
+  from { transform: scale(1, 1); opacity: 1; }
+  to { transform: scale(0.85, 0.8); opacity: 0.85; }
+}
+
+@keyframes dot-ping {
+  from { transform: scale(1); opacity: 0.8; }
+  to { transform: scale(2.6); opacity: 0; }
+}
+
+@keyframes dot-pulse {
   from { transform: scale(1); opacity: 0.7; }
   to { transform: scale(2.4); opacity: 0; }
 }
@@ -258,18 +386,20 @@ import { experience } from "../data/experience";
 @media (prefers-reduced-motion: reduce) {
   .timeline-dot,
   .timeline-dot::before,
+  .timeline-period,
+  .timeline-hint,
   .timeline-rocket,
   .rocket-thrust {
     transition: none;
   }
 
-  .rocket-flame {
-    animation: none;
-  }
-
+  .rocket-flame,
+  .pad-beacon,
+  .hint-arrow,
+  .is-docked .timeline-rocket svg,
+  .is-reached .timeline-dot::after,
   .timeline-dot.is-current::after {
     animation: none;
-    opacity: 0;
   }
 }
 </style>
@@ -283,15 +413,16 @@ import { experience } from "../data/experience";
     let lastScrollY = window.scrollY;
     let coastTimer = 0;
 
-    // Fill the rail up to 60% of the viewport height and light up the dots it has passed
+    // Fill the rail up to 60% of the viewport height and light up the bullets it has passed
     const update = () => {
       frame = 0;
       const anchor = window.innerHeight * 0.6;
       const rect = timeline.getBoundingClientRect();
-      const progress = Math.min(Math.max((anchor - rect.top) / rect.height, 0), 1);
+      const start = parseFloat(getComputedStyle(timeline).getPropertyValue("--start")) || 0;
+      const progress = Math.min(Math.max((anchor - rect.top - start) / (rect.height - start), 0), 1);
 
       timeline.style.setProperty("--progress", progress.toFixed(4));
-      timeline.style.setProperty("--rocket", progress > 0 ? "1" : "0");
+      timeline.classList.toggle("is-docked", progress === 0);
 
       // Faster scrolling = bigger flame; it settles back once scrolling stops
       const delta = window.scrollY - lastScrollY;
