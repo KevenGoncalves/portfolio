@@ -11,10 +11,10 @@ import { experience } from "../data/experience";
          <span class="timeline-track" aria-hidden="true"></span>
          <span class="timeline-progress" aria-hidden="true"></span>
          <span class="timeline-pad" aria-hidden="true">
-            <svg viewBox="0 0 28 12" fill="none">
+            <svg viewBox="0 0 28 22" fill="none">
                <rect x="2" y="4.5" width="24" height="3" rx="1.5" fill="#d4d4d8" />
-               <rect x="7" y="7" width="1.5" height="5" rx="0.75" fill="#71717a" />
-               <rect x="19.5" y="7" width="1.5" height="5" rx="0.75" fill="#71717a" />
+               <path class="pad-clamp" d="M6.25 7v12.5l1.5 1.5" stroke="#71717a" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" />
+               <path class="pad-clamp" d="M21.75 7v12.5l-1.5 1.5" stroke="#71717a" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" />
                <circle class="pad-beacon" cx="14" cy="2" r="1.6" fill="#ef4444" />
             </svg>
          </span>
@@ -28,15 +28,16 @@ import { experience } from "../data/experience";
             <svg viewBox="0 0 24 44" fill="none">
                <defs>
                   <linearGradient id="rocket-flame" x1="0" x2="0" y1="0" y2="1">
-                     <stop offset="0%" stop-color="#ffffff" stop-opacity="0.95" />
-                     <stop offset="50%" stop-color="#e4e4e7" stop-opacity="0.5" />
-                     <stop offset="100%" stop-color="#e4e4e7" stop-opacity="0" />
+                     <stop offset="0%" stop-color="#fde68a" />
+                     <stop offset="35%" stop-color="#fb923c" />
+                     <stop offset="75%" stop-color="#ef4444" stop-opacity="0.7" />
+                     <stop offset="100%" stop-color="#ef4444" stop-opacity="0" />
                   </linearGradient>
                </defs>
                <g class="rocket-thrust">
                   <g class="rocket-flame">
                      <path d="M9 31.5C9.8 37.5 11.2 42.5 12 44c.8-1.5 2.2-6.5 3-12.5Z" fill="url(#rocket-flame)" />
-                     <path d="M10.6 31.5c.4 3.2 1 5.6 1.4 6.6.4-1 1-3.4 1.4-6.6Z" fill="#ffffff" />
+                     <path d="M10.6 31.5c.4 3.2 1 5.6 1.4 6.6.4-1 1-3.4 1.4-6.6Z" fill="#fef3c7" />
                   </g>
                </g>
                <path d="M6.5 19C3.5 21 2 24.5 2 29.5V32l4.5-3Z" fill="#d4d4d8" />
@@ -133,7 +134,7 @@ import { experience } from "../data/experience";
 <style>
 /* --start is where the rail begins: just below the launch pad, at the docked rocket's nose */
 .timeline {
-  --start: 52px;
+  --start: 36px;
 }
 
 /* Launch pad at the top of the rail, with a blinking beacon */
@@ -156,10 +157,31 @@ import { experience } from "../data/experience";
   animation: pad-blink 1.6s ease-in-out infinite;
 }
 
+.pad-clamp {
+  transform-box: fill-box;
+  transition: transform 0.35s ease;
+}
+
+.pad-clamp:first-of-type {
+  transform-origin: top right;
+}
+
+.pad-clamp:last-of-type {
+  transform-origin: top left;
+}
+
+.timeline:not(.is-docked) .pad-clamp:first-of-type {
+  transform: rotate(25deg);
+}
+
+.timeline:not(.is-docked) .pad-clamp:last-of-type {
+  transform: rotate(-25deg);
+}
+
 /* "Scroll to launch" hint, only while the rocket is docked */
 .timeline-hint {
   position: absolute;
-  top: 22px;
+  top: 10px;
   left: 2.25rem;
   display: flex;
   align-items: center;
@@ -206,7 +228,7 @@ import { experience } from "../data/experience";
 }
 
 .timeline-track {
-  top: 12px;
+  top: 7px;
   bottom: 0;
   background: linear-gradient(to bottom, #3f3f46 0%, #27272a 12%, #27272a 85%, transparent 100%); /* zinc-700 → zinc-800 */
 }
@@ -225,7 +247,7 @@ import { experience } from "../data/experience";
   z-index: 2;
   width: 20px;
   transform: translate(-50%, -100%) rotate(180deg);
-  filter: drop-shadow(0 0 6px rgb(250 250 250 / 0.35));
+  filter: drop-shadow(0 0 6px rgb(250 250 250 / 0.3));
   transition: transform 0.35s ease;
   pointer-events: none;
 }
@@ -235,13 +257,9 @@ import { experience } from "../data/experience";
   transform: translate(-50%, 0) rotate(0deg);
 }
 
-/* Docked under the pad: always nose-down, gently bobbing, engine idling */
+/* Docked in the pad clamps: always nose-down, engine off until launch */
 .is-docked .timeline-rocket {
   transform: translate(-50%, -100%) rotate(180deg);
-}
-
-.is-docked .timeline-rocket svg {
-  animation: rocket-bob 2s ease-in-out infinite;
 }
 
 .timeline-rocket svg {
@@ -260,7 +278,7 @@ import { experience } from "../data/experience";
 }
 
 .is-docked .rocket-thrust {
-  transform: scaleY(0.35) scaleX(0.8);
+  transform: scale(0);
 }
 
 .rocket-flame {
@@ -325,18 +343,18 @@ import { experience } from "../data/experience";
   color: #d4d4d8; /* zinc-300 */
 }
 
-/* Current role: sauce-red bullet with a continuous pulse */
-.timeline-dot.is-current {
+/* Current role: sauce-red bullet with a continuous pulse (stays red even once reached) */
+.timeline .timeline-dot.is-current {
   border-color: #ef4444; /* red-500 */
   box-shadow: 0 0 14px rgb(239 68 68 / 0.4);
 }
 
-.timeline-dot.is-current::before {
+.timeline .timeline-dot.is-current::before {
   background: #ef4444;
   transform: scale(1.15);
 }
 
-.timeline-dot.is-current::after {
+.timeline .timeline-dot.is-current::after {
   border-color: #ef4444;
   animation: dot-pulse 2s ease-out infinite;
 }
@@ -349,11 +367,6 @@ import { experience } from "../data/experience";
 @keyframes hint-bob {
   0%, 100% { translate: 0 -1px; }
   50% { translate: 0 2px; }
-}
-
-@keyframes rocket-bob {
-  0%, 100% { transform: translateY(0); }
-  50% { transform: translateY(2px); }
 }
 
 @keyframes rocket-flicker {
@@ -389,16 +402,16 @@ import { experience } from "../data/experience";
   .timeline-period,
   .timeline-hint,
   .timeline-rocket,
-  .rocket-thrust {
+  .rocket-thrust,
+  .pad-clamp {
     transition: none;
   }
 
   .rocket-flame,
   .pad-beacon,
   .hint-arrow,
-  .is-docked .timeline-rocket svg,
   .is-reached .timeline-dot::after,
-  .timeline-dot.is-current::after {
+  .timeline .timeline-dot.is-current::after {
     animation: none;
   }
 }
@@ -413,10 +426,10 @@ import { experience } from "../data/experience";
     let lastScrollY = window.scrollY;
     let coastTimer = 0;
 
-    // Fill the rail up to 60% of the viewport height and light up the bullets it has passed
+    // Fill the rail up to 40% of the viewport height and light up the bullets it has passed
     const update = () => {
       frame = 0;
-      const anchor = window.innerHeight * 0.6;
+      const anchor = window.innerHeight * 0.4;
       const rect = timeline.getBoundingClientRect();
       const start = parseFloat(getComputedStyle(timeline).getPropertyValue("--start")) || 0;
       const progress = Math.min(Math.max((anchor - rect.top - start) / (rect.height - start), 0), 1);
