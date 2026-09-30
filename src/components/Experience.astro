@@ -42,17 +42,18 @@ import { experience } from "../data/experience";
                <!-- Engine nozzle -->
                <path d="M9 58h6l1 3.5a.5.5 0 0 1-.5.5h-7a.5.5 0 0 1-.5-.5Z" fill="white" />
                <!-- Glass body: dark base so the rail doesn't show through, translucent white, thin outline -->
-               <path d="M12 1c4.5 4 7 10 7 17v36c0 2.2-1.8 4-4 4H9c-2.2 0-4-1.8-4-4V18C5 11 7.5 5 12 1Z" fill="#09090b" />
-               <path d="M12 1c4.5 4 7 10 7 17v36c0 2.2-1.8 4-4 4H9c-2.2 0-4-1.8-4-4V18C5 11 7.5 5 12 1Z" fill="white" fill-opacity="0.25" stroke="white" stroke-opacity="0.7" />
-               <!-- Solid nose cap -->
-               <path d="M12 1.6c2.3 2.1 4 4.9 5.1 8.2-1.9.8-8.3.8-10.2 0C8 6.5 9.7 3.7 12 1.6Z" fill="white" />
+               <path d="M12 .75C15.2 3.2 19 9.5 19 18v36c0 2.2-1.8 4-4 4H9c-2.2 0-4-1.8-4-4V18C5 9.5 8.8 3.2 12 .75Z" fill="#09090b" />
+               <path d="M12 .75C15.2 3.2 19 9.5 19 18v36c0 2.2-1.8 4-4 4H9c-2.2 0-4-1.8-4-4V18C5 9.5 8.8 3.2 12 .75Z" fill="white" fill-opacity="0.25" stroke="white" stroke-opacity="0.7" />
+               <!-- Nose: solid cap inset from the outline, with a curved seam below it -->
+               <path d="M12 2.7c2.2 1.8 4.2 4.8 5.1 8.4-1.6.8-8.6.8-10.2 0 .9-3.6 2.9-6.6 5.1-8.4Z" fill="white" />
+               <path d="M5.9 14.3c1.9-.8 10.3-.8 12.2 0" stroke="white" stroke-opacity="0.7" stroke-width="0.75" stroke-linecap="round" />
                <!-- Side lines -->
-               <path d="M8.5 13v41M15.5 13v41" stroke="white" stroke-opacity="0.35" stroke-width="0.75" stroke-linecap="round" />
+               <path d="M8.5 16.5v37.5M15.5 16.5v37.5" stroke="white" stroke-opacity="0.35" stroke-width="0.75" stroke-linecap="round" />
                <!-- Segment lines -->
-               <path d="M5 24.5c0-1.4 2.3-2 7-2s7 .6 7 2M5 40.5c0-1.4 2.3-2 7-2s7 .6 7 2" stroke="white" stroke-width="0.75" />
+               <path d="M5 26.5c0-1.4 2.3-2 7-2s7 .6 7 2M5 40.5c0-1.4 2.3-2 7-2s7 .6 7 2" stroke="white" stroke-width="0.75" />
                <!-- Windows -->
-               <ellipse cx="12" cy="16" rx="2" ry="1.5" stroke="white" stroke-width="0.9" />
-               <ellipse cx="12" cy="31.5" rx="2" ry="1.5" stroke="white" stroke-width="0.9" />
+               <ellipse cx="12" cy="20" rx="2" ry="1.5" stroke="white" stroke-width="0.9" />
+               <ellipse cx="12" cy="33" rx="2" ry="1.5" stroke="white" stroke-width="0.9" />
                <ellipse cx="12" cy="47.5" rx="2" ry="1.5" stroke="white" stroke-width="0.9" />
             </svg>
          </span>
@@ -243,7 +244,8 @@ import { experience } from "../data/experience";
 
 .timeline-progress {
   top: var(--start);
-  height: calc(var(--progress, 0) * (100% - var(--start)));
+  /* Ends 12px short of the nose tip, hidden under the rocket */
+  height: max(0px, calc(var(--progress, 0) * (100% - var(--start)) - 12px));
   background: linear-gradient(to bottom, #52525b, #f4f4f5); /* zinc-600 → zinc-100 */
 }
 
