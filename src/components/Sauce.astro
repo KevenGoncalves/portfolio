@@ -1,178 +1,123 @@
----
-const letters = [..."sauce"];
----
-
-<span class="sauce">
-  <span class="sr-only">sauce</span>
-  <span class="sauce-word" aria-hidden="true">
-    {letters.map((letter, i) => <span class="sauce-letter" style={`--i: ${i}`}>{letter}</span>)}
-  </span>
-  <svg class="sauce-swoosh" viewBox="0 0 114 12" preserveAspectRatio="none" aria-hidden="true">
-    <defs>
-      <linearGradient id="sauce-swoosh-fill" x1="0" x2="1" y1="0" y2="0">
-        <stop offset="0%" stop-color="#dc2626" />
-        <stop offset="60%" stop-color="#ef4444" />
-        <stop offset="100%" stop-color="#f97316" />
-      </linearGradient>
-    </defs>
-    <path
-      class="swoosh-stroke"
-      fill="url(#sauce-swoosh-fill)"
-      d="M1 9C20 5.5 45 4.5 70 5.2 82 5.6 92 4.2 99 2 93 6.2 83 8.6 70 9.2 45 10.2 22 11.2 1 9Z"
-    />
-    <circle class="swoosh-dot swoosh-dot-1" cx="105" cy="4.5" r="1.8" fill="#f97316" />
-    <circle class="swoosh-dot swoosh-dot-2" cx="111" cy="2.6" r="1.1" fill="#f97316" />
-  </svg>
+<span class="sauce font-[Oxanium] font-bold">
+  <span class="sauce-text">sauce</span>
+  <span class="drip drip-1" aria-hidden="true"></span>
+  <span class="drip drip-2" aria-hidden="true"></span>
+  <span class="drip drip-3" aria-hidden="true"></span>
 </span>
 
 <style>
+/* Red, glossy "sauce" with drips falling from the letters */
 .sauce {
-  --sauce-deep: #dc2626; /* red-600 */
-  --sauce: #ef4444; /* red-500 */
-  --sauce-warm: #fb923c; /* orange-400 */
-  --sauce-shine: #fed7aa; /* orange-200 */
+  --sauce: #f87171; /* red-400 */
+  --sauce-dark: #ef4444; /* red-500 */
+  --sauce-shine: #fecaca; /* red-200 */
   position: relative;
   display: inline-block;
-  font-family: "Oxanium", sans-serif;
-  font-weight: 800;
-  font-size: 1.2em;
-  line-height: 1;
-  letter-spacing: 0.02em;
-  margin-right: 0.12em;
+  color: var(--sauce);
 }
 
-.sauce-word {
-  position: relative;
-  z-index: 1;
-  display: inline-block;
-  filter: drop-shadow(0 0 10px rgb(239 68 68 / 0.3));
-  transition: filter 0.3s ease;
-}
-
-/* Each letter carries the glossy gradient; staggered delays make the shine travel across the word */
-.sauce-letter {
+/* Glossy highlight sweeping across the letters */
+.sauce-text {
   display: inline-block;
   background: linear-gradient(
-    100deg,
-    var(--sauce-deep) 0%,
-    var(--sauce) 35%,
-    var(--sauce-warm) 46%,
+    110deg,
+    var(--sauce) 0%,
+    var(--sauce) 40%,
     var(--sauce-shine) 50%,
-    var(--sauce-warm) 54%,
-    var(--sauce) 65%,
-    var(--sauce-deep) 100%
+    var(--sauce) 60%,
+    var(--sauce) 100%
   );
-  background-size: 300% 100%;
-  background-position: 100% 0;
+  background-size: 250% 100%;
   background-clip: text;
   -webkit-background-clip: text;
   color: transparent;
+  animation: sauce-gloss 4s ease-in-out infinite;
+}
+
+.sauce:hover .sauce-text {
   animation:
-    sauce-gloss 5s ease-in-out infinite calc(var(--i) * 0.09s),
-    sauce-ripple 5s ease-in-out infinite calc(1.6s + var(--i) * 0.08s);
+    sauce-gloss 4s ease-in-out infinite,
+    sauce-wobble 0.7s ease-in-out;
 }
 
-.sauce:hover .sauce-word {
-  filter: drop-shadow(0 0 14px rgb(249 115 22 / 0.5));
-}
-
-.sauce:hover .sauce-letter {
-  animation:
-    sauce-gloss 5s ease-in-out infinite calc(var(--i) * 0.09s),
-    sauce-jiggle 0.55s ease-in-out calc(var(--i) * 0.05s);
-}
-
-/* Plating swoosh painted under the word, with two dots at the end */
-.sauce-swoosh {
+/* Drips: a strand stretches from the letter, then a droplet falls off */
+.drip {
   position: absolute;
-  left: -4%;
-  bottom: -0.32em;
-  width: 110%;
-  height: 0.45em;
-  overflow: visible;
+  top: 80%;
+  width: 3px;
   pointer-events: none;
 }
 
-.swoosh-stroke {
-  clip-path: inset(0 100% 0 0);
-  animation: swoosh-paint 0.9s cubic-bezier(0.65, 0, 0.35, 1) 0.4s forwards;
+.drip::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 0;
+  border-radius: 0 0 3px 3px;
+  background: var(--sauce-dark);
+  animation: sauce-stretch var(--duration) ease-in infinite var(--delay);
 }
 
-.swoosh-dot {
-  transform-box: fill-box;
-  transform-origin: center;
-  transform: scale(0);
-  animation: swoosh-dot 0.35s cubic-bezier(0.34, 1.56, 0.64, 1) forwards;
+.drip::after {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: -0.5px;
+  width: 4px;
+  height: 5px;
+  border-radius: 50% 50% 50% 50% / 40% 40% 60% 60%;
+  background: var(--sauce-dark);
+  opacity: 0;
+  animation: sauce-fall var(--duration) ease-in infinite var(--delay);
 }
 
-.swoosh-dot-1 { animation-delay: 1.15s; }
-.swoosh-dot-2 { animation-delay: 1.3s; }
+.drip-1 { left: 14%; --duration: 3.2s; --delay: 0s; }
+.drip-2 { left: 52%; --duration: 4.1s; --delay: 1.3s; }
+.drip-3 { left: 83%; --duration: 3.6s; --delay: 2.4s; }
 
-/* Repaint on hover (a different keyframe name restarts the animation) */
-.sauce:hover .swoosh-stroke {
-  animation: swoosh-repaint 0.6s cubic-bezier(0.65, 0, 0.35, 1) forwards;
+.sauce:hover .drip::before,
+.sauce:hover .drip::after {
+  animation-duration: calc(var(--duration) / 2);
 }
-
-.sauce:hover .swoosh-dot {
-  animation-name: swoosh-dot-again;
-}
-
-.sauce:hover .swoosh-dot-1 { animation-delay: 0.45s; }
-.sauce:hover .swoosh-dot-2 { animation-delay: 0.55s; }
 
 @keyframes sauce-gloss {
-  0%, 15% { background-position: 100% 0; }
-  65%, 100% { background-position: 0% 0; }
+  0%, 20% { background-position: 100% 0; }
+  60%, 100% { background-position: 0% 0; }
 }
 
-/* A slow, viscous wave rolling through the letters */
-@keyframes sauce-ripple {
-  0%, 16%, 100% { transform: translateY(0) scaleY(1); }
-  6% { transform: translateY(-2px) scaleY(1.05); }
-  11% { transform: translateY(1px) scaleY(0.97); }
+@keyframes sauce-wobble {
+  0%, 100% { transform: skewX(0) scaleY(1); }
+  20% { transform: skewX(-8deg) scaleY(1.06); }
+  40% { transform: skewX(6deg) scaleY(0.96); }
+  60% { transform: skewX(-4deg) scaleY(1.03); }
+  80% { transform: skewX(2deg) scaleY(0.99); }
 }
 
-@keyframes sauce-jiggle {
-  0%, 100% { transform: translateY(0) scale(1, 1); }
-  30% { transform: translateY(-4px) scale(0.92, 1.1); }
-  60% { transform: translateY(1px) scale(1.08, 0.92); }
-  80% { transform: translateY(-1px) scale(0.98, 1.02); }
+@keyframes sauce-stretch {
+  0% { height: 0; }
+  45% { height: 6px; }
+  55% { height: 8px; }
+  65% { height: 3px; }
+  80%, 100% { height: 0; }
 }
 
-@keyframes swoosh-paint {
-  to { clip-path: inset(0 0 0 0); }
-}
-
-@keyframes swoosh-repaint {
-  from { clip-path: inset(0 100% 0 0); }
-  to { clip-path: inset(0 0 0 0); }
-}
-
-@keyframes swoosh-dot {
-  to { transform: scale(1); }
-}
-
-@keyframes swoosh-dot-again {
-  from { transform: scale(0); }
-  to { transform: scale(1); }
+@keyframes sauce-fall {
+  0%, 52% { opacity: 0; transform: translateY(4px); }
+  56% { opacity: 1; transform: translateY(6px); }
+  85% { opacity: 1; transform: translateY(18px) scaleY(1.2); }
+  100% { opacity: 0; transform: translateY(24px) scaleY(1.2); }
 }
 
 @media (prefers-reduced-motion: reduce) {
-  .sauce-letter,
-  .sauce:hover .sauce-letter {
+  .sauce-text,
+  .sauce:hover .sauce-text {
     animation: none;
   }
 
-  .swoosh-stroke,
-  .sauce:hover .swoosh-stroke {
-    animation: none;
-    clip-path: none;
-  }
-
-  .swoosh-dot,
-  .sauce:hover .swoosh-dot {
-    animation: none;
-    transform: none;
+  .drip {
+    display: none;
   }
 }
 </style>
