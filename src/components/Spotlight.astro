@@ -1,0 +1,41 @@
+<div
+  id="spotlight"
+  class="pointer-events-none fixed inset-0 z-30 opacity-0 transition-opacity duration-300"
+  aria-hidden="true"
+></div>
+
+<style>
+#spotlight {
+  background: radial-gradient(
+    600px at var(--spotlight-x, 50%) var(--spotlight-y, 50%),
+    rgba(228, 228, 231, 0.08),
+    transparent 80%
+  );
+}
+
+#spotlight.is-active {
+  opacity: 1;
+}
+</style>
+
+<script>
+  const spotlight = document.getElementById("spotlight");
+
+  // Only follow the cursor on devices with a real pointer (skip touch screens)
+  if (spotlight && window.matchMedia("(hover: hover) and (pointer: fine)").matches) {
+    let frame = 0;
+
+    window.addEventListener("pointermove", (event) => {
+      cancelAnimationFrame(frame);
+      frame = requestAnimationFrame(() => {
+        spotlight.style.setProperty("--spotlight-x", `${event.clientX}px`);
+        spotlight.style.setProperty("--spotlight-y", `${event.clientY}px`);
+        spotlight.classList.add("is-active");
+      });
+    });
+
+    document.documentElement.addEventListener("pointerleave", () => {
+      spotlight.classList.remove("is-active");
+    });
+  }
+</script>
