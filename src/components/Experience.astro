@@ -11,11 +11,11 @@ import { experience } from "../data/experience";
          <span class="timeline-track" aria-hidden="true"></span>
          <span class="timeline-progress" aria-hidden="true"></span>
          <span class="timeline-pad" aria-hidden="true">
-            <svg viewBox="0 0 28 22" fill="none">
-               <rect x="2" y="4.5" width="24" height="3" rx="1.5" fill="#d4d4d8" />
-               <path class="pad-clamp" d="M6.25 7v12.5l1.5 1.5" stroke="#71717a" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" />
-               <path class="pad-clamp" d="M21.75 7v12.5l-1.5 1.5" stroke="#71717a" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" />
-               <circle class="pad-beacon" cx="14" cy="2" r="1.6" fill="#ef4444" />
+            <svg viewBox="0 0 36 26" fill="none">
+               <rect x="2.5" y="4.5" width="31" height="3" rx="1.5" fill="white" fill-opacity="0.25" stroke="white" stroke-opacity="0.7" />
+               <path class="pad-clamp" d="M9.5 8v13.5l1.5 1.5" stroke="white" stroke-opacity="0.7" stroke-linecap="round" stroke-linejoin="round" />
+               <path class="pad-clamp" d="M26.5 8v13.5l-1.5 1.5" stroke="white" stroke-opacity="0.7" stroke-linecap="round" stroke-linejoin="round" />
+               <circle class="pad-beacon" cx="18" cy="2" r="1.6" fill="#ef4444" />
             </svg>
          </span>
          <p class="timeline-hint" aria-hidden="true">
@@ -25,27 +25,35 @@ import { experience } from "../data/experience";
             </svg>
          </p>
          <span class="timeline-rocket" aria-hidden="true">
-            <svg viewBox="0 0 24 44" fill="none">
-               <defs>
-                  <linearGradient id="rocket-flame" x1="0" x2="0" y1="0" y2="1">
-                     <stop offset="0%" stop-color="#fde68a" />
-                     <stop offset="35%" stop-color="#fb923c" />
-                     <stop offset="75%" stop-color="#ef4444" stop-opacity="0.7" />
-                     <stop offset="100%" stop-color="#ef4444" stop-opacity="0" />
-                  </linearGradient>
-               </defs>
+            <svg viewBox="0 0 24 80" fill="none">
+               <!-- Flame (flat layers): red outer, orange middle, pale yellow core -->
                <g class="rocket-thrust">
                   <g class="rocket-flame">
-                     <path d="M9 31.5C9.8 37.5 11.2 42.5 12 44c.8-1.5 2.2-6.5 3-12.5Z" fill="url(#rocket-flame)" />
-                     <path d="M10.6 31.5c.4 3.2 1 5.6 1.4 6.6.4-1 1-3.4 1.4-6.6Z" fill="#fef3c7" />
+                     <path d="M8.5 62c1 8 2.5 14.5 3.5 17 1-2.5 2.5-9 3.5-17Z" fill="#ef4444" fill-opacity="0.6" />
+                     <path d="M9.8 62c.7 5.5 1.6 9.5 2.2 11 .6-1.5 1.5-5.5 2.2-11Z" fill="#fb923c" />
+                     <path d="M11 62c.3 3 .7 5 1 6 .3-1 .7-3 1-6Z" fill="#fef3c7" />
                   </g>
                </g>
-               <path d="M6.5 19C3.5 21 2 24.5 2 29.5V32l4.5-3Z" fill="#d4d4d8" />
-               <path d="M17.5 19c3 2 4.5 5.5 4.5 10.5V32l-4.5-3Z" fill="#d4d4d8" />
-               <path d="M12 1.5c4.5 4 5.5 10.5 5.5 18.5V29h-11v-9C6.5 12 7.5 5.5 12 1.5Z" fill="#fafafa" />
-               <path d="M8.5 29h7l-1 2.5h-5Z" fill="#a1a1aa" />
-               <rect x="11.25" y="23" width="1.5" height="9" rx="0.75" fill="#d4d4d8" />
-               <circle cx="12" cy="13.5" r="2.6" fill="#09090b" stroke="#d4d4d8" stroke-width="0.9" />
+               <!-- Fins -->
+               <path d="M5 42c-2.5 2-4 5.5-4 10v6l4-3Z" fill="#09090b" />
+               <path d="M5 42c-2.5 2-4 5.5-4 10v6l4-3Z" fill="white" fill-opacity="0.25" stroke="white" stroke-opacity="0.7" stroke-linejoin="round" />
+               <path d="M19 42c2.5 2 4 5.5 4 10v6l-4-3Z" fill="#09090b" />
+               <path d="M19 42c2.5 2 4 5.5 4 10v6l-4-3Z" fill="white" fill-opacity="0.25" stroke="white" stroke-opacity="0.7" stroke-linejoin="round" />
+               <!-- Engine nozzle -->
+               <path d="M9 58h6l1 3.5a.5.5 0 0 1-.5.5h-7a.5.5 0 0 1-.5-.5Z" fill="white" />
+               <!-- Glass body: dark base so the rail doesn't show through, translucent white, thin outline -->
+               <path d="M12 1c4.5 4 7 10 7 17v36c0 2.2-1.8 4-4 4H9c-2.2 0-4-1.8-4-4V18C5 11 7.5 5 12 1Z" fill="#09090b" />
+               <path d="M12 1c4.5 4 7 10 7 17v36c0 2.2-1.8 4-4 4H9c-2.2 0-4-1.8-4-4V18C5 11 7.5 5 12 1Z" fill="white" fill-opacity="0.25" stroke="white" stroke-opacity="0.7" />
+               <!-- Solid nose cap -->
+               <path d="M12 1.6c2.3 2.1 4 4.9 5.1 8.2-1.9.8-8.3.8-10.2 0C8 6.5 9.7 3.7 12 1.6Z" fill="white" />
+               <!-- Side lines -->
+               <path d="M8.5 13v41M15.5 13v41" stroke="white" stroke-opacity="0.35" stroke-width="0.75" stroke-linecap="round" />
+               <!-- Segment lines -->
+               <path d="M5 24.5c0-1.4 2.3-2 7-2s7 .6 7 2M5 40.5c0-1.4 2.3-2 7-2s7 .6 7 2" stroke="white" stroke-width="0.75" />
+               <!-- Windows -->
+               <ellipse cx="12" cy="16" rx="2" ry="1.5" stroke="white" stroke-width="0.9" />
+               <ellipse cx="12" cy="31.5" rx="2" ry="1.5" stroke="white" stroke-width="0.9" />
+               <ellipse cx="12" cy="47.5" rx="2" ry="1.5" stroke="white" stroke-width="0.9" />
             </svg>
          </span>
          <ol class="timeline-list group/list">
@@ -134,7 +142,7 @@ import { experience } from "../data/experience";
 <style>
 /* --start is where the rail begins: just below the launch pad, at the docked rocket's nose */
 .timeline {
-  --start: 36px;
+  --start: 70px;
 }
 
 /* Launch pad at the top of the rail, with a blinking beacon */
@@ -142,7 +150,7 @@ import { experience } from "../data/experience";
   position: absolute;
   top: 0;
   left: 7.5px;
-  width: 28px;
+  width: 36px;
   translate: -50% 0;
   pointer-events: none;
 }
@@ -181,7 +189,7 @@ import { experience } from "../data/experience";
 /* "Scroll to launch" hint, only while the rocket is docked */
 .timeline-hint {
   position: absolute;
-  top: 10px;
+  top: 24px;
   left: 2.25rem;
   display: flex;
   align-items: center;
@@ -245,9 +253,8 @@ import { experience } from "../data/experience";
   top: calc(var(--start) + var(--progress, 0) * (100% - var(--start)));
   left: 7.5px;
   z-index: 2;
-  width: 20px;
+  width: 24px;
   transform: translate(-50%, -100%) rotate(180deg);
-  filter: drop-shadow(0 0 6px rgb(250 250 250 / 0.3));
   transition: transform 0.35s ease;
   pointer-events: none;
 }
