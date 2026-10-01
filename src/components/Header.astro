@@ -84,33 +84,33 @@ const t = useTranslations(lang);
 </header>
 
 <style>
-/* Social icons: a quick glitch on hover (same idea as "video games" in About):
-   the icon skews and jolts while red and grey ghost copies split off, then snaps back */
+/* Social icons: the same RGB split as "video games" in About — cyan peeks out on the left, red on the right,
+   with a quick jolt on hover before the icon settles (the split stays while hovered) */
 .social-link:hover svg,
 .social-link:focus-visible svg {
+  filter: drop-shadow(-1.5px 0 var(--glitch-blue)) drop-shadow(1.5px 0 var(--glitch-red));
   animation: social-glitch 0.45s steps(1, end);
 }
 
 @keyframes social-glitch {
   0% {
-    transform: translate(1px, 0) skewX(-8deg);
-    filter: drop-shadow(2px 0 var(--color-red-400)) drop-shadow(-2px 0 var(--color-zinc-600));
+    transform: translateX(2px) skewX(-8deg);
+    filter: drop-shadow(-3px 0 var(--glitch-blue)) drop-shadow(3px 0 var(--glitch-red));
+    clip-path: polygon(0 0, 100% 0, 100% 35%, 0 35%, 0 50%, 100% 50%, 100% 100%, 0 100%);
   }
   25% {
-    transform: translate(-2px, 0) skewX(6deg);
-    filter: drop-shadow(-2px 0 var(--color-red-400)) drop-shadow(2px 0 var(--color-zinc-600));
+    transform: translateX(-2px) skewX(6deg);
+    filter: drop-shadow(-2.5px 0 var(--glitch-blue)) drop-shadow(2.5px 0 var(--glitch-red));
+    clip-path: polygon(0 0, 100% 0, 100% 62%, 0 62%, 0 74%, 100% 74%, 100% 100%, 0 100%);
   }
   50% {
-    transform: translate(1px, -1px);
-    filter: drop-shadow(1px 1px var(--color-red-400)) drop-shadow(-1px -1px var(--color-zinc-600));
+    transform: translateX(1px);
+    filter: drop-shadow(-2px 0 var(--glitch-blue)) drop-shadow(2px 0 var(--glitch-red));
+    clip-path: polygon(0 0, 100% 0, 100% 18%, 0 18%, 0 28%, 100% 28%, 100% 100%, 0 100%);
   }
-  75% {
+  75%, 100% {
     transform: none;
-    filter: drop-shadow(-1px 0 var(--color-red-400));
-  }
-  100% {
-    transform: none;
-    filter: none;
+    clip-path: none;
   }
 }
 
