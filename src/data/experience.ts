@@ -1,89 +1,119 @@
-export type Job = {
-  /** Shown above the role, e.g. "2018 — 2024" */
-  period: string;
-  /** Spoken version of the period for screen readers, e.g. "2018 to 2024" */
-  periodLabel: string;
-  /** Marks the ongoing role (gets the pulsing dot on the timeline) */
-  current?: boolean;
+import type { ImageMetadata } from "astro";
+import cornelder from "../assets/companies/cornelder.png";
+import lumai from "../assets/companies/lumai.png";
+import txekaLa from "../assets/companies/txeka-la.png";
+import savanaPoint from "../assets/companies/savanapoint.png";
+import explicador from "../assets/companies/explicador.png";
+
+export type Role = {
   title: string;
+  /** Employment type, e.g. "Full-time" or "Internship" */
+  type?: string;
+  /** "YYYY-MM" */
+  start: string;
+  /** "YYYY-MM"; leave out for the current role */
+  end?: string;
+};
+
+export type Job = {
   company: string;
-  url: string;
-  /** Earlier titles held at the same company, most recent first */
-  previousTitles?: string[];
-  description: string;
+  logo: ImageMetadata;
+  location: string;
+  url?: string;
+  /** Most recent first; several roles at the same company show as a promotion ladder */
+  roles: Role[];
+  description?: string;
   links?: { label: string; url: string }[];
   tech: string[];
 };
 
 export const experience: Job[] = [
   {
-    period: "2024 — Present",
-    periodLabel: "2024 to Present",
-    current: true,
-    title: "Senior Frontend Engineer, Accessibility",
-    company: "Klaviyo",
-    url: "https://www.klaviyo.com",
-    description:
-      "Build and maintain critical components used to construct Klaviyo’s frontend, across the whole product. Work closely with cross-functional teams, including developers, designers, and product managers, to implement and advocate for best practices in web accessibility.",
-    tech: ["JavaScript", "TypeScript", "React", "Storybook"],
-  },
-  {
-    period: "2018 — 2024",
-    periodLabel: "2018 to 2024",
-    title: "Lead Engineer",
-    company: "Upstatement",
-    url: "https://upstatement.com",
-    previousTitles: ["Senior Engineer", "Engineer"],
-    description:
-      "Build, style, and ship high-quality websites, design systems, mobile apps, and digital experiences for a diverse array of projects for clients including Harvard Business School, Everytown for Gun Safety, Pratt Institute, Koala Health, Vanderbilt University, The 19th News, and more. Provide leadership within engineering department through close collaboration, knowledge shares, and spearheading the development of internal tools.",
-    tech: ["JavaScript", "TypeScript", "HTML & SCSS", "React", "Next.js", "React Native", "WordPress", "Contentful", "Node.js", "PHP"],
-  },
-  {
-    period: "July — Dec 2017",
-    periodLabel: "July to December 2017",
-    title: "UI Engineer Co-op",
-    company: "Apple",
-    url: "https://www.apple.com/apple-music/",
-    description:
-      "Developed and styled interactive web apps for Apple Music, including the user interface of Apple Music’s embeddable web player widget for in-browser user authorization and full song playback.",
-    links: [
-      { label: "MusicKit.js", url: "https://developer.apple.com/documentation/musickitjs" },
-      { label: "9to5Mac", url: "https://9to5mac.com/2018/06/03/apple-music-embeddable-web-player-listen-browser/" },
-      { label: "The Verge", url: "https://www.theverge.com/2017/10/5/16433770/facebook-messenger-apple-music-bot-song-streaming" },
+    company: "Cornelder de Moçambique",
+    logo: cornelder,
+    location: "Beira, Mozambique · On-site",
+    roles: [
+      { title: "Software Developer", type: "Full-time", start: "2025-04" },
+      { title: "Application Development Intern", type: "Internship", start: "2024-03", end: "2025-03" },
     ],
-    tech: ["Ember", "SCSS", "JavaScript", "MusicKit.js"],
+    tech: ["Kotlin", "Android Jetpack"],
   },
   {
-    period: "2016 — 2017",
-    periodLabel: "2016 to 2017",
-    title: "Developer",
-    company: "Scout Studio",
-    url: "https://scout.camd.northeastern.edu/",
-    description:
-      "Collaborated with other student designers and engineers on pro-bono projects to create new brands, design systems, and websites for organizations in the community.",
-    tech: ["Jekyll", "SCSS", "JavaScript", "WordPress"],
+    company: "Grupo Lumai",
+    logo: lumai,
+    location: "Beira, Mozambique",
+    roles: [{ title: "Full Stack Developer", type: "Full-time", start: "2023-03", end: "2024-03" }],
+    tech: ["Go", "TypeScript"],
   },
   {
-    period: "July — Dec 2016",
-    periodLabel: "July to December 2016",
-    title: "Software Engineer Co-op",
-    company: "Starry",
-    url: "https://starry.com/",
-    description: "Worked with the UI team to engineer and improve major features of Starry’s customer-facing Android app.",
-    links: [
-      { label: "Android App", url: "https://play.google.com/store/apps/details?id=com.starry.management&hl=en_US&gl=US" },
-      { label: "ScreenTime 2.0", url: "https://starry.com/blog/product/whats-new-screentime-just-got-better-for-parents" },
-    ],
-    tech: ["Cordova", "Backbone", "JavaScript", "CSS"],
+    company: "Txeka Lá",
+    logo: txekaLa,
+    location: "Beira, Mozambique · On-site",
+    roles: [{ title: "Full Stack Developer", type: "Full-time", start: "2022-09", end: "2023-03" }],
+    tech: ["TypeScript", "PHP"],
   },
   {
-    period: "July — Dec 2015",
-    periodLabel: "July to December 2015",
-    title: "Creative Technologist Co-op",
-    company: "MullenLowe U.S.",
-    url: "https://us.mullenlowe.com/",
-    description:
-      "Developed, maintained, and shipped production code for client websites. Clients included JetBlue, Lovesac, U.S. Cellular, U.S. Department of Defense, and more.",
-    tech: ["HTML", "CSS", "JavaScript", "jQuery"],
+    company: "SavanaPoint",
+    logo: savanaPoint,
+    location: "Beira, Mozambique",
+    roles: [{ title: "Full Stack Developer", start: "2021-10", end: "2022-09" }],
+    tech: ["TypeScript", "Next.js"],
+  },
+  {
+    company: "Explicador Inc",
+    logo: explicador,
+    location: "Maputo, Mozambique",
+    roles: [{ title: "Software Quality Assurance Tester", type: "Internship", start: "2021-03", end: "2022-09" }],
+    tech: ["Jenkins", "Vue.js"],
   },
 ];
+
+/* ---------- Date helpers (periods and durations are worked out at build time) ---------- */
+
+const MONTHS = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
+const MONTHS_LONG = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
+
+const parse = (ym: string) => {
+  const [year, month] = ym.split("-").map(Number);
+  return { year, month };
+};
+
+const thisMonth = () => {
+  const now = new Date();
+  return `${now.getFullYear()}-${String(now.getMonth() + 1).padStart(2, "0")}`;
+};
+
+/** "Mar 2024 — Present" */
+export const formatPeriod = (start: string, end?: string) => {
+  const s = parse(start);
+  const e = end ? parse(end) : null;
+  return `${MONTHS[s.month - 1]} ${s.year} — ${e ? `${MONTHS[e.month - 1]} ${e.year}` : "Present"}`;
+};
+
+/** "March 2024 to Present", for screen readers */
+export const formatPeriodLabel = (start: string, end?: string) => {
+  const s = parse(start);
+  const e = end ? parse(end) : null;
+  return `${MONTHS_LONG[s.month - 1]} ${s.year} to ${e ? `${MONTHS_LONG[e.month - 1]} ${e.year}` : "Present"}`;
+};
+
+/** "2 yrs 8 mos", counting both the first and last month (like LinkedIn) */
+export const formatDuration = (start: string, end?: string) => {
+  const s = parse(start);
+  const e = parse(end ?? thisMonth());
+  const total = (e.year - s.year) * 12 + (e.month - s.month) + 1;
+  const years = Math.floor(total / 12);
+  const months = total % 12;
+  const parts = [];
+  if (years) parts.push(`${years} ${years === 1 ? "yr" : "yrs"}`);
+  if (months) parts.push(`${months} ${months === 1 ? "mo" : "mos"}`);
+  return parts.join(" ");
+};
+
+/** Overall span of a job across all its roles */
+export const jobSpan = (job: Job) => {
+  const starts = job.roles.map((role) => role.start).sort();
+  const current = job.roles.some((role) => !role.end);
+  const ends = job.roles.map((role) => role.end).filter((end): end is string => Boolean(end)).sort();
+  return { start: starts[0], end: current ? undefined : ends[ends.length - 1], current };
+};

@@ -1,5 +1,6 @@
 ---
-import { experience } from "../data/experience";
+import { Image } from "astro:assets";
+import { experience, formatDuration, formatPeriod, formatPeriodLabel, jobSpan } from "../data/experience";
 ---
 
 <section id="experience" class="mb-16 scroll-mt-16 md:mb-24 lg:mb-36 lg:scroll-mt-24" aria-label="Work experience">
@@ -7,6 +8,17 @@ import { experience } from "../data/experience";
       <h2 class="text-sm font-bold uppercase tracking-widest text-zinc-100 lg:sr-only">Experience</h2>
    </div>
    <div>
+      <!-- Two-tone filter for company logos: dark parts → zinc-200, light parts → zinc-900 -->
+      <svg class="absolute size-0" aria-hidden="true">
+         <filter id="logo-duotone" color-interpolation-filters="sRGB">
+            <feColorMatrix type="matrix" values="0.2126 0.7152 0.0722 0 0  0.2126 0.7152 0.0722 0 0  0.2126 0.7152 0.0722 0 0  0 0 0 1 0" />
+            <feComponentTransfer>
+               <feFuncR type="table" tableValues="0.894 0.894 0.094" />
+               <feFuncG type="table" tableValues="0.894 0.894 0.094" />
+               <feFuncB type="table" tableValues="0.906 0.906 0.106" />
+            </feComponentTransfer>
+         </filter>
+      </svg>
       <div class="timeline relative lg:-mt-16" data-timeline>
          <span class="timeline-track" aria-hidden="true"></span>
          <span class="timeline-progress" aria-hidden="true"></span>
@@ -59,68 +71,76 @@ import { experience } from "../data/experience";
          </span>
          <ol class="timeline-list group/list">
 
-         {experience.map((job) => (
+         {experience.map((job) => {
+            const span = jobSpan(job);
+            const [latest] = job.roles;
+            const single = job.roles.length === 1;
+            return (
             <li class="timeline-item relative mb-12 pl-9 last:mb-0 sm:pl-11" data-timeline-item>
-               <span class:list={["timeline-dot", { "is-current": job.current }]} data-timeline-dot aria-hidden="true"></span>
+               <span class:list={["timeline-dot", { "is-current": span.current }]} data-timeline-dot aria-hidden="true"></span>
                <div class="group relative pb-1 transition-all lg:hover:!opacity-100 lg:group-hover/list:opacity-50">
                   <div class="absolute -inset-x-4 -inset-y-4 z-0 hidden rounded-md transition motion-reduce:transition-none lg:-inset-x-6 lg:block lg:group-hover:bg-zinc-800/50 lg:group-hover:shadow-[inset_0_1px_0_0_rgba(212,212,216,0.1)] lg:group-hover:drop-shadow-lg"></div>
-                  <div class="relative z-10">
-                     <p class="timeline-period text-xs font-semibold uppercase tracking-wide text-zinc-500" aria-label={job.periodLabel}>{job.period}</p>
-                     <h3 class="mt-2 font-medium leading-snug text-zinc-100">
-                        <a class="group/link inline-flex items-baseline text-base font-medium leading-tight text-zinc-100 hover:text-white focus-visible:text-white" href={job.url} target="_blank" rel="noreferrer noopener" aria-label={`${job.title} at ${job.company} (opens in a new tab)`}>
-                           <span class="absolute -inset-x-4 -inset-y-2.5 hidden rounded md:-inset-x-6 md:-inset-y-4 lg:block"></span>
-                           <span>
-                              {job.title} ·{" "}
-                              <span class="inline-block">
-                                 {job.company}
-                                 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" class="ml-1 inline-block h-4 w-4 shrink-0 translate-y-px transition-transform group-hover/link:-translate-y-1 group-hover/link:translate-x-1 group-focus-visible/link:-translate-y-1 group-focus-visible/link:translate-x-1 motion-reduce:transition-none" aria-hidden="true">
-                                    <path fill-rule="evenodd" d="M5.22 14.78a.75.75 0 001.06 0l7.22-7.22v5.69a.75.75 0 001.5 0v-7.5a.75.75 0 00-.75-.75h-7.5a.75.75 0 000 1.5h5.69l-7.22 7.22a.75.75 0 000 1.06z" clip-rule="evenodd"></path>
-                                 </svg>
-                              </span>
-                           </span>
-                        </a>
-                     </h3>
+                  <div class="relative z-10 flex gap-4">
+                     <div class="company-logo" aria-hidden="true">
+                        <Image src={job.logo} alt="" width={48} height={48} />
+                     </div>
 
-                     {job.previousTitles && (
-                        <ul class="relative mt-2 space-y-1 pl-4 before:absolute before:top-2 before:bottom-2 before:left-[3px] before:w-px before:bg-zinc-700" aria-label="Previous roles">
-                           {job.previousTitles.map((title) => (
-                              <li class="relative text-sm text-zinc-500">
-                                 <span class="absolute top-1/2 -left-4 size-[7px] -translate-y-1/2 rounded-full border border-zinc-600 bg-zinc-950" aria-hidden="true"></span>
-                                 {title}
+                     <div class="min-w-0 flex-1">
+                        <p class="timeline-period text-xs font-semibold uppercase tracking-wide text-zinc-500" aria-label={`${formatPeriodLabel(span.start, span.end)}, ${formatDuration(span.start, span.end)}`}>
+                           {formatPeriod(span.start, span.end)} · <span class="normal-case tracking-normal">{formatDuration(span.start, span.end)}</span>
+                        </p>
+                        <h3 class="mt-1.5 text-base font-medium leading-snug text-zinc-100">
+                           {single ? <>{latest.title} · {job.url ? <a class="hover:text-white focus-visible:text-white" href={job.url} target="_blank" rel="noreferrer noopener">{job.company}</a> : job.company}</> : job.company}
+                        </h3>
+                        <p class="mt-0.5 text-sm text-zinc-500">
+                           {single && latest.type ? `${latest.type} · ${job.location}` : job.location}
+                        </p>
+
+                        {!single && (
+                           <ol class="relative mt-3 space-y-3 pl-4 before:absolute before:top-2 before:bottom-2 before:left-[3px] before:w-px before:bg-zinc-700" aria-label="Roles">
+                              {job.roles.map((role) => (
+                                 <li class="relative">
+                                    <span class="absolute top-[0.45rem] -left-4 size-[7px] rounded-full border border-zinc-600 bg-zinc-950" aria-hidden="true"></span>
+                                    <p class="text-sm font-medium leading-snug text-zinc-200">{role.title}</p>
+                                    <p class="text-xs text-zinc-500">
+                                       {role.type && <span class="whitespace-nowrap">{role.type} · </span>}<span class="whitespace-nowrap">{formatPeriod(role.start, role.end)}</span> · <span class="whitespace-nowrap">{formatDuration(role.start, role.end)}</span>
+                                    </p>
+                                 </li>
+                              ))}
+                           </ol>
+                        )}
+
+                        {job.description && <p class="mt-2 text-sm leading-normal">{job.description}</p>}
+
+                        {job.links && (
+                           <ul class="mt-2 flex flex-wrap" aria-label="Related links">
+                              {job.links.map((link) => (
+                                 <li class="mr-4">
+                                    <a class="relative mt-2 inline-flex items-center text-sm font-medium text-zinc-300 hover:text-white focus-visible:text-white" href={link.url} target="_blank" rel="noreferrer noopener" aria-label={`${link.label} (opens in a new tab)`}>
+                                       <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" class="mr-1 h-3 w-3" aria-hidden="true">
+                                          <path d="M12.232 4.232a2.5 2.5 0 013.536 3.536l-1.225 1.224a.75.75 0 001.061 1.06l1.224-1.224a4 4 0 00-5.656-5.656l-3 3a4 4 0 00.225 5.865.75.75 0 00.977-1.138 2.5 2.5 0 01-.142-3.667l3-3z"></path>
+                                          <path d="M11.603 7.963a.75.75 0 00-.977 1.138 2.5 2.5 0 01.142 3.667l-3 3a2.5 2.5 0 01-3.536-3.536l1.225-1.224a.75.75 0 00-1.061-1.06l-1.224 1.224a4 4 0 105.656 5.656l3-3a4 4 0 00-.225-5.865z"></path>
+                                       </svg>
+                                       <span>{link.label}</span>
+                                    </a>
+                                 </li>
+                              ))}
+                           </ul>
+                        )}
+
+                        <ul class="mt-2 flex flex-wrap" aria-label="Technologies used">
+                           {job.tech.map((tech) => (
+                              <li class="mr-1.5 mt-2">
+                                 <div class="flex items-center rounded-full bg-zinc-400/10 px-3 py-1 text-xs font-medium leading-5 text-zinc-300">{tech}</div>
                               </li>
                            ))}
                         </ul>
-                     )}
-
-                     <p class="mt-2 text-sm leading-normal">{job.description}</p>
-
-                     {job.links && (
-                        <ul class="mt-2 flex flex-wrap" aria-label="Related links">
-                           {job.links.map((link) => (
-                              <li class="mr-4">
-                                 <a class="relative mt-2 inline-flex items-center text-sm font-medium text-zinc-300 hover:text-white focus-visible:text-white" href={link.url} target="_blank" rel="noreferrer noopener" aria-label={`${link.label} (opens in a new tab)`}>
-                                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" class="mr-1 h-3 w-3" aria-hidden="true">
-                                       <path d="M12.232 4.232a2.5 2.5 0 013.536 3.536l-1.225 1.224a.75.75 0 001.061 1.06l1.224-1.224a4 4 0 00-5.656-5.656l-3 3a4 4 0 00.225 5.865.75.75 0 00.977-1.138 2.5 2.5 0 01-.142-3.667l3-3z"></path>
-                                       <path d="M11.603 7.963a.75.75 0 00-.977 1.138 2.5 2.5 0 01.142 3.667l-3 3a2.5 2.5 0 01-3.536-3.536l1.225-1.224a.75.75 0 00-1.061-1.06l-1.224 1.224a4 4 0 105.656 5.656l3-3a4 4 0 00-.225-5.865z"></path>
-                                    </svg>
-                                    <span>{link.label}</span>
-                                 </a>
-                              </li>
-                           ))}
-                        </ul>
-                     )}
-
-                     <ul class="mt-2 flex flex-wrap" aria-label="Technologies used">
-                        {job.tech.map((tech) => (
-                           <li class="mr-1.5 mt-2">
-                              <div class="flex items-center rounded-full bg-zinc-400/10 px-3 py-1 text-xs font-medium leading-5 text-zinc-300">{tech}</div>
-                           </li>
-                        ))}
-                     </ul>
+                     </div>
                   </div>
                </div>
             </li>
-         ))}
+            );
+         })}
          </ol>
       </div>
 
@@ -421,6 +441,25 @@ import { experience } from "../data/experience";
 @keyframes dot-pulse {
   from { transform: scale(1); opacity: 0.7; }
   to { transform: scale(2.4); opacity: 0; }
+}
+
+/* Company logo tile, rendered two-tone (zinc) with the SVG filter above */
+.company-logo {
+  flex-shrink: 0;
+  width: 2.5rem;
+  height: 2.5rem;
+  overflow: hidden;
+  border: 1px solid #27272a; /* zinc-800 */
+  border-radius: 0.5rem;
+  background: #18181b; /* zinc-900 */
+}
+
+.company-logo img {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  filter: url(#logo-duotone);
 }
 
 /* Entries rise in as they scroll into view (only once the script has run) */
