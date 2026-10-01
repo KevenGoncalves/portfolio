@@ -6,6 +6,8 @@ import { langPath, localize, useTranslations, type Lang } from "../i18n/ui";
 import LanguageToggle from "./LanguageToggle.astro";
 import ThemeToggle from "./ThemeToggle.astro";
 import PageReveal from "./PageReveal.astro";
+import SeoMeta from "./SeoMeta.astro";
+import ThemeInit from "./ThemeInit.astro";
 
 interface Props {
    lang: Lang;
@@ -31,12 +33,8 @@ const metaLine = (job: Job, type?: EmploymentType) =>
 <html lang={lang} data-theme="dark">
    <head>
       <meta charset="UTF-8" />
-      <!-- Same saved theme as the site, applied before paint (the CV sheet itself always stays white) -->
-      <script is:inline>
-         try {
-            if (localStorage.getItem("theme") === "light") document.documentElement.dataset.theme = "light";
-         } catch {}
-      </script>
+      <!-- Same theme as the site, applied before paint (the CV sheet itself always stays white) -->
+      <ThemeInit />
       <PageReveal />
       <meta name="viewport" content="width=device-width" />
       <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
@@ -44,6 +42,7 @@ const metaLine = (job: Job, type?: EmploymentType) =>
       <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
       <link href="https://fonts.googleapis.com/css2?family=Oxanium:wght@600;700&family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet" />
       <title>Keven Gonçalves — {t("resume.title")}</title>
+      <SeoMeta lang={lang} title={`Keven Gonçalves — ${t("resume.title")}`} description={localize(headline, lang)} paths={resumePath} />
    </head>
    <body class="resume-body font-sans text-zinc-700 antialiased">
       <!-- Screen-only toolbar: back to the site, the site's theme and language toggles, PDF download -->

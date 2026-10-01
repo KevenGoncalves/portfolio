@@ -7,7 +7,8 @@
     "build": "astro build",
     "preview": "astro preview",
     "astro": "astro",
-    "resume:pdf": "astro build && node scripts/resume-pdf.mjs && astro build"
+    "resume:pdf": "astro build && node scripts/resume-pdf.mjs && astro build",
+    "og:image": "node scripts/og-image.mjs"
   },
   "dependencies": {
     "@emailjs/browser": "^4.4.1",

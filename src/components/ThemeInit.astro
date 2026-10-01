@@ -1,0 +1,17 @@
+<!--
+  Applies the theme before the page paints, so it never flashes the wrong one:
+  the visitor's saved choice if they picked one with the toggle, otherwise their device's light/dark setting.
+  Also keeps the browser UI colour (theme-color) in step. Must stay in <head>.
+-->
+<meta name="theme-color" content="#000000" />
+<script is:inline>
+   (() => {
+      let saved = null;
+      try {
+         saved = localStorage.getItem("theme");
+      } catch {}
+      const light = saved ? saved === "light" : matchMedia("(prefers-color-scheme: light)").matches;
+      if (light) document.documentElement.dataset.theme = "light";
+      document.querySelector('meta[name="theme-color"]')?.setAttribute("content", light ? "#fafafa" : "#000000");
+   })();
+</script>

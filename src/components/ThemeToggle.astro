@@ -86,15 +86,30 @@ const t = useTranslations(lang);
          button.setAttribute("aria-label", (light ? button.dataset.labelToDark : button.dataset.labelToLight) ?? "");
       };
 
-      const apply = (theme: string) => {
+      const show = (theme: string) => {
          root.dataset.theme = theme;
+         document.querySelector('meta[name="theme-color"]')?.setAttribute("content", theme === "light" ? "#fafafa" : "#000000");
+         syncLabel();
+      };
+
+      // A click is an explicit choice: remember it (from then on the device setting no longer applies)
+      const apply = (theme: string) => {
+         show(theme);
          try {
             localStorage.setItem("theme", theme);
          } catch {
             // Private mode or storage blocked: the theme still switches for this visit
          }
-         syncLabel();
       };
+
+      // Until the visitor picks a theme, follow the device's light/dark setting live
+      matchMedia("(prefers-color-scheme: light)").addEventListener("change", (event) => {
+         let saved = null;
+         try {
+            saved = localStorage.getItem("theme");
+         } catch {}
+         if (!saved) show(event.matches ? "light" : "dark");
+      });
 
       syncLabel();
       button.addEventListener("click", () => {

@@ -13,6 +13,8 @@ const t = useTranslations(lang);
 
 // One optimised photo, used by the <img> and by the glitch copies (so it's only downloaded once)
 const photo = await getImage({ src: ProfileImage });
+// It's at the top of the page, so it loads right away (Astro defaults images to lazy)
+const { loading: _lazy, ...photoAttributes } = photo.attributes;
 ---
 
 <header class="lg:sticky lg:top-0 lg:flex lg:max-h-screen lg:w-[48%] lg:flex-col lg:justify-between lg:overflow-y-auto lg:py-[clamp(3rem,8vh,6rem)]">
@@ -22,8 +24,10 @@ const photo = await getImage({ src: ProfileImage });
         <div class="photo-glitch relative bg-zinc-200" style={`--photo: url("${photo.src}")`}>
           <img
             src={photo.src}
-            {...photo.attributes}
-            alt="Portrait"
+            {...photoAttributes}
+            loading="eager"
+            fetchpriority="high"
+            alt="Keven Gonçalves"
             class="w-full h-auto object-cover grayscale"
           />
         </div>
@@ -42,10 +46,10 @@ const photo = await getImage({ src: ProfileImage });
     </p>
      <nav class="nav hidden lg:block" aria-label={t("nav.label")}>
         <ul class="mt-12 w-max lg:short:mt-8">
-           <li><a class="group flex items-center py-3 lg:short:py-2" href="#about"><span class="nav-indicator mr-4 h-px w-8 bg-zinc-600 transition-all group-hover:w-16 group-hover:bg-zinc-200 group-focus-visible:w-16 group-focus-visible:bg-zinc-200 motion-reduce:transition-none"></span><span class="nav-text text-xs font-bold uppercase tracking-widest text-zinc-500 group-hover:text-zinc-100 group-focus-visible:text-zinc-100">{t("nav.about")}</span></a></li>
-           <li><a class="group flex items-center py-3 lg:short:py-2" href="#experience"><span class="nav-indicator mr-4 h-px w-8 bg-zinc-600 transition-all group-hover:w-16 group-hover:bg-zinc-200 group-focus-visible:w-16 group-focus-visible:bg-zinc-200 motion-reduce:transition-none"></span><span class="nav-text text-xs font-bold uppercase tracking-widest text-zinc-500 group-hover:text-zinc-100 group-focus-visible:text-zinc-100">{t("nav.experience")}</span></a></li>
-           <li><a class="group flex items-center py-3 lg:short:py-2 active" href="#projects"><span class="nav-indicator mr-4 h-px w-8 bg-zinc-600 transition-all group-hover:w-16 group-hover:bg-zinc-200 group-focus-visible:w-16 group-focus-visible:bg-zinc-200 motion-reduce:transition-none"></span><span class="nav-text text-xs font-bold uppercase tracking-widest text-zinc-500 group-hover:text-zinc-100 group-focus-visible:text-zinc-100">{t("nav.projects")}</span></a></li>
-           <li><a class="group flex items-center py-3 lg:short:py-2" href="#contact"><span class="nav-indicator mr-4 h-px w-8 bg-zinc-600 transition-all group-hover:w-16 group-hover:bg-zinc-200 group-focus-visible:w-16 group-focus-visible:bg-zinc-200 motion-reduce:transition-none"></span><span class="nav-text text-xs font-bold uppercase tracking-widest text-zinc-500 group-hover:text-zinc-100 group-focus-visible:text-zinc-100">{t("nav.contact")}</span></a></li>
+           <li><a class="nav-link group flex items-center py-3 lg:short:py-2" data-nav-link href="#about"><span class="nav-indicator mr-4 h-px w-8 bg-zinc-600 transition-all group-hover:w-16 group-hover:bg-zinc-200 group-focus-visible:w-16 group-focus-visible:bg-zinc-200 motion-reduce:transition-none"></span><span class="nav-text text-xs font-bold uppercase tracking-widest text-zinc-500 group-hover:text-zinc-100 group-focus-visible:text-zinc-100">{t("nav.about")}</span></a></li>
+           <li><a class="nav-link group flex items-center py-3 lg:short:py-2" data-nav-link href="#experience"><span class="nav-indicator mr-4 h-px w-8 bg-zinc-600 transition-all group-hover:w-16 group-hover:bg-zinc-200 group-focus-visible:w-16 group-focus-visible:bg-zinc-200 motion-reduce:transition-none"></span><span class="nav-text text-xs font-bold uppercase tracking-widest text-zinc-500 group-hover:text-zinc-100 group-focus-visible:text-zinc-100">{t("nav.experience")}</span></a></li>
+           <li><a class="nav-link group flex items-center py-3 lg:short:py-2" data-nav-link href="#projects"><span class="nav-indicator mr-4 h-px w-8 bg-zinc-600 transition-all group-hover:w-16 group-hover:bg-zinc-200 group-focus-visible:w-16 group-focus-visible:bg-zinc-200 motion-reduce:transition-none"></span><span class="nav-text text-xs font-bold uppercase tracking-widest text-zinc-500 group-hover:text-zinc-100 group-focus-visible:text-zinc-100">{t("nav.projects")}</span></a></li>
+           <li><a class="nav-link group flex items-center py-3 lg:short:py-2" data-nav-link href="#contact"><span class="nav-indicator mr-4 h-px w-8 bg-zinc-600 transition-all group-hover:w-16 group-hover:bg-zinc-200 group-focus-visible:w-16 group-focus-visible:bg-zinc-200 motion-reduce:transition-none"></span><span class="nav-text text-xs font-bold uppercase tracking-widest text-zinc-500 group-hover:text-zinc-100 group-focus-visible:text-zinc-100">{t("nav.contact")}</span></a></li>
         </ul>
      </nav>
   </div>
@@ -88,6 +92,16 @@ const photo = await getImage({ src: ProfileImage });
 </header>
 
 <style>
+/* Nav: the link for the section on screen is highlighted (long bright line, bright text), set by the script below */
+.nav-link.is-active .nav-indicator {
+  width: 4rem;
+  background-color: var(--color-zinc-200);
+}
+
+.nav-link.is-active .nav-text {
+  color: var(--color-zinc-100);
+}
+
 /* Photo: RGB-split glitch on hover. Two copies of the photo (tinted cyan and red, screened over it)
    tear apart in horizontal slices while the photo jolts, then it snaps back to the clean photo. */
 .photo-glitch {
@@ -199,3 +213,38 @@ const photo = await getImage({ src: ProfileImage });
   }
 }
 </style>
+
+<script>
+  // Scroll-spy: highlight the nav link of the section currently on screen
+  // (the last section whose top has passed 40% of the viewport; the last one once the page bottom is reached)
+  const links = [...document.querySelectorAll<HTMLAnchorElement>("[data-nav-link]")];
+  const sections = links
+    .map((link) => document.querySelector<HTMLElement>(link.hash))
+    .filter((section): section is HTMLElement => section !== null);
+
+  if (links.length && sections.length === links.length) {
+    let frame = 0;
+    const update = () => {
+      frame = 0;
+      const line = window.innerHeight * 0.4;
+      const atBottom = window.innerHeight + window.scrollY >= document.documentElement.scrollHeight - 2;
+      let current = 0;
+      sections.forEach((section, index) => {
+        if (section.getBoundingClientRect().top <= line) current = index;
+      });
+      if (atBottom) current = sections.length - 1;
+      links.forEach((link, index) => {
+        const active = index === current;
+        link.classList.toggle("is-active", active);
+        if (active) link.setAttribute("aria-current", "location");
+        else link.removeAttribute("aria-current");
+      });
+    };
+    const schedule = () => {
+      if (!frame) frame = requestAnimationFrame(update);
+    };
+    window.addEventListener("scroll", schedule, { passive: true });
+    window.addEventListener("resize", schedule);
+    update();
+  }
+</script>
