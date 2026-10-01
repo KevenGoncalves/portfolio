@@ -10,30 +10,85 @@ const t = useTranslations(lang);
 const codes = Object.keys(languages) as Lang[];
 ---
 
-<!-- EN | PT switch: each option links to the other language's page -->
-<nav class="inline-flex items-center rounded-full border border-zinc-800 bg-zinc-900/70 p-1 backdrop-blur" aria-label={t("lang.switch")}>
-   {codes.map((code) => (
+<!-- EN | PT switch: a thumb slides to the chosen language, then the page switches -->
+<nav
+   class="language-toggle relative inline-grid grid-flow-col rounded-full border border-zinc-800 bg-zinc-900/70 p-1 backdrop-blur"
+   style={`--active: ${codes.indexOf(lang)}`}
+   aria-label={t("lang.switch")}
+   data-lang-toggle
+>
+   <span class="language-thumb" aria-hidden="true"></span>
+   {codes.map((code, index) => (
       <a
          href={langPath[code]}
          hreflang={code}
          lang={code}
          aria-current={code === lang ? "page" : undefined}
-         class:list={[
-            "rounded-full px-3 py-1 text-xs font-bold tracking-widest transition",
-            code === lang ? "bg-zinc-100 text-zinc-900" : "text-zinc-400 hover:text-zinc-100",
-         ]}
+         class="language-option relative z-10 w-10 rounded-full py-1 text-center text-xs font-bold tracking-widest"
          data-lang-link
+         data-index={index}
       >
          {languages[code]}
       </a>
    ))}
 </nav>
 
+<style>
+/* The thumb sits under the active option; --active is its index (0 = EN, 1 = PT) */
+.language-thumb {
+   position: absolute;
+   top: 0.25rem;
+   bottom: 0.25rem;
+   left: 0.25rem;
+   width: 2.5rem;
+   border-radius: 9999px;
+   background: var(--color-zinc-100);
+   transform: translateX(calc(var(--active) * 100%));
+   transition: transform 0.35s cubic-bezier(0.34, 1.5, 0.64, 1);
+}
+
+.language-option {
+   color: var(--color-zinc-400);
+   transition: color 0.25s ease;
+}
+
+.language-option:hover {
+   color: var(--color-zinc-100);
+}
+
+/* The option under the thumb (current, or the one just picked) */
+[data-lang-toggle] .language-option.is-active,
+[data-lang-toggle]:not(.is-switching) .language-option[aria-current="page"] {
+   color: var(--color-zinc-900);
+}
+
+@media (prefers-reduced-motion: reduce) {
+   .language-thumb,
+   .language-option {
+      transition: none;
+   }
+}
+</style>
+
 <script>
-   // Keep the reader's place: carry the current #section over to the other language
-   document.querySelectorAll<HTMLAnchorElement>("[data-lang-link]").forEach((link) => {
-      link.addEventListener("click", () => {
-         if (location.hash) link.href = link.pathname + location.hash;
+   const toggle = document.querySelector<HTMLElement>("[data-lang-toggle]");
+   const reduceMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+
+   toggle?.querySelectorAll<HTMLAnchorElement>("[data-lang-link]").forEach((link) => {
+      link.addEventListener("click", (event) => {
+         if (link.getAttribute("aria-current") === "page") return;
+         // Keep the reader's place: carry the current #section over to the other language
+         const target = link.pathname + location.hash;
+         if (reduceMotion) {
+            link.href = target;
+            return;
+         }
+         // Slide the thumb to the chosen language, then switch pages
+         event.preventDefault();
+         toggle.classList.add("is-switching");
+         link.classList.add("is-active");
+         toggle.style.setProperty("--active", link.dataset.index ?? "0");
+         setTimeout(() => (location.href = target), 280);
       });
    });
 </script>

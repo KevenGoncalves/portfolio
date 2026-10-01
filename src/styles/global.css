@@ -68,3 +68,10 @@ html {
 :root[data-theme="light"] .project-art {
   filter: invert(1) hue-rotate(180deg);
 }
+
+/* Theme switch: the new theme is revealed by a growing circle (animated from ThemeToggle.astro) */
+::view-transition-old(root),
+::view-transition-new(root) {
+  animation: none;
+  mix-blend-mode: normal;
+}

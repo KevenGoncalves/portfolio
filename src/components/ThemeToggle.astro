@@ -9,35 +9,68 @@ const { lang } = Astro.props;
 const t = useTranslations(lang);
 ---
 
-<!-- Sun shows in the dark theme (switch to light), moon in the light theme (switch to dark) -->
+<!--
+  One icon that morphs: a sun in the dark theme (click → light), a crescent moon in the light theme (click → dark).
+  The rays spin away, the core grows and a "shadow" circle slides in to carve the crescent.
+-->
 <button
    type="button"
-   class="theme-toggle grid size-9 place-items-center rounded-full border border-zinc-800 bg-zinc-900/70 text-zinc-400 backdrop-blur transition hover:text-zinc-100 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-zinc-500"
+   class="theme-toggle group/theme grid size-9 place-items-center rounded-full border border-zinc-800 bg-zinc-900/70 text-zinc-300 backdrop-blur transition hover:border-zinc-600 hover:text-zinc-100 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-zinc-500"
    aria-label={t("theme.toLight")}
    data-label-to-light={t("theme.toLight")}
    data-label-to-dark={t("theme.toDark")}
    data-theme-toggle
 >
-   <svg class="icon-sun size-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true">
-      <circle cx="12" cy="12" r="4"></circle>
-      <path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M4.93 19.07l1.41-1.41M17.66 6.34l1.41-1.41"></path>
-   </svg>
-   <svg class="icon-moon size-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
-      <path d="M20.5 14.5A8.5 8.5 0 0 1 9.5 3.5a8.5 8.5 0 1 0 11 11Z"></path>
+   <svg class="theme-icon size-[18px]" viewBox="0 0 24 24" aria-hidden="true">
+      <mask id="theme-toggle-moon">
+         <rect width="24" height="24" fill="white"></rect>
+         <circle class="moon-shadow" cx="17" cy="7" r="7" fill="black"></circle>
+      </mask>
+      <circle class="sun-core" cx="12" cy="12" r="5" fill="currentColor" mask="url(#theme-toggle-moon)"></circle>
+      <g class="sun-rays" stroke="currentColor" stroke-width="2" stroke-linecap="round">
+         <path d="M12 2v2M12 20v2M2 12h2M20 12h2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M4.93 19.07l1.41-1.41M17.66 6.34l1.41-1.41"></path>
+      </g>
    </svg>
 </button>
 
 <style>
-.icon-moon {
-   display: none;
+.sun-core,
+.sun-rays,
+.moon-shadow {
+   transform-box: view-box;
+   transform-origin: 12px 12px;
+   transition: transform 0.5s cubic-bezier(0.34, 1.4, 0.64, 1), opacity 0.3s ease;
 }
 
-:global(:root[data-theme="light"]) .icon-sun {
-   display: none;
+/* Dark theme: sun (rays out, shadow parked off the icon) */
+.moon-shadow {
+   transform: translate(10px, -10px);
 }
 
-:global(:root[data-theme="light"]) .icon-moon {
-   display: block;
+.group\/theme:hover .sun-rays {
+   transform: rotate(45deg);
+}
+
+/* Light theme: moon (rays spun away, core grown, shadow carving the crescent) */
+:global(:root[data-theme="light"]) .sun-core {
+   transform: scale(1.75);
+}
+
+:global(:root[data-theme="light"]) .sun-rays {
+   transform: rotate(90deg) scale(0);
+   opacity: 0;
+}
+
+:global(:root[data-theme="light"]) .moon-shadow {
+   transform: translate(0, 0);
+}
+
+@media (prefers-reduced-motion: reduce) {
+   .sun-core,
+   .sun-rays,
+   .moon-shadow {
+      transition: none;
+   }
 }
 </style>
 
@@ -46,21 +79,46 @@ const t = useTranslations(lang);
 
    if (button) {
       const root = document.documentElement;
+      const reduceMotion = window.matchMedia("(prefers-reduced-motion: reduce)");
+
       const syncLabel = () => {
          const light = root.dataset.theme === "light";
          button.setAttribute("aria-label", (light ? button.dataset.labelToDark : button.dataset.labelToLight) ?? "");
       };
 
-      syncLabel();
-      button.addEventListener("click", () => {
-         const next = root.dataset.theme === "light" ? "dark" : "light";
-         root.dataset.theme = next;
+      const apply = (theme: string) => {
+         root.dataset.theme = theme;
          try {
-            localStorage.setItem("theme", next);
+            localStorage.setItem("theme", theme);
          } catch {
             // Private mode or storage blocked: the theme still switches for this visit
          }
          syncLabel();
+      };
+
+      syncLabel();
+      button.addEventListener("click", () => {
+         const next = root.dataset.theme === "light" ? "dark" : "light";
+
+         // No View Transitions support (or reduced motion): switch instantly
+         if (!document.startViewTransition || reduceMotion.matches) {
+            apply(next);
+            return;
+         }
+
+         // Circular reveal: the new theme grows out of the button until it covers the page
+         const { left, top, width, height } = button.getBoundingClientRect();
+         const x = left + width / 2;
+         const y = top + height / 2;
+         const radius = Math.hypot(Math.max(x, innerWidth - x), Math.max(y, innerHeight - y));
+
+         const transition = document.startViewTransition(() => apply(next));
+         transition.ready.then(() => {
+            root.animate(
+               { clipPath: [`circle(0px at ${x}px ${y}px)`, `circle(${radius}px at ${x}px ${y}px)`] },
+               { duration: 650, easing: "cubic-bezier(0.4, 0, 0.2, 1)", pseudoElement: "::view-transition-new(root)" },
+            );
+         });
       });
    }
 </script>
