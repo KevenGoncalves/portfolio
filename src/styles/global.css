@@ -54,6 +54,14 @@
 
 html {
   background: var(--page-a);
+  /* Menu links (#about, #experience, …) glide to their section instead of jumping */
+  scroll-behavior: smooth;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
 }
 
 /* Project illustrations were drawn on dark: invert them in the light theme, keeping their hues */
