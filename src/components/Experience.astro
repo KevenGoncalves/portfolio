@@ -1,12 +1,34 @@
 ---
 import SectionHeading from "./SectionHeading.astro";
 import { Image } from "astro:assets";
-import { experience, formatDuration, formatPeriod, formatPeriodLabel, jobSpan } from "../data/experience";
+import { experience, formatDuration, formatPeriod, formatPeriodLabel, jobSpan, type EmploymentType, type Job } from "../data/experience";
 import { techIcons } from "../data/tech-icons";
+import { localize, useTranslations, type Lang } from "../i18n/ui";
+
+interface Props {
+   lang: Lang;
+}
+
+const { lang } = Astro.props;
+const t = useTranslations(lang);
+
+/** "Full-time · Beira, Mozambique · On-site" (type only shown for single-role jobs) */
+const metaLine = (job: Job, type?: EmploymentType) =>
+   [
+      type && t(`experience.${type}`),
+      job.location && `${job.location.city}, ${t("experience.country")}`,
+      job.location?.workplace && t(`experience.${job.location.workplace}`),
+   ]
+      .filter(Boolean)
+      .join(" · ");
+
+// "View Full Résumé": the last word stays on one line with the arrow
+const resumeWords = t("experience.resume").split(" ");
+const resumeLast = resumeWords.pop();
 ---
 
-<section id="experience" class="mb-16 scroll-mt-16 md:mb-24 lg:mb-36 lg:scroll-mt-24" aria-label="Work experience">
-   <SectionHeading number="02" title="Experience" />
+<section id="experience" class="mb-16 scroll-mt-16 md:mb-24 lg:mb-36 lg:scroll-mt-24" aria-label={t("experience.label")}>
+   <SectionHeading number="02" title={t("nav.experience")} />
    <div>
       <!-- Two-tone filter for company logos (transparent backgrounds): darker colours → zinc-400, brighter → zinc-100 -->
       <svg class="absolute size-0" aria-hidden="true">
@@ -31,7 +53,7 @@ import { techIcons } from "../data/tech-icons";
             </svg>
          </span>
          <p class="timeline-hint" aria-hidden="true">
-            Scroll to launch
+            {t("experience.hint")}
             <svg viewBox="0 0 20 20" fill="currentColor" class="hint-arrow">
                <path fill-rule="evenodd" d="M10 3a.75.75 0 01.75.75v10.638l3.96-4.158a.75.75 0 111.08 1.04l-5.25 5.5a.75.75 0 01-1.08 0l-5.25-5.5a.75.75 0 111.08-1.04l3.96 4.158V3.75A.75.75 0 0110 3z" clip-rule="evenodd" />
             </svg>
@@ -86,39 +108,37 @@ import { techIcons } from "../data/tech-icons";
                      </div>
 
                      <div class="min-w-0 flex-1">
-                        <p class="timeline-period text-xs font-semibold uppercase tracking-wide text-zinc-500" aria-label={`${formatPeriodLabel(span.start, span.end)}, ${formatDuration(span.start, span.end)}`}>
-                           {formatPeriod(span.start, span.end)} · <span class="normal-case tracking-normal">{formatDuration(span.start, span.end)}</span>
+                        <p class="timeline-period text-xs font-semibold uppercase tracking-wide text-zinc-500" aria-label={`${formatPeriodLabel(span.start, span.end, lang)}, ${formatDuration(span.start, span.end, lang)}`}>
+                           {formatPeriod(span.start, span.end, lang)} · <span class="normal-case tracking-normal">{formatDuration(span.start, span.end, lang)}</span>
                         </p>
                         <h3 class="mt-1.5 text-base font-medium leading-snug text-zinc-100">
-                           {single ? <>{latest.title} · {job.url ? <a class="hover:text-white focus-visible:text-white" href={job.url} target="_blank" rel="noreferrer noopener">{job.company}</a> : job.company}</> : job.company}
+                           {single ? <>{localize(latest.title, lang)} · {job.url ? <a class="hover:text-white focus-visible:text-white" href={job.url} target="_blank" rel="noreferrer noopener">{job.company}</a> : job.company}</> : job.company}
                         </h3>
-                        {(job.location || (single && latest.type)) && (
-                           <p class="mt-0.5 text-sm text-zinc-500">
-                              {[single ? latest.type : undefined, job.location].filter(Boolean).join(" · ")}
-                           </p>
+                        {metaLine(job, single ? latest.type : undefined) && (
+                           <p class="mt-0.5 text-sm text-zinc-500">{metaLine(job, single ? latest.type : undefined)}</p>
                         )}
 
                         {!single && (
-                           <ol class="relative mt-3 space-y-3 pl-4 before:absolute before:top-2 before:bottom-2 before:left-[3px] before:w-px before:bg-zinc-700" aria-label="Roles">
+                           <ol class="relative mt-3 space-y-3 pl-4 before:absolute before:top-2 before:bottom-2 before:left-[3px] before:w-px before:bg-zinc-700" aria-label={t("experience.roles")}>
                               {job.roles.map((role) => (
                                  <li class="relative">
                                     <span class="absolute top-[0.45rem] -left-4 size-[7px] rounded-full border border-zinc-600 bg-zinc-950" aria-hidden="true"></span>
-                                    <p class="text-sm font-medium leading-snug text-zinc-200">{role.title}</p>
+                                    <p class="text-sm font-medium leading-snug text-zinc-200">{localize(role.title, lang)}</p>
                                     <p class="text-xs text-zinc-500">
-                                       {role.type && <span class="whitespace-nowrap">{role.type} · </span>}<span class="whitespace-nowrap">{formatPeriod(role.start, role.end)}</span> · <span class="whitespace-nowrap">{formatDuration(role.start, role.end)}</span>
+                                       {role.type && <span class="whitespace-nowrap">{t(`experience.${role.type}`)} · </span>}<span class="whitespace-nowrap">{formatPeriod(role.start, role.end, lang)}</span> · <span class="whitespace-nowrap">{formatDuration(role.start, role.end, lang)}</span>
                                     </p>
                                  </li>
                               ))}
                            </ol>
                         )}
 
-                        {job.description && <p class="mt-2 text-sm leading-normal">{job.description}</p>}
+                        {job.description && <p class="mt-2 text-sm leading-normal">{localize(job.description, lang)}</p>}
 
                         {job.links && (
                            <ul class="mt-2 flex flex-wrap" aria-label="Related links">
                               {job.links.map((link) => (
                                  <li class="mr-4">
-                                    <a class="relative mt-2 inline-flex items-center text-sm font-medium text-zinc-300 hover:text-white focus-visible:text-white" href={link.url} target="_blank" rel="noreferrer noopener" aria-label={`${link.label} (opens in a new tab)`}>
+                                    <a class="relative mt-2 inline-flex items-center text-sm font-medium text-zinc-300 hover:text-white focus-visible:text-white" href={link.url} target="_blank" rel="noreferrer noopener" aria-label={`${link.label} ${t("newTab")}`}>
                                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" class="mr-1 h-3 w-3" aria-hidden="true">
                                           <path d="M12.232 4.232a2.5 2.5 0 013.536 3.536l-1.225 1.224a.75.75 0 001.061 1.06l1.224-1.224a4 4 0 00-5.656-5.656l-3 3a4 4 0 00.225 5.865.75.75 0 00.977-1.138 2.5 2.5 0 01-.142-3.667l3-3z"></path>
                                           <path d="M11.603 7.963a.75.75 0 00-.977 1.138 2.5 2.5 0 01.142 3.667l-3 3a2.5 2.5 0 01-3.536-3.536l1.225-1.224a.75.75 0 00-1.061-1.06l-1.224 1.224a4 4 0 105.656 5.656l3-3a4 4 0 00-.225-5.865z"></path>
@@ -130,7 +150,7 @@ import { techIcons } from "../data/tech-icons";
                            </ul>
                         )}
 
-                        <ul class="mt-3 flex flex-wrap gap-2" aria-label="Technologies used">
+                        <ul class="mt-3 flex flex-wrap gap-2" aria-label={t("experience.tech")}>
                            {job.tech.map((tech) => (
                               <li>
                                  {techIcons[tech] ? (
@@ -155,11 +175,11 @@ import { techIcons } from "../data/tech-icons";
 
       <!-- Room for the 80px rocket when it turns around at the end of the timeline -->
       <div class="mt-28">
-         <a class="group/link inline-flex items-baseline text-base font-semibold leading-tight text-zinc-100 hover:text-white focus-visible:text-white" href="/resume.pdf" target="_blank" rel="noreferrer noopener" aria-label="View Full Résumé (opens in a new tab)">
+         <a class="group/link inline-flex items-baseline text-base font-semibold leading-tight text-zinc-100 hover:text-white focus-visible:text-white" href="/resume.pdf" target="_blank" rel="noreferrer noopener" aria-label={`${t("experience.resume")} ${t("newTab")}`}>
             <span>
-               View Full{" "}
+               {resumeWords.join(" ")}{" "}
                <span class="inline-block">
-                  Résumé
+                  {resumeLast}
                   <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" class="ml-1 inline-block h-4 w-4 shrink-0 translate-y-px transition-transform group-hover/link:-translate-y-1 group-hover/link:translate-x-1 group-focus-visible/link:-translate-y-1 group-focus-visible/link:translate-x-1 motion-reduce:transition-none" aria-hidden="true">
                      <path fill-rule="evenodd" d="M5.22 14.78a.75.75 0 001.06 0l7.22-7.22v5.69a.75.75 0 001.5 0v-7.5a.75.75 0 00-.75-.75h-7.5a.75.75 0 000 1.5h5.69l-7.22 7.22a.75.75 0 000 1.06z" clip-rule="evenodd"></path>
                   </svg>

@@ -1,33 +1,51 @@
 ---
 import SectionHeading from "./SectionHeading.astro";
+import { useTranslations, type Lang } from "../i18n/ui";
+
+interface Props {
+   lang: Lang;
+}
+
+const { lang } = Astro.props;
+const t = useTranslations(lang);
 
 const fieldClass =
    "mt-2 block w-full rounded-md border border-zinc-800 bg-zinc-900/60 px-3.5 py-2.5 text-sm text-zinc-100 placeholder:text-zinc-600 transition focus:border-zinc-500 focus:outline-none focus:ring-2 focus:ring-zinc-500/20";
 const labelClass = "text-xs font-semibold uppercase tracking-wide text-zinc-500";
 ---
 
-<section id="contact" class="mb-16 scroll-mt-16 md:mb-24 lg:mb-36 lg:scroll-mt-24" aria-label="Contact">
-   <SectionHeading number="04" title="Contact" />
+<section id="contact" class="mb-16 scroll-mt-16 md:mb-24 lg:mb-36 lg:scroll-mt-24" aria-label={t("contact.label")}>
+   <SectionHeading number="04" title={t("nav.contact")} />
 
    <p class="mb-8">
-      Have a project in mind, a role to fill, or just want to talk tech? Send me a message and I’ll get back to you.
+      {t("contact.intro")}
    </p>
 
-   <form class="space-y-5" data-contact-form novalidate>
+   <!-- Status messages for the script, in the page's language -->
+   <form
+      class="space-y-5"
+      data-contact-form
+      data-msg-send={t("contact.send")}
+      data-msg-sending={t("contact.sending")}
+      data-msg-success={t("contact.success")}
+      data-msg-error={t("contact.error")}
+      data-msg-not-configured={t("contact.notConfigured")}
+      novalidate
+   >
       <div class="grid gap-5 sm:grid-cols-2">
          <label class="block">
-            <span class={labelClass}>Name</span>
-            <input class={fieldClass} type="text" name="name" autocomplete="name" placeholder="Your name" required />
+            <span class={labelClass}>{t("contact.name")}</span>
+            <input class={fieldClass} type="text" name="name" autocomplete="name" placeholder={t("contact.namePlaceholder")} required />
          </label>
          <label class="block">
-            <span class={labelClass}>Email</span>
-            <input class={fieldClass} type="email" name="email" autocomplete="email" placeholder="you@example.com" required />
+            <span class={labelClass}>{t("contact.email")}</span>
+            <input class={fieldClass} type="email" name="email" autocomplete="email" placeholder={t("contact.emailPlaceholder")} required />
          </label>
       </div>
 
       <label class="block">
-         <span class={labelClass}>Message</span>
-         <textarea class={`${fieldClass} min-h-36 resize-y`} name="message" rows="5" placeholder="Tell me about your project…" required></textarea>
+         <span class={labelClass}>{t("contact.message")}</span>
+         <textarea class={`${fieldClass} min-h-36 resize-y`} name="message" rows="5" placeholder={t("contact.messagePlaceholder")} required></textarea>
       </label>
 
       <!-- Honeypot: hidden from people, bots tend to fill it in -->
@@ -41,7 +59,7 @@ const labelClass = "text-xs font-semibold uppercase tracking-wide text-zinc-500"
             class="group/send inline-flex items-center gap-2 rounded-md bg-zinc-100 px-5 py-2.5 text-sm font-semibold text-zinc-900 transition hover:bg-white focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-zinc-400 disabled:cursor-not-allowed disabled:opacity-60"
             data-contact-submit
          >
-            <span data-contact-label>Send message</span>
+            <span data-contact-label>{t("contact.send")}</span>
             <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" class="h-4 w-4 transition-transform group-hover/send:translate-x-1 motion-reduce:transition-none" aria-hidden="true">
                <path fill-rule="evenodd" d="M3 10a.75.75 0 01.75-.75h10.638L10.23 5.29a.75.75 0 111.04-1.08l5.5 5.25a.75.75 0 010 1.08l-5.5 5.25a.75.75 0 11-1.04-1.08l4.158-3.96H3.75A.75.75 0 013 10z" clip-rule="evenodd"></path>
             </svg>
@@ -65,6 +83,7 @@ const labelClass = "text-xs font-semibold uppercase tracking-wide text-zinc-500"
       const button = form.querySelector<HTMLButtonElement>("[data-contact-submit]")!;
       const label = form.querySelector<HTMLElement>("[data-contact-label]")!;
       const status = form.querySelector<HTMLElement>("[data-contact-status]")!;
+      const msg = form.dataset as Record<string, string>;
 
       const setStatus = (message: string, tone: "muted" | "success" | "error") => {
          status.textContent = message;
@@ -77,7 +96,7 @@ const labelClass = "text-xs font-semibold uppercase tracking-wide text-zinc-500"
          // Bots that fill the hidden field get a fake success
          if ((form.elements.namedItem("company") as HTMLInputElement).value) {
             form.reset();
-            setStatus("Thanks! Your message has been sent.", "success");
+            setStatus(msg.msgSuccess, "success");
             return;
          }
 
@@ -88,24 +107,24 @@ const labelClass = "text-xs font-semibold uppercase tracking-wide text-zinc-500"
 
          if (!SERVICE_ID || !TEMPLATE_ID || !PUBLIC_KEY) {
             console.error("EmailJS is not configured: set the PUBLIC_EMAILJS_* variables in .env");
-            setStatus("The form isn’t set up yet. Please try again later.", "error");
+            setStatus(msg.msgNotConfigured, "error");
             return;
          }
 
          button.disabled = true;
-         label.textContent = "Sending…";
+         label.textContent = msg.msgSending;
          setStatus("", "muted");
 
          try {
             await emailjs.sendForm(SERVICE_ID, TEMPLATE_ID, form, { publicKey: PUBLIC_KEY });
             form.reset();
-            setStatus("Thanks! Your message has been sent. I’ll get back to you soon.", "success");
+            setStatus(msg.msgSuccess, "success");
          } catch (error) {
             console.error("EmailJS error", error);
-            setStatus("Something went wrong. Please try again in a moment.", "error");
+            setStatus(msg.msgError, "error");
          } finally {
             button.disabled = false;
-            label.textContent = "Send message";
+            label.textContent = msg.msgSend;
          }
       });
    }

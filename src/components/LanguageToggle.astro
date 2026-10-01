@@ -1,0 +1,39 @@
+---
+import { langPath, languages, useTranslations, type Lang } from "../i18n/ui";
+
+interface Props {
+   lang: Lang;
+}
+
+const { lang } = Astro.props;
+const t = useTranslations(lang);
+const codes = Object.keys(languages) as Lang[];
+---
+
+<!-- EN | PT switch: each option links to the other language's page -->
+<nav class="inline-flex items-center rounded-full border border-zinc-800 bg-zinc-900/70 p-1 backdrop-blur" aria-label={t("lang.switch")}>
+   {codes.map((code) => (
+      <a
+         href={langPath[code]}
+         hreflang={code}
+         lang={code}
+         aria-current={code === lang ? "page" : undefined}
+         class:list={[
+            "rounded-full px-3 py-1 text-xs font-bold tracking-widest transition",
+            code === lang ? "bg-zinc-100 text-zinc-900" : "text-zinc-400 hover:text-zinc-100",
+         ]}
+         data-lang-link
+      >
+         {languages[code]}
+      </a>
+   ))}
+</nav>
+
+<script>
+   // Keep the reader's place: carry the current #section over to the other language
+   document.querySelectorAll<HTMLAnchorElement>("[data-lang-link]").forEach((link) => {
+      link.addEventListener("click", () => {
+         if (location.hash) link.href = link.pathname + location.hash;
+      });
+   });
+</script>

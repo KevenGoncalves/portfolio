@@ -1,23 +1,49 @@
 ---
 import SectionHeading from "./SectionHeading.astro";
+import { useTranslations, type Lang } from "../i18n/ui";
+
+interface Props {
+   lang: Lang;
+}
+
+const { lang } = Astro.props;
+const t = useTranslations(lang);
+const strong = "font-medium text-zinc-100";
 ---
 
-<section id="about" class="mb-16 scroll-mt-16 md:mb-24 lg:mb-36 lg:scroll-mt-24" aria-label="About me">
-   <SectionHeading number="01" title="About" />
-   <div>
-      <p class="mb-4">
-         I’m a developer driven by curiosity about how things really work — from the low-level details all the way up to the high-level design. I love digging deep to understand a system inside and out, then using that knowledge to build great things for great people.
-      </p>
-      <p class="mb-4">
-         Currently, I’m a Software Developer at{" "}<span class="font-medium text-zinc-100">Cornelder de Moçambique</span>, focused on mobile development with native technologies, building fast, reliable apps that feel right at home on every device.
-      </p>
-      <p class="mb-4">
-         In the past, I worked mainly as a{" "}<span class="font-medium text-zinc-100">full-stack developer</span>{" "}for both{" "}<span class="font-medium text-zinc-100">established companies</span>{" "}and{" "}<span class="font-medium text-zinc-100">startups</span>, taking features from the database all the way to the interface.
-      </p>
-      <p>
-         Outside of work, I spend my free time with my family and playing my beloved{" "}<span class="glitch font-medium text-zinc-100" data-text="video games">video games</span>.
-      </p>
-   </div>
+<section id="about" class="mb-16 scroll-mt-16 md:mb-24 lg:mb-36 lg:scroll-mt-24" aria-label={t("about.label")}>
+   <SectionHeading number="01" title={t("nav.about")} />
+   {lang === "pt" ? (
+      <div>
+         <p class="mb-4">
+            Sou um desenvolvedor movido pela curiosidade de perceber como as coisas realmente funcionam — desde os detalhes de baixo nível até ao design de alto nível. Gosto de mergulhar a fundo para compreender um sistema por dentro e por fora e, depois, usar esse conhecimento para construir coisas incríveis para pessoas incríveis.
+         </p>
+         <p class="mb-4">
+            Atualmente, sou Desenvolvedor de Software na{" "}<span class={strong}>Cornelder de Moçambique</span>, focado em desenvolvimento mobile com tecnologias nativas, criando aplicações rápidas e fiáveis que se sentem em casa em qualquer dispositivo.
+         </p>
+         <p class="mb-4">
+            Antes disso, trabalhei sobretudo como{" "}<span class={strong}>desenvolvedor full-stack</span>{" "}tanto para{" "}<span class={strong}>empresas consolidadas</span>{" "}como para{" "}<span class={strong}>startups</span>, levando funcionalidades da base de dados até à interface.
+         </p>
+         <p>
+            Fora do trabalho, passo o meu tempo livre com a minha família e a jogar os meus adorados{" "}<span class={`glitch ${strong}`} data-text="videojogos">videojogos</span>.
+         </p>
+      </div>
+   ) : (
+      <div>
+         <p class="mb-4">
+            I’m a developer driven by curiosity about how things really work — from the low-level details all the way up to the high-level design. I love digging deep to understand a system inside and out, then using that knowledge to build great things for great people.
+         </p>
+         <p class="mb-4">
+            Currently, I’m a Software Developer at{" "}<span class={strong}>Cornelder de Moçambique</span>, focused on mobile development with native technologies, building fast, reliable apps that feel right at home on every device.
+         </p>
+         <p class="mb-4">
+            In the past, I worked mainly as a{" "}<span class={strong}>full-stack developer</span>{" "}for both{" "}<span class={strong}>established companies</span>{" "}and{" "}<span class={strong}>startups</span>, taking features from the database all the way to the interface.
+         </p>
+         <p>
+            Outside of work, I spend my free time with my family and playing my beloved{" "}<span class={`glitch ${strong}`} data-text="video games">video games</span>.
+         </p>
+      </div>
+   )}
 </section>
 
 <style>
