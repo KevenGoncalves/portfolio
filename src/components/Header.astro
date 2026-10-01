@@ -34,7 +34,7 @@ const { loading: _lazy, ...photoAttributes } = photo.attributes;
       </div>
   </div>
   <div>
-    <h1 class="text-4xl font-bold tracking-tight text-zinc-100 sm:text-5xl font-[Oxanium]"><a href={langPath[lang]}>Keven Gonçalves</a></h1>
+    <h1 class="text-4xl font-bold tracking-tight text-zinc-100 sm:text-5xl font-[Oxanium]"><a class="name-glitch" href={langPath[lang]} data-text="Keven Gonçalves">Keven Gonçalves</a></h1>
     <h2 class="mt-3 text-lg font-medium tracking-tight text-zinc-100 sm:text-xl flex items-center">
       <span class="flex items-center gap-1">
         <svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="24px" fill="currentColor"><path d="M305-208 32-480l273-273 90 89-184 184 183 183-89 89Zm350 1-90-89 184-184-183-183 89-89 273 272-273 273Z"/></svg>
@@ -92,6 +92,53 @@ const { loading: _lazy, ...photoAttributes } = photo.attributes;
 </header>
 
 <style>
+/* Name: the same RGB-split glitch as the 404 page, scaled to the heading.
+   Cyan/red ghosts sit on either side, and every few seconds a slice tears sideways */
+.name-glitch {
+  position: relative;
+  display: inline-block;
+  text-shadow: -0.04em 0 var(--glitch-blue), 0.04em 0 var(--glitch-red);
+}
+
+.name-glitch::before,
+.name-glitch::after {
+  content: attr(data-text);
+  content: attr(data-text) / ""; /* decorative copies, hidden from screen readers */
+  position: absolute;
+  inset: 0;
+  clip-path: inset(0 0 100% 0);
+  pointer-events: none;
+}
+
+.name-glitch::before {
+  animation: name-tear-a 3.6s steps(1, end) infinite;
+}
+
+.name-glitch::after {
+  animation: name-tear-b 3.6s steps(1, end) infinite;
+}
+
+@keyframes name-tear-a {
+  0%, 86%, 100% { clip-path: inset(0 0 100% 0); transform: none; }
+  88% { clip-path: inset(18% 0 62% 0); transform: translateX(-0.12em); }
+  91% { clip-path: inset(55% 0 30% 0); transform: translateX(0.1em); }
+  94% { clip-path: inset(30% 0 55% 0); transform: translateX(-0.06em); }
+}
+
+@keyframes name-tear-b {
+  0%, 86%, 100% { clip-path: inset(0 0 100% 0); transform: none; }
+  88% { clip-path: inset(68% 0 12% 0); transform: translateX(0.11em); }
+  91% { clip-path: inset(8% 0 78% 0); transform: translateX(-0.09em); }
+  94% { clip-path: inset(80% 0 4% 0); transform: translateX(0.05em); }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .name-glitch::before,
+  .name-glitch::after {
+    animation: none;
+  }
+}
+
 /* Nav: the link for the section on screen is highlighted (long bright line, bright text), set by the script below */
 .nav-link.is-active .nav-indicator {
   width: 4rem;
