@@ -21,9 +21,9 @@ const { loading: _lazy, ...photoAttributes } = photo.attributes;
 // The "tear" ones also slide a couple of horizontal slices sideways.
 const SPLIT = 0.008; // ≈2px on the photo
 const photoTears = [
-  { id: "photo-tear-a", rows: [{ y: 0.18, h: 0.06, dx: -0.04 }, { y: 0.55, h: 0.05, dx: 0.035 }] },
-  { id: "photo-tear-b", rows: [{ y: 0.08, h: 0.05, dx: 0.03 }, { y: 0.68, h: 0.07, dx: -0.045 }] },
-  { id: "photo-tear-c", rows: [{ y: 0.32, h: 0.04, dx: -0.025 }, { y: 0.8, h: 0.04, dx: 0.02 }] },
+  { id: "photo-tear-a", rows: [{ y: 0.18, h: 0.06, dx: -0.022 }, { y: 0.55, h: 0.05, dx: 0.02 }] },
+  { id: "photo-tear-b", rows: [{ y: 0.08, h: 0.05, dx: 0.018 }, { y: 0.68, h: 0.07, dx: -0.022 }] },
+  { id: "photo-tear-c", rows: [{ y: 0.32, h: 0.04, dx: -0.015 }, { y: 0.8, h: 0.04, dx: 0.012 }] },
 ];
 const photoFilters = [{ id: "photo-split", rows: [] as { y: number; h: number; dx: number }[] }, ...photoTears];
 ---
@@ -34,29 +34,30 @@ const photoFilters = [{ id: "photo-split", rows: [] as { y: number; h: number; d
         <div class="absolute inset-0 border border-zinc-500 translate-x-4 translate-y-4"></div>
         <svg class="absolute size-0" aria-hidden="true">
           {photoFilters.map(({ id, rows }) => (
-            <filter id={id} x="-0.08" y="0" width="1.16" height="1" primitiveUnits="objectBoundingBox" color-interpolation-filters="sRGB">
+            <filter id={id} x="0" y="0" width="1" height="1" primitiveUnits="objectBoundingBox" color-interpolation-filters="sRGB">
               {/* Red channel pulled left, green+blue (cyan) pushed right, added back together */}
               <feColorMatrix in="SourceGraphic" type="matrix" values="1 0 0 0 0  0 0 0 0 0  0 0 0 0 0  0 0 0 1 0" result="red" />
               <feOffset in="red" dx={-SPLIT} dy="0" result="redShift" />
               <feColorMatrix in="SourceGraphic" type="matrix" values="0 0 0 0 0  0 1 0 0 0  0 0 1 0 0  0 0 0 1 0" result="cyan" />
               <feOffset in="cyan" dx={SPLIT} dy="0" result="cyanShift" />
-              <feBlend in="redShift" in2="cyanShift" mode="screen" result="split" />
+              <feBlend in="redShift" in2="cyanShift" mode="screen" result="rawSplit" />
+              {/* Keep the split only where both channels overlap; the photo's very edges stay as they are
+                  (otherwise they'd show single-colour strips down the sides) */}
+              <feComposite in="redShift" in2="cyanShift" operator="in" result="overlap" />
+              <feComposite in="rawSplit" in2="overlap" operator="in" result="innerSplit" />
+              <feMerge result="split">
+                <feMergeNode in="SourceGraphic" />
+                <feMergeNode in="innerSplit" />
+              </feMerge>
+              {/* Tear: slices of the split photo laid back over it, slid sideways */}
+              {rows.map((row, i) => (
+                <feOffset in="split" dx={row.dx} dy="0" y={row.y} height={row.h} result={`row${i}`} />
+              ))}
               {rows.length > 0 && (
-                <>
-                  {/* Tear: cut the slices out and lay them back in, slid sideways */}
-                  {rows.map((row, i) => (
-                    <>
-                      <feFlood flood-color="#000" x="-0.1" width="1.2" y={row.y} height={row.h} result={`gap${i}`} />
-                      <feOffset in="split" dx={row.dx} dy="0" x="-0.1" width="1.2" y={row.y} height={row.h} result={`row${i}`} />
-                    </>
-                  ))}
-                  <feMerge result="gaps">{rows.map((_, i) => <feMergeNode in={`gap${i}`} />)}</feMerge>
-                  <feComposite in="split" in2="gaps" operator="out" result="holed" />
-                  <feMerge>
-                    <feMergeNode in="holed" />
-                    {rows.map((_, i) => <feMergeNode in={`row${i}`} />)}
-                  </feMerge>
-                </>
+                <feMerge>
+                  <feMergeNode in="split" />
+                  {rows.map((_, i) => <feMergeNode in={`row${i}`} />)}
+                </feMerge>
               )}
             </filter>
           ))}
@@ -189,29 +190,22 @@ const photoFilters = [{ id: "photo-split", rows: [] as { y: number; h: number; d
   color: var(--color-zinc-100);
 }
 
-/* Photo: the same glitch as the name. Its colour channels are always split (cyan edge left, red edge right),
-   and on the name's 3.6s cycle a few slices tear sideways (filters defined above the photo).
-   Clipped to the photo so the shifted channels and slices don't spill past its frame */
-.photo-glitch {
-  overflow: hidden;
-}
-
+/* Photo: the normal photo most of the time; every 8s it glitches like the name for about 0.4s:
+   colour channels split (cyan edge left, red edge right) and a few slices tear sideways (filters defined above the photo) */
 .photo-glitch img {
-  filter: grayscale(1) url(#photo-split);
-  /* Trim the single-channel strips the split leaves down the photo's own left/right edges */
-  clip-path: inset(0 1%);
-  animation: photo-tear 3.6s steps(1, end) infinite;
+  filter: grayscale(1);
+  animation: photo-tear 8s steps(1, end) infinite;
 }
 
 @keyframes photo-tear {
-  0%, 86%, 100% { filter: grayscale(1) url(#photo-split); transform: none; }
-  88% { filter: grayscale(1) url(#photo-tear-a); transform: translateX(2px); }
-  91% { filter: grayscale(1) url(#photo-tear-b); transform: translateX(-2px); }
-  94% { filter: grayscale(1) url(#photo-tear-c); transform: none; }
+  0%, 100% { filter: grayscale(1); }
+  94.6% { filter: grayscale(1) url(#photo-tear-a); }
+  95.95% { filter: grayscale(1) url(#photo-tear-b); }
+  97.3% { filter: grayscale(1) url(#photo-tear-c); }
+  98.65% { filter: grayscale(1) url(#photo-split); }
 }
 
 @media (prefers-reduced-motion: reduce) {
-  /* Keep the colour split, skip the tearing */
   .photo-glitch img {
     animation: none;
   }
