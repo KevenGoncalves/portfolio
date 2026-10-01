@@ -1,19 +1,26 @@
 <span class="sauce font-[Oxanium]">sauce</span>
 
 <style>
-/* Red "sauce". On hover a red highlighter swipes in behind it and the letters turn dark */
+/* Red "sauce", a little bigger than the line, on a soft red highlighter covering the whole word, with a faint glow.
+   On hover the full red highlighter swipes in behind it and the letters turn dark */
 .sauce {
   display: inline-block;
-  padding: 0 3px;
+  padding: 0 4px;
+  font-size: 1.15em;
   font-weight: 800;
+  line-height: 1;
   color: var(--color-red-400); /* accent red */
-  background: linear-gradient(var(--color-red-400), var(--color-red-400)) left / 0% 100% no-repeat;
-  transition: background-size 0.3s ease, color 0.3s ease;
+  text-shadow: 0 0 12px color-mix(in srgb, var(--color-red-400) 45%, transparent);
+  background:
+    linear-gradient(var(--color-red-400), var(--color-red-400)) left / 0% 100% no-repeat,
+    linear-gradient(color-mix(in srgb, var(--color-red-400) 22%, transparent), color-mix(in srgb, var(--color-red-400) 22%, transparent)) left / 100% 100% no-repeat;
+  transition: background-size 0.3s ease, color 0.3s ease, text-shadow 0.3s ease;
 }
 
 .sauce:hover {
-  background-size: 100% 100%;
+  background-size: 100% 100%, 100% 100%;
   color: var(--color-zinc-950); /* zinc-950 */
+  text-shadow: none;
 }
 
 @media (prefers-reduced-motion: reduce) {
