@@ -1,10 +1,17 @@
 import {
+  siExpress,
+  siFirebase,
   siGo,
+  siGraphql,
+  siIos,
   siJenkins,
   siJetpackcompose,
   siKotlin,
   siNextdotjs,
   siPhp,
+  siPython,
+  siReact,
+  siSvelte,
   siTypescript,
   siVuedotjs,
   type SimpleIcon,
@@ -26,8 +33,17 @@ const visibleColor = (hex: string) => {
 
 const icon = (si: SimpleIcon): TechIcon => ({ path: si.path, color: visibleColor(si.hex) });
 
+/** Generic "AI sparkle" (no single brand logo stands for LLMs in general) */
+const sparkles: TechIcon = {
+  path:
+    "M10 2.5Q11 9 17.5 10Q11 11 10 17.5Q9 11 2.5 10Q9 9 10 2.5Z" +
+    "M18 14.5Q18.5 17.5 21.5 18Q18.5 18.5 18 21.5Q17.5 18.5 14.5 18Q17.5 17.5 18 14.5Z" +
+    "M19 2.5Q19.3 4.2 21 4.5Q19.3 4.8 19 6.5Q18.7 4.8 17 4.5Q18.7 4.2 19 2.5Z",
+  color: "#a78bfa", // violet-400
+};
+
 /**
- * Technology name (as written in experience.ts) → Simple Icons icon.
+ * Technology name (as written in experience.ts) → icon (from Simple Icons, or a custom one like `sparkles`).
  * Technologies missing here fall back to a text pill.
  */
 export const techIcons: Record<string, TechIcon> = {
@@ -39,4 +55,12 @@ export const techIcons: Record<string, TechIcon> = {
   "Next.js": icon(siNextdotjs),
   Jenkins: icon(siJenkins),
   "Vue.js": icon(siVuedotjs),
+  Python: icon(siPython),
+  iOS: icon(siIos),
+  Express: icon(siExpress),
+  Svelte: icon(siSvelte),
+  React: icon(siReact),
+  GraphQL: icon(siGraphql),
+  Firebase: icon(siFirebase),
+  LLMs: sparkles,
 };
