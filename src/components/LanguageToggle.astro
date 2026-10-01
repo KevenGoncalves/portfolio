@@ -3,9 +3,11 @@ import { langPath, languages, useTranslations, type Lang } from "../i18n/ui";
 
 interface Props {
    lang: Lang;
+   /** Where each language option links; defaults to each language's home page */
+   paths?: Record<Lang, string>;
 }
 
-const { lang } = Astro.props;
+const { lang, paths = langPath } = Astro.props;
 const t = useTranslations(lang);
 const codes = Object.keys(languages) as Lang[];
 ---
@@ -20,7 +22,7 @@ const codes = Object.keys(languages) as Lang[];
    <span class="language-thumb" aria-hidden="true"></span>
    {codes.map((code, index) => (
       <a
-         href={langPath[code]}
+         href={paths[code]}
          hreflang={code}
          lang={code}
          aria-current={code === lang ? "page" : undefined}

@@ -2,7 +2,9 @@
 import "../styles/global.css";
 import { experience, formatPeriod, jobSpan, type EmploymentType, type Job } from "../data/experience";
 import { achievements, bullets, contacts, education, headline, languages, location, skills } from "../data/resume";
-import { langPath, languages as siteLanguages, localize, useTranslations, type Lang } from "../i18n/ui";
+import { langPath, localize, useTranslations, type Lang } from "../i18n/ui";
+import LanguageToggle from "./LanguageToggle.astro";
+import ThemeToggle from "./ThemeToggle.astro";
 
 interface Props {
    lang: Lang;
@@ -25,9 +27,15 @@ const metaLine = (job: Job, type?: EmploymentType) =>
 ---
 
 <!doctype html>
-<html lang={lang}>
+<html lang={lang} data-theme="dark">
    <head>
       <meta charset="UTF-8" />
+      <!-- Same saved theme as the site, applied before paint (the CV sheet itself always stays white) -->
+      <script is:inline>
+         try {
+            if (localStorage.getItem("theme") === "light") document.documentElement.dataset.theme = "light";
+         } catch {}
+      </script>
       <meta name="viewport" content="width=device-width" />
       <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
       <link rel="preconnect" href="https://fonts.googleapis.com" />
@@ -36,26 +44,16 @@ const metaLine = (job: Job, type?: EmploymentType) =>
       <title>Keven Gonçalves — {t("resume.title")}</title>
    </head>
    <body class="resume-body font-sans text-zinc-700 antialiased">
-      <!-- Screen-only toolbar -->
+      <!-- Screen-only toolbar: back to the site, the site's theme and language toggles, PDF download -->
       <nav class="toolbar mx-auto flex max-w-[210mm] flex-wrap items-center justify-between gap-3 px-4 py-5 text-sm print:hidden">
-         <a href={langPath[lang]} class="inline-flex items-center gap-1.5 font-medium text-zinc-600 hover:text-zinc-900">
+         <a href={langPath[lang]} class="inline-flex items-center gap-1.5 font-medium text-zinc-400 transition hover:text-zinc-100">
             <svg viewBox="0 0 20 20" fill="currentColor" class="size-4" aria-hidden="true"><path fill-rule="evenodd" d="M17 10a.75.75 0 0 1-.75.75H5.612l4.158 3.96a.75.75 0 1 1-1.04 1.08l-5.5-5.25a.75.75 0 0 1 0-1.08l5.5-5.25a.75.75 0 1 1 1.04 1.08L5.612 9.25H16.25A.75.75 0 0 1 17 10Z" clip-rule="evenodd"></path></svg>
             {t("resume.back")}
          </a>
          <div class="flex items-center gap-2">
-            <div class="inline-flex rounded-full border border-zinc-300 bg-white p-1">
-               {(Object.keys(siteLanguages) as Lang[]).map((code) => (
-                  <a
-                     href={resumePath[code]}
-                     hreflang={code}
-                     aria-current={code === lang ? "page" : undefined}
-                     class:list={["rounded-full px-3 py-1 text-xs font-bold tracking-widest", code === lang ? "bg-zinc-900 text-white" : "text-zinc-500 hover:text-zinc-900"]}
-                  >
-                     {siteLanguages[code]}
-                  </a>
-               ))}
-            </div>
-            <a href={pdfPath} download={`Keven-Goncalves-CV-${lang.toUpperCase()}.pdf`} class="inline-flex items-center gap-2 rounded-full bg-zinc-900 px-4 py-2 text-xs font-semibold text-white hover:bg-zinc-700">
+            <ThemeToggle lang={lang} />
+            <LanguageToggle lang={lang} paths={resumePath} />
+            <a href={pdfPath} download={`Keven-Goncalves-CV-${lang.toUpperCase()}.pdf`} class="inline-flex h-9 items-center gap-2 rounded-full bg-zinc-100 px-4 text-xs font-semibold text-zinc-900 transition hover:bg-white">
                <svg viewBox="0 0 20 20" fill="currentColor" class="size-4" aria-hidden="true"><path d="M10.75 2.75a.75.75 0 0 0-1.5 0v8.614L6.295 8.235a.75.75 0 1 0-1.09 1.03l4.25 4.5a.75.75 0 0 0 1.09 0l4.25-4.5a.75.75 0 0 0-1.09-1.03l-2.955 3.129V2.75Z"></path><path d="M3.5 12.75a.75.75 0 0 0-1.5 0v2.5A2.75 2.75 0 0 0 4.75 18h10.5A2.75 2.75 0 0 0 18 15.25v-2.5a.75.75 0 0 0-1.5 0v2.5c0 .69-.56 1.25-1.25 1.25H4.75c-.69 0-1.25-.56-1.25-1.25v-2.5Z"></path></svg>
                {t("resume.download")}
             </a>
@@ -165,8 +163,13 @@ const metaLine = (job: Job, type?: EmploymentType) =>
 </html>
 
 <style>
-/* Paper look on screen, exact A4 when printed / exported to PDF */
+/* Paper look on screen, exact A4 when printed / exported to PDF.
+   The backdrop follows the site theme; the sheet always stays white paper. */
 :global(html) {
+   background: #18181b;
+}
+
+:global(html[data-theme="light"]) {
    background: #e4e4e7;
 }
 
@@ -176,12 +179,25 @@ const metaLine = (job: Job, type?: EmploymentType) =>
 }
 
 .sheet {
+   /* Pin the zinc greys to their real values here, so the light theme's flipped palette never reaches the paper */
+   --color-zinc-50: oklch(98.5% 0 0);
+   --color-zinc-100: oklch(96.7% 0.001 286.375);
+   --color-zinc-200: oklch(92% 0.004 286.32);
+   --color-zinc-300: oklch(87.1% 0.006 286.286);
+   --color-zinc-400: oklch(70.5% 0.015 286.067);
+   --color-zinc-500: oklch(55.2% 0.016 285.938);
+   --color-zinc-600: oklch(44.2% 0.017 285.786);
+   --color-zinc-700: oklch(37% 0.013 285.805);
+   --color-zinc-800: oklch(27.4% 0.006 286.033);
+   --color-zinc-900: oklch(21% 0.006 285.885);
+   --color-zinc-950: oklch(14.1% 0.005 285.823);
+   --color-red-400: oklch(70.4% 0.191 22.216);
    width: 210mm;
    min-height: 297mm;
    margin: 0 auto;
    padding: 13mm 15mm 10mm;
    background: #fff;
-   box-shadow: 0 10px 40px rgb(0 0 0 / 0.12);
+   box-shadow: 0 10px 40px rgb(0 0 0 / 0.25);
 }
 
 .resume-heading {
@@ -217,7 +233,8 @@ const metaLine = (job: Job, type?: EmploymentType) =>
 }
 
 @media print {
-   :global(html) {
+   :global(html),
+   :global(html[data-theme="light"]) {
       background: #fff;
    }
 
