@@ -1,6 +1,6 @@
 ---
 import ProfileImage from "../assets/profile.png";
-import { Image } from "astro:assets";
+import { getImage } from "astro:assets";
 import Sauce from "./Sauce.astro";
 import { langPath, useTranslations, type Lang } from "../i18n/ui";
 
@@ -10,15 +10,19 @@ interface Props {
 
 const { lang } = Astro.props;
 const t = useTranslations(lang);
+
+// One optimised photo, used by the <img> and by the glitch copies (so it's only downloaded once)
+const photo = await getImage({ src: ProfileImage });
 ---
 
 <header class="lg:sticky lg:top-0 lg:flex lg:max-h-screen lg:w-[48%] lg:flex-col lg:justify-between lg:overflow-y-auto lg:py-[clamp(3rem,8vh,6rem)]">
   <div>
     <div class="relative mb-10 max-w-56 sm:max-w-64 lg:mb-8 lg:max-w-[min(18rem,26vh)] lg:short:max-w-40">
         <div class="absolute inset-0 border border-zinc-500 translate-x-4 translate-y-4"></div>
-        <div class="relative bg-zinc-200">
-          <Image
-            src={ProfileImage}
+        <div class="photo-glitch relative bg-zinc-200" style={`--photo: url("${photo.src}")`}>
+          <img
+            src={photo.src}
+            {...photo.attributes}
             alt="Portrait"
             class="w-full h-auto object-cover grayscale"
           />
@@ -84,6 +88,80 @@ const t = useTranslations(lang);
 </header>
 
 <style>
+/* Photo: RGB-split glitch on hover. Two copies of the photo (tinted cyan and red, screened over it)
+   tear apart in horizontal slices while the photo jolts, then it snaps back to the clean photo. */
+.photo-glitch {
+  overflow: hidden;
+}
+
+.photo-glitch::before,
+.photo-glitch::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: var(--photo) center / cover no-repeat;
+  background-blend-mode: luminosity; /* the photo's light and shade, in the tint colour */
+  mix-blend-mode: screen;
+  opacity: 0;
+  pointer-events: none;
+}
+
+.photo-glitch::before {
+  background-color: var(--glitch-blue);
+}
+
+.photo-glitch::after {
+  background-color: var(--glitch-red);
+}
+
+.photo-glitch:hover::before {
+  animation: photo-glitch-cyan 0.6s steps(1, end);
+}
+
+.photo-glitch:hover::after {
+  animation: photo-glitch-red 0.6s steps(1, end);
+}
+
+.photo-glitch:hover img {
+  animation: photo-glitch-jolt 0.6s steps(1, end);
+}
+
+@keyframes photo-glitch-cyan {
+  0% { opacity: 0.8; transform: translateX(-12px); clip-path: inset(8% 0 62% 0); }
+  15% { transform: translateX(9px); clip-path: inset(55% 0 20% 0); }
+  30% { transform: translateX(-7px); clip-path: inset(20% 0 45% 0); }
+  45% { transform: translateX(5px); clip-path: inset(70% 0 6% 0); }
+  60% { opacity: 0.6; transform: translateX(-6px); clip-path: inset(0 0 0 0); }
+  80% { opacity: 0.35; transform: translateX(-3px); clip-path: inset(0 0 0 0); }
+  100% { opacity: 0; transform: none; }
+}
+
+@keyframes photo-glitch-red {
+  0% { opacity: 0.8; transform: translateX(10px); clip-path: inset(40% 0 35% 0); }
+  15% { transform: translateX(-11px); clip-path: inset(12% 0 70% 0); }
+  30% { transform: translateX(8px); clip-path: inset(62% 0 14% 0); }
+  45% { transform: translateX(-6px); clip-path: inset(30% 0 52% 0); }
+  60% { opacity: 0.6; transform: translateX(6px); clip-path: inset(0 0 0 0); }
+  80% { opacity: 0.35; transform: translateX(3px); clip-path: inset(0 0 0 0); }
+  100% { opacity: 0; transform: none; }
+}
+
+@keyframes photo-glitch-jolt {
+  0% { transform: translateX(4px) skewX(-3deg); clip-path: polygon(0 0, 100% 0, 100% 30%, 0 30%, 0 38%, 100% 38%, 100% 100%, 0 100%); }
+  15% { transform: translateX(-5px) skewX(2deg); clip-path: polygon(0 0, 100% 0, 100% 58%, 0 58%, 0 66%, 100% 66%, 100% 100%, 0 100%); }
+  30% { transform: translateX(3px); clip-path: polygon(0 0, 100% 0, 100% 14%, 0 14%, 0 19%, 100% 19%, 100% 100%, 0 100%); }
+  45% { transform: translateX(-2px); clip-path: none; }
+  60%, 100% { transform: none; clip-path: none; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .photo-glitch:hover::before,
+  .photo-glitch:hover::after,
+  .photo-glitch:hover img {
+    animation: none;
+  }
+}
+
 /* Social icons: the same RGB split as "video games" in About — cyan peeks out on the left, red on the right,
    with a quick jolt on hover before the icon settles (the split stays while hovered) */
 .social-link:hover svg,
