@@ -25,7 +25,7 @@ const strong = "font-medium text-zinc-100";
             Antes disso, trabalhei sobretudo como{" "}<span class={strong}>desenvolvedor full-stack</span>{" "}tanto para{" "}<span class={strong}>empresas consolidadas</span>{" "}como para{" "}<span class={strong}>startups</span>, levando funcionalidades da base de dados até à interface.
          </p>
          <p>
-            Fora do trabalho, passo o meu tempo livre com a minha família e a jogar os meus adorados{" "}<span class={`glitch ${strong}`} data-text="videojogos"><span class="glitch-text">videojogos</span></span>.
+            Fora do trabalho, passo o meu tempo livre com a minha família e a jogar os meus adorados{" "}<span class={strong}>videojogos</span>.
          </p>
       </div>
    ) : (
@@ -40,81 +40,9 @@ const strong = "font-medium text-zinc-100";
             In the past, I worked mainly as a{" "}<span class={strong}>full-stack developer</span>{" "}for both{" "}<span class={strong}>established companies</span>{" "}and{" "}<span class={strong}>startups</span>, taking features from the database all the way to the interface.
          </p>
          <p>
-            Outside of work, I spend my free time with my family and playing my beloved{" "}<span class={`glitch ${strong}`} data-text="video games"><span class="glitch-text">video games</span></span>.
+            Outside of work, I spend my free time with my family and playing my beloved{" "}<span class={strong}>video games</span>.
          </p>
       </div>
    )}
 </section>
 
-<style>
-/* RGB-split glitch on hover: cyan and red copies peek out on each side of the words,
-   while horizontal bands tear off and slide sideways (the bands are the two pseudo-elements;
-   the real text gets matching holes cut out so nothing is drawn twice) */
-.glitch {
-  position: relative;
-  display: inline-block;
-}
-
-.glitch-text {
-  display: inline-block;
-}
-
-.glitch::before,
-.glitch::after {
-  content: attr(data-text);
-  content: attr(data-text) / ""; /* hide the copies from screen readers */
-  position: absolute;
-  inset: 0;
-  clip-path: inset(0 0 100% 0);
-  pointer-events: none;
-}
-
-.glitch:hover,
-.glitch:hover::before,
-.glitch:hover::after {
-  text-shadow: -2px 0 var(--glitch-blue), 2px 0 var(--glitch-red);
-}
-
-.glitch:hover .glitch-text {
-  animation: glitch-holes 1.6s steps(1, end) infinite;
-}
-
-.glitch:hover::before {
-  animation: glitch-band-a 1.6s steps(1, end) infinite;
-}
-
-.glitch:hover::after {
-  animation: glitch-band-b 1.6s steps(1, end) infinite;
-}
-
-/* Holes in the real text, matching the bands below (x goes past the box so the colour fringes aren't cut) */
-@keyframes glitch-holes {
-  0% { clip-path: polygon(-10% 0, 110% 0, 110% 20%, -10% 20%, -10% 34%, 110% 34%, 110% 62%, -10% 62%, -10% 72%, 110% 72%, 110% 100%, -10% 100%); transform: translateX(1px); }
-  8% { clip-path: polygon(-10% 0, 110% 0, 110% 8%, -10% 8%, -10% 22%, 110% 22%, 110% 48%, -10% 48%, -10% 66%, 110% 66%, 110% 100%, -10% 100%); transform: translateX(-1px); }
-  16% { clip-path: polygon(-10% 0, 110% 0, 110% 40%, -10% 40%, -10% 52%, 110% 52%, 110% 80%, -10% 80%, -10% 90%, 110% 90%, 110% 100%, -10% 100%); transform: none; }
-  24%, 100% { clip-path: none; transform: none; }
-}
-
-@keyframes glitch-band-a {
-  0% { clip-path: polygon(-10% 20%, 110% 20%, 110% 34%, -10% 34%); transform: translateX(-6px); }
-  8% { clip-path: polygon(-10% 8%, 110% 8%, 110% 22%, -10% 22%); transform: translateX(5px); }
-  16% { clip-path: polygon(-10% 40%, 110% 40%, 110% 52%, -10% 52%); transform: translateX(-4px); }
-  24%, 100% { clip-path: inset(0 0 100% 0); transform: none; }
-}
-
-@keyframes glitch-band-b {
-  0% { clip-path: polygon(-10% 62%, 110% 62%, 110% 72%, -10% 72%); transform: translateX(5px); }
-  8% { clip-path: polygon(-10% 48%, 110% 48%, 110% 66%, -10% 66%); transform: translateX(-7px); }
-  16% { clip-path: polygon(-10% 80%, 110% 80%, 110% 90%, -10% 90%); transform: translateX(3px); }
-  24%, 100% { clip-path: inset(0 0 100% 0); transform: none; }
-}
-
-@media (prefers-reduced-motion: reduce) {
-  /* Keep the colour split, skip the tearing */
-  .glitch:hover .glitch-text,
-  .glitch:hover::before,
-  .glitch:hover::after {
-    animation: none;
-  }
-}
-</style>

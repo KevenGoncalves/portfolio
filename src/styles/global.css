@@ -29,7 +29,7 @@
   /* Sliding background stripes (Background.astro) */
   --page-a: #000;
   --page-b: #1a1a1b;
-  /* Glitch RGB split (About "video games", social icons): cyan pulls left, red pulls right */
+  /* Glitch RGB split on the social icons (Header.astro): cyan pulls left, red pulls right */
   --glitch-red: #ff1f1f;
   --glitch-blue: #00f0ff;
 }
