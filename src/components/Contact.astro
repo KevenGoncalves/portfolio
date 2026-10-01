@@ -26,33 +26,33 @@ const directContacts = [
       {t("contact.intro")}
    </p>
 
-   <!-- Direct contact: email and phone, each clickable with a copy button (the email may break after the @ on narrow phones) -->
+   <!-- Direct contact: just the label and the value (email may break after the @ on narrow phones).
+        The value opens mail / the dialer; the small copy button shows on hover (always on touch screens). -->
    <h3 class="sr-only">{t("contact.direct")}</h3>
-   <ul class="mb-10 grid gap-3">
+   <ul class="mb-10 flex flex-col gap-5 sm:flex-row sm:flex-wrap sm:gap-x-12">
       {directContacts.map((contact) => (
-         <li class="group/contact relative flex items-center gap-3 rounded-lg border border-zinc-800 bg-zinc-900/40 p-3.5 transition hover:border-zinc-600 hover:bg-zinc-900/70">
-            <span class="grid size-10 shrink-0 place-items-center rounded-md bg-zinc-800 text-zinc-300 transition group-hover/contact:text-zinc-100" aria-hidden="true">
-               {contact.icon === "mail" ? (
-                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" class="size-5"><rect x="3" y="5" width="18" height="14" rx="2.5"></rect><path d="m4 7 8 6 8-6"></path></svg>
-               ) : (
-                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" class="size-5"><path d="M6.6 3.5h2.6l1.6 4-2.1 1.3a11 11 0 0 0 6.5 6.5l1.3-2.1 4 1.6v2.6a2 2 0 0 1-2.2 2A16.5 16.5 0 0 1 4.6 5.7a2 2 0 0 1 2-2.2Z"></path></svg>
-               )}
-            </span>
-            <a href={contact.href} class="min-w-0 flex-1 after:absolute after:inset-0 after:rounded-lg focus-visible:outline-none">
-               <span class={`${labelClass} block`}>{contact.label}</span>
-               <span class="block text-sm font-medium text-zinc-100 transition group-hover/contact:text-white">{contact.value.includes("@") ? <>{contact.value.split("@")[0]}@<wbr />{contact.value.split("@")[1]}</> : contact.value}</span>
-            </a>
-            <button
-               type="button"
-               class="relative z-10 grid size-8 shrink-0 place-items-center rounded-md text-zinc-500 transition hover:bg-zinc-800 hover:text-zinc-100 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-zinc-500"
-               aria-label={`${t("contact.copy")} ${contact.label.toLowerCase()}`}
-               title={t("contact.copy")}
-               data-copy={contact.value}
-               data-copied-label={t("contact.copied")}
-            >
-               <svg class="copy-icon size-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="9" y="9" width="11" height="11" rx="2"></rect><path d="M5 15V6a2 2 0 0 1 2-2h9"></path></svg>
-               <svg class="check-icon hidden size-4 text-zinc-100" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m5 12.5 4.5 4.5L19 7.5"></path></svg>
-            </button>
+         <li class="contact-item min-w-0">
+            <span class={`${labelClass} block`}>{contact.label}</span>
+            <div class="mt-1 flex items-center gap-1.5">
+               <a href={contact.href} class="contact-value min-w-0 text-base font-medium text-zinc-100 focus-visible:outline-none sm:text-lg">
+                  <!-- Text roll: the value slides up and a red copy rolls in from below -->
+                  <span class="roll">
+                     <span class="roll-a">{contact.value.includes("@") ? <>{contact.value.split("@")[0]}@<wbr />{contact.value.split("@")[1]}</> : contact.value}</span>
+                     <span class="roll-b" aria-hidden="true">{contact.value.includes("@") ? <>{contact.value.split("@")[0]}@<wbr />{contact.value.split("@")[1]}</> : contact.value}</span>
+                  </span>
+               </a>
+               <button
+                  type="button"
+                  class="contact-copy grid size-7 shrink-0 place-items-center rounded-md text-zinc-500 transition hover:text-zinc-100 focus-visible:opacity-100 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-zinc-500"
+                  aria-label={`${t("contact.copy")} ${contact.label.toLowerCase()}`}
+                  title={t("contact.copy")}
+                  data-copy={contact.value}
+                  data-copied-label={t("contact.copied")}
+               >
+                  <svg class="copy-icon size-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="9" y="9" width="11" height="11" rx="2"></rect><path d="M5 15V6a2 2 0 0 1 2-2h9"></path></svg>
+                  <svg class="check-icon hidden size-4 text-zinc-100" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m5 12.5 4.5 4.5L19 7.5"></path></svg>
+               </button>
+            </div>
          </li>
       ))}
    </ul>
@@ -112,8 +112,73 @@ const directContacts = [
    </form>
 </section>
 
+<style>
+/* Text roll on hover: the value slides up out of view while a sauce-red copy rolls in from below */
+.roll {
+   position: relative;
+   display: inline-block;
+   overflow: hidden;
+   vertical-align: bottom;
+}
+
+.roll-a,
+.roll-b {
+   display: block;
+   transition: transform 0.4s cubic-bezier(0.65, 0, 0.35, 1);
+}
+
+.roll-b {
+   position: absolute;
+   inset: 0;
+   color: var(--color-red-400);
+   transform: translateY(100%);
+}
+
+.contact-item:hover .roll-a,
+.contact-value:focus-visible .roll-a {
+   transform: translateY(-100%);
+}
+
+.contact-item:hover .roll-b,
+.contact-value:focus-visible .roll-b {
+   transform: translateY(0);
+}
+
+/* Copy button: hidden until you hover the contact (devices with a mouse); always visible on touch screens */
+@media (hover: hover) {
+   .contact-copy {
+      opacity: 0;
+   }
+
+   .contact-item:hover .contact-copy,
+   .contact-copy:focus-visible,
+   .contact-copy:has(.check-icon:not(.hidden)) {
+      opacity: 1;
+   }
+}
+
+/* Reduced motion: no roll, the value simply turns red */
+@media (prefers-reduced-motion: reduce) {
+   .roll-a,
+   .roll-b,
+   .contact-copy {
+      transition: none;
+   }
+
+   .roll-b {
+      display: none;
+   }
+
+   .contact-item:hover .roll-a,
+   .contact-value:focus-visible .roll-a {
+      transform: none;
+      color: var(--color-red-400);
+   }
+}
+</style>
+
 <script>
-   // Copy buttons on the email / phone tiles: swap to a check mark and announce "Copied!" briefly
+   // Copy buttons on the email / phone rows: swap to a check mark and announce "Copied!" briefly
    const copyText = async (text: string) => {
       try {
          await navigator.clipboard.writeText(text);
