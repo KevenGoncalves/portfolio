@@ -1,0 +1,54 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 480 270" fill="none">
+  <defs>
+    <pattern id="dots" width="16" height="16" patternUnits="userSpaceOnUse"><circle cx="2" cy="2" r="1" fill="#1f1f23"/></pattern>
+  </defs>
+  <rect width="480" height="270" fill="#09090b"/>
+  <rect width="480" height="270" fill="url(#dots)"/>
+
+  <!-- POS terminal with the product grid -->
+  <rect x="48" y="54" width="220" height="172" rx="14" fill="#18181b" stroke="#71717a" stroke-width="2.5"/>
+  <circle cx="244" cy="61" r="3" fill="#f87171"/>
+  <rect x="62" y="68" width="192" height="134" rx="8" fill="#111113"/>
+    <rect x="72" y="80" width="52" height="40" rx="6" fill="#27272a"/>
+    <rect x="90" y="88" width="16" height="14" rx="3" fill="#3f3f46"/>
+    <rect x="84" y="108" width="28" height="4" rx="2" fill="#52525b"/>
+    <rect x="134" y="80" width="52" height="40" rx="6" fill="#f87171" fill-opacity="0.15" stroke="#f87171" stroke-width="2"/>
+    <rect x="152" y="88" width="16" height="14" rx="3" fill="#f87171"/>
+    <rect x="146" y="108" width="28" height="4" rx="2" fill="#f87171"/>
+    <rect x="196" y="80" width="52" height="40" rx="6" fill="#27272a"/>
+    <rect x="214" y="88" width="16" height="14" rx="3" fill="#3f3f46"/>
+    <rect x="208" y="108" width="28" height="4" rx="2" fill="#52525b"/>
+    <rect x="72" y="130" width="52" height="40" rx="6" fill="#27272a"/>
+    <rect x="90" y="138" width="16" height="14" rx="3" fill="#3f3f46"/>
+    <rect x="84" y="158" width="28" height="4" rx="2" fill="#52525b"/>
+    <rect x="134" y="130" width="52" height="40" rx="6" fill="#27272a"/>
+    <rect x="152" y="138" width="16" height="14" rx="3" fill="#3f3f46"/>
+    <rect x="146" y="158" width="28" height="4" rx="2" fill="#52525b"/>
+    <rect x="196" y="130" width="52" height="40" rx="6" fill="#27272a"/>
+    <rect x="214" y="138" width="16" height="14" rx="3" fill="#3f3f46"/>
+    <rect x="208" y="158" width="28" height="4" rx="2" fill="#52525b"/>
+  <!-- charge button -->
+  <rect x="72" y="180" width="172" height="14" rx="5" fill="#f87171"/>
+  <rect x="136" y="185" width="44" height="4" rx="2" fill="#09090b" fill-opacity="0.6"/>
+  <!-- stand -->
+  <path d="M138 226h40l8 18h-56Z" fill="#27272a"/>
+
+  <!-- receipt coming out of the printer -->
+  <path d="M326 46l5.5-6l5.5 6l5.5-6l5.5 6l5.5-6l5.5 6l5.5-6l5.5 6l5.5-6l5.5 6l5.5-6l5.5 6l5.5-6l5.5 6l5.5-6l5.5 6V184H326Z" fill="#fafafa"/>
+    <rect x="338" y="66" width="34" height="5" rx="2.5" fill="#a1a1aa"/>
+    <rect x="386" y="66" width="16" height="5" rx="2.5" fill="#a1a1aa"/>
+    <rect x="338" y="80" width="26" height="5" rx="2.5" fill="#a1a1aa"/>
+    <rect x="386" y="80" width="16" height="5" rx="2.5" fill="#a1a1aa"/>
+    <rect x="338" y="94" width="40" height="5" rx="2.5" fill="#a1a1aa"/>
+    <rect x="386" y="94" width="16" height="5" rx="2.5" fill="#a1a1aa"/>
+  <path d="M338 110h64" stroke="#d4d4d8" stroke-width="2" stroke-dasharray="4 3"/>
+  <rect x="338" y="122" width="22" height="7" rx="3" fill="#52525b"/>
+  <rect x="380" y="122" width="22" height="7" rx="3" fill="#f87171"/>
+  <path d="M338 146v14M342 146v14M347 146v14M350 146v14M355 146v14M360 146v14M363 146v14M368 146v14M373 146v14M376 146v14M381 146v14M386 146v14M389 146v14M394 146v14M398 146v14M402 146v14" stroke="#3f3f46" stroke-width="2"/>
+
+  <!-- receipt printer -->
+  <rect x="300" y="170" width="140" height="64" rx="12" fill="#e4e4e7"/>
+  <rect x="316" y="180" width="108" height="5" rx="2.5" fill="#09090b"/>
+  <rect x="314" y="206" width="40" height="6" rx="3" fill="#a1a1aa"/>
+  <circle cx="420" cy="214" r="5" fill="#f87171"/>
+</svg>

@@ -1,0 +1,66 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 480 270" fill="none">
+  <defs>
+    <pattern id="dots" width="16" height="16" patternUnits="userSpaceOnUse"><circle cx="2" cy="2" r="1" fill="#1f1f23"/></pattern>
+  </defs>
+  <rect width="480" height="270" fill="#09090b"/>
+  <rect width="480" height="270" fill="url(#dots)"/>
+  <!-- water -->
+  <path d="M36 206h70m24 0h120m26 0h90m22 0h60M70 224h96m26 0h70m30 0h110" stroke="#27272a" stroke-width="3" stroke-linecap="round"/>
+
+  <!-- hull -->
+  <path d="M58 88h296c50 0 80 22 94 47-14 25-44 47-94 47H58a14 14 0 0 1-14-14v-66a14 14 0 0 1 14-14Z" fill="#18181b" stroke="#71717a" stroke-width="2.5"/>
+  <path d="M368 101c26 4 44 17 54 34-10 17-28 30-54 34" stroke="#3f3f46" stroke-width="2" stroke-linecap="round"/>
+
+  <!-- bridge at the stern -->
+  <rect x="56" y="100" width="36" height="70" rx="5" fill="#e4e4e7"/>
+  <rect x="63" y="108" width="22" height="7" rx="2" fill="#09090b"/>
+  <rect x="63" y="155" width="22" height="7" rx="2" fill="#09090b"/>
+  <rect x="70" y="122" width="8" height="26" rx="2" fill="#a1a1aa"/>
+
+  <!-- stowage plan -->
+    <rect x="104" y="101" width="25" height="14" rx="2" fill="#52525b"/>
+    <rect x="104" y="118" width="25" height="14" rx="2" fill="#3f3f46"/>
+    <rect x="104" y="135" width="25" height="14" rx="2" fill="#71717a"/>
+    <rect x="104" y="152" width="25" height="14" rx="2" fill="#27272a"/>
+    <rect x="133" y="101" width="25" height="14" rx="2" fill="#27272a"/>
+    <rect x="133" y="118" width="25" height="14" rx="2" fill="#27272a"/>
+    <rect x="133" y="135" width="25" height="14" rx="2" fill="#52525b"/>
+    <rect x="133" y="152" width="25" height="14" rx="2" fill="#27272a"/>
+    <rect x="162" y="101" width="25" height="14" rx="2" fill="#3f3f46"/>
+    <rect x="162" y="118" width="25" height="14" rx="2" fill="#27272a"/>
+    <rect x="162" y="135" width="25" height="14" rx="2" fill="#27272a"/>
+    <rect x="162" y="152" width="25" height="14" rx="2" fill="#71717a"/>
+    <rect x="191" y="101" width="25" height="14" rx="2" fill="#71717a"/>
+    <rect x="191" y="118" width="25" height="14" rx="2" fill="#27272a"/>
+    <rect x="191" y="135" width="25" height="14" rx="2" fill="#3f3f46"/>
+    <rect x="191" y="152" width="25" height="14" rx="2" fill="#27272a"/>
+    <rect x="220" y="101" width="25" height="14" rx="2" fill="#71717a"/>
+    <rect x="220" y="118" width="25" height="14" rx="2" fill="#27272a"/>
+    <rect x="220" y="135" width="25" height="14" rx="2" fill="#27272a"/>
+    <rect x="220" y="152" width="25" height="14" rx="2" fill="#3f3f46"/>
+    <rect x="249" y="101" width="25" height="14" rx="2" fill="#27272a"/>
+    <rect x="249" y="118" width="25" height="14" rx="2" fill="#71717a"/>
+    <rect x="249" y="135" width="25" height="14" rx="2" fill="#27272a"/>
+    <rect x="249" y="152" width="25" height="14" rx="2" fill="#3f3f46"/>
+    <rect x="278" y="101" width="25" height="14" rx="2" fill="#27272a"/>
+    <rect x="278" y="118" width="25" height="14" rx="2" stroke="#f87171" stroke-width="1.5" stroke-dasharray="3 2"/>
+    <rect x="278" y="135" width="25" height="14" rx="2" fill="#3f3f46"/>
+    <rect x="278" y="152" width="25" height="14" rx="2" fill="#52525b"/>
+    <rect x="307" y="101" width="25" height="14" rx="2" fill="#71717a"/>
+    <rect x="307" y="118" width="25" height="14" rx="2" fill="#3f3f46"/>
+    <rect x="307" y="135" width="25" height="14" rx="2" fill="#27272a"/>
+    <rect x="307" y="152" width="25" height="14" rx="2" fill="#52525b"/>
+    <rect x="336" y="118" width="25" height="14" rx="2" fill="#3f3f46"/>
+    <rect x="336" y="135" width="25" height="14" rx="2" fill="#27272a"/>
+
+  <!-- quay crane lifting a container into its slot -->
+  <path d="M292 18v58M332 18v58M282 18h176M292 40h40" stroke="#52525b" stroke-width="4" stroke-linecap="round"/>
+  <path d="M292 18l40 22M332 18l-40 22" stroke="#3f3f46" stroke-width="2"/>
+  <rect x="268" y="72" width="88" height="6" rx="3" fill="#3f3f46"/>
+  <path d="M291 30v0" stroke="#71717a"/>
+  <rect x="280" y="14" width="10" height="10" rx="2" fill="#71717a"/>
+  <path d="M291 24v27" stroke="#a1a1aa" stroke-width="1.5"/>
+  <rect x="278.5" y="51" width="25" height="14" rx="2" fill="#f87171"/>
+  <path d="M291 70v18" stroke="#f87171" stroke-width="1.5" stroke-dasharray="2 3" stroke-linecap="round"/>
+  <circle cx="452" cy="18" r="3" fill="#f87171"/>
+</svg>

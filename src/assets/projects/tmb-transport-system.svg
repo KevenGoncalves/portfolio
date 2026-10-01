@@ -1,0 +1,47 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 480 270" fill="none">
+  <defs>
+    <pattern id="dots" width="16" height="16" patternUnits="userSpaceOnUse"><circle cx="2" cy="2" r="1" fill="#1f1f23"/></pattern>
+  </defs>
+  <rect width="480" height="270" fill="#09090b"/>
+  <rect width="480" height="270" fill="url(#dots)"/>
+  <!-- other routes -->
+  <path d="M-10 218C90 218 120 128 214 128S350 52 490 52" stroke="#27272a" stroke-width="7" stroke-linecap="round"/>
+  <path d="M30 40C130 40 160 186 256 186S380 120 490 120" stroke="#27272a" stroke-width="7" stroke-linecap="round"/>
+
+  <!-- highlighted route -->
+  <path d="M-10 170C80 170 120 98 216 98S340 160 490 160" stroke="#f87171" stroke-width="7" stroke-linecap="round"/>
+
+  <!-- stops -->
+  <g stroke="#09090b" stroke-width="3">
+    <circle cx="52" cy="160" r="8" fill="#fafafa"/>
+    <circle cx="140" cy="118" r="8" fill="#fafafa"/>
+    <circle cx="300" cy="126" r="8" fill="#fafafa"/>
+    <circle cx="412" cy="158" r="8" fill="#fafafa"/>
+  </g>
+  <circle cx="216" cy="98" r="11" fill="#09090b" stroke="#f87171" stroke-width="4"/>
+  <circle cx="216" cy="98" r="4" fill="#fafafa"/>
+
+  <!-- bus arriving at the stop -->
+  <g transform="translate(150 44)">
+    <rect x="0" y="0" width="104" height="38" rx="9" fill="#e4e4e7"/>
+    <rect x="0" y="24" width="104" height="5" fill="#f87171"/>
+    <rect x="8" y="7" width="15" height="12" rx="2.5" fill="#09090b"/>
+    <rect x="27" y="7" width="15" height="12" rx="2.5" fill="#09090b"/>
+    <rect x="46" y="7" width="15" height="12" rx="2.5" fill="#09090b"/>
+    <rect x="65" y="7" width="15" height="12" rx="2.5" fill="#09090b"/>
+    <rect x="85" y="7" width="13" height="22" rx="2.5" fill="#3f3f46"/>
+    <circle cx="22" cy="38" r="7" fill="#09090b" stroke="#a1a1aa" stroke-width="3"/>
+    <circle cx="80" cy="38" r="7" fill="#09090b" stroke="#a1a1aa" stroke-width="3"/>
+  </g>
+
+  <!-- peak hours -->
+  <rect x="306" y="190" width="146" height="66" rx="8" fill="#18181b" stroke="#27272a" stroke-width="1.5"/>
+    <rect x="318" y="202" width="10" height="44" rx="2" fill="#f87171"/>
+    <rect x="334" y="210" width="10" height="36" rx="2" fill="#3f3f46"/>
+    <rect x="350" y="216" width="10" height="30" rx="2" fill="#3f3f46"/>
+    <rect x="366" y="220" width="10" height="26" rx="2" fill="#3f3f46"/>
+    <rect x="382" y="224" width="10" height="22" rx="2" fill="#3f3f46"/>
+    <rect x="398" y="230" width="10" height="16" rx="2" fill="#3f3f46"/>
+    <rect x="414" y="234" width="10" height="12" rx="2" fill="#3f3f46"/>
+    <rect x="430" y="238" width="10" height="8" rx="2" fill="#3f3f46"/>
+</svg>
