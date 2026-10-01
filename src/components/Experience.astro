@@ -49,7 +49,7 @@ const resumeLast = resumeWords.pop();
                <rect x="2.5" y="4.5" width="31" height="3" rx="1.5" fill="white" fill-opacity="0.25" stroke="white" stroke-opacity="0.7" />
                <path class="pad-clamp" d="M9.5 8v13.5l1.5 1.5" stroke="white" stroke-opacity="0.7" stroke-linecap="round" stroke-linejoin="round" />
                <path class="pad-clamp" d="M26.5 8v13.5l-1.5 1.5" stroke="white" stroke-opacity="0.7" stroke-linecap="round" stroke-linejoin="round" />
-               <circle class="pad-beacon" cx="18" cy="2" r="1.6" fill="#ef4444" />
+               <circle class="pad-beacon" cx="18" cy="2" r="1.6" fill="#ff6467" />
             </svg>
          </span>
          <p class="timeline-hint" aria-hidden="true">
@@ -63,7 +63,7 @@ const resumeLast = resumeWords.pop();
                <!-- Flame (flat layers): red outer, orange middle, pale yellow core -->
                <g class="rocket-thrust">
                   <g class="rocket-flame">
-                     <path d="M8.5 62c1 8 2.5 14.5 3.5 17 1-2.5 2.5-9 3.5-17Z" fill="#ef4444" fill-opacity="0.6" />
+                     <path d="M8.5 62c1 8 2.5 14.5 3.5 17 1-2.5 2.5-9 3.5-17Z" fill="#ff6467" fill-opacity="0.6" />
                      <path d="M9.8 62c.7 5.5 1.6 9.5 2.2 11 .6-1.5 1.5-5.5 2.2-11Z" fill="#fb923c" />
                      <path d="M11 62c.3 3 .7 5 1 6 .3-1 .7-3 1-6Z" fill="#fef3c7" />
                   </g>
@@ -434,17 +434,17 @@ const resumeLast = resumeWords.pop();
 
 /* Current role: sauce-red bullet with a continuous pulse (stays red even once reached) */
 .timeline .timeline-dot.is-current {
-  border-color: #ef4444; /* red-500 */
-  box-shadow: 0 0 14px rgb(239 68 68 / 0.4);
+  border-color: var(--color-red-400); /* accent red */
+  box-shadow: 0 0 14px color-mix(in srgb, var(--color-red-400) 40%, transparent);
 }
 
 .timeline .timeline-dot.is-current::before {
-  background: #ef4444;
+  background: var(--color-red-400);
   transform: scale(1.15);
 }
 
 .timeline .timeline-dot.is-current::after {
-  border-color: #ef4444;
+  border-color: var(--color-red-400);
   animation: dot-pulse 2s ease-out infinite;
 }
 

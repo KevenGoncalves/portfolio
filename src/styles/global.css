@@ -30,7 +30,7 @@
   --page-a: #000;
   --page-b: #1a1a1b;
   /* Glitch RGB split on the social icons (Header.astro): cyan pulls left, red pulls right */
-  --glitch-red: #ff1f1f;
+  --glitch-red: var(--color-red-400); /* same as the accent red */
   --glitch-blue: #00f0ff;
 }
 
@@ -49,7 +49,7 @@
   --color-zinc-950: oklch(98.5% 0 0);
   --color-white: oklch(14.1% 0.005 285.823);
   --color-black: #fff;
-  /* Slightly deeper red so red text stays readable on white */
+  /* Accent red: slightly deeper so red text stays readable on white (dark theme uses Tailwind's red-400, #ff6467) */
   --color-red-400: oklch(63.7% 0.237 25.331);
   --page-a: #fafafa;
   --page-b: #f1f1f3;

@@ -65,13 +65,13 @@ const metaLine = (job: Job, type?: EmploymentType) =>
          <header class="grid grid-cols-[1fr_auto] items-start gap-10">
             <div>
                <h1 class="font-[Oxanium] text-[34px] leading-none font-bold tracking-tight text-zinc-900">Keven Gonçalves</h1>
-               <p class="mt-2 text-[13px] font-semibold text-red-600">{t("header.role")}</p>
+               <p class="mt-2 text-[13px] font-semibold text-red-400">{t("header.role")}</p>
                <p class="mt-2 max-w-[118mm] text-[10.5px] leading-[1.6] text-zinc-600">{localize(headline, lang)}</p>
             </div>
             <ul class="space-y-1 pt-1 text-right text-[10.5px] text-zinc-700">
                <li>{localize(location, lang)}</li>
                {contacts.map((contact) => (
-                  <li><a href={contact.href} class="hover:text-red-600">{contact.label}</a></li>
+                  <li><a href={contact.href} class="hover:text-red-400">{contact.label}</a></li>
                ))}
             </ul>
          </header>
@@ -151,7 +151,7 @@ const metaLine = (job: Job, type?: EmploymentType) =>
                   <h2 class="resume-heading">{t("resume.achievements")}</h2>
                   {achievements.map((item) => (
                      <div class="mb-2.5">
-                        <p class="text-[10px] font-semibold text-red-600">{item.year}</p>
+                        <p class="text-[10px] font-semibold text-red-400">{item.year}</p>
                         <p class="text-[10.5px] leading-[1.55] text-zinc-600">{localize(item.text, lang)}</p>
                      </div>
                   ))}
@@ -191,7 +191,7 @@ const metaLine = (job: Job, type?: EmploymentType) =>
    --color-zinc-800: oklch(27.4% 0.006 286.033);
    --color-zinc-900: oklch(21% 0.006 285.885);
    --color-zinc-950: oklch(14.1% 0.005 285.823);
-   --color-red-400: oklch(70.4% 0.191 22.216);
+   --color-red-400: oklch(63.7% 0.237 25.331); /* the light theme's accent red (white paper) */
    width: 210mm;
    min-height: 297mm;
    margin: 0 auto;
@@ -217,7 +217,7 @@ const metaLine = (job: Job, type?: EmploymentType) =>
    width: 4px;
    height: 12px;
    border-radius: 2px;
-   background: #ef4444;
+   background: var(--color-red-400);
 }
 
 /* Small screens: let the sheet scale down instead of overflowing sideways */

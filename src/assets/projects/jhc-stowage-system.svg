@@ -43,7 +43,7 @@
     <rect x="249" y="135" width="25" height="14" rx="2" fill="#27272a"/>
     <rect x="249" y="152" width="25" height="14" rx="2" fill="#3f3f46"/>
     <rect x="278" y="101" width="25" height="14" rx="2" fill="#27272a"/>
-    <rect x="278" y="118" width="25" height="14" rx="2" stroke="#f87171" stroke-width="1.5" stroke-dasharray="3 2"/>
+    <rect x="278" y="118" width="25" height="14" rx="2" stroke="#ff6467" stroke-width="1.5" stroke-dasharray="3 2"/>
     <rect x="278" y="135" width="25" height="14" rx="2" fill="#3f3f46"/>
     <rect x="278" y="152" width="25" height="14" rx="2" fill="#52525b"/>
     <rect x="307" y="101" width="25" height="14" rx="2" fill="#71717a"/>
@@ -60,7 +60,7 @@
   <path d="M291 30v0" stroke="#71717a"/>
   <rect x="280" y="14" width="10" height="10" rx="2" fill="#71717a"/>
   <path d="M291 24v27" stroke="#a1a1aa" stroke-width="1.5"/>
-  <rect x="278.5" y="51" width="25" height="14" rx="2" fill="#f87171"/>
-  <path d="M291 70v18" stroke="#f87171" stroke-width="1.5" stroke-dasharray="2 3" stroke-linecap="round"/>
-  <circle cx="452" cy="18" r="3" fill="#f87171"/>
+  <rect x="278.5" y="51" width="25" height="14" rx="2" fill="#ff6467"/>
+  <path d="M291 70v18" stroke="#ff6467" stroke-width="1.5" stroke-dasharray="2 3" stroke-linecap="round"/>
+  <circle cx="452" cy="18" r="3" fill="#ff6467"/>
 </svg>
