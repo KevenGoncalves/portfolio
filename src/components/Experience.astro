@@ -1,6 +1,7 @@
 ---
 import { Image } from "astro:assets";
 import { experience, formatDuration, formatPeriod, formatPeriodLabel, jobSpan } from "../data/experience";
+import { techIcons } from "../data/tech-icons";
 ---
 
 <section id="experience" class="mb-16 scroll-mt-16 md:mb-24 lg:mb-36 lg:scroll-mt-24" aria-label="Work experience">
@@ -128,10 +129,17 @@ import { experience, formatDuration, formatPeriod, formatPeriodLabel, jobSpan } 
                            </ul>
                         )}
 
-                        <ul class="mt-2 flex flex-wrap" aria-label="Technologies used">
+                        <ul class="mt-3 flex flex-wrap gap-2" aria-label="Technologies used">
                            {job.tech.map((tech) => (
-                              <li class="mr-1.5 mt-2">
-                                 <div class="flex items-center rounded-full bg-zinc-400/10 px-3 py-1 text-xs font-medium leading-5 text-zinc-300">{tech}</div>
+                              <li>
+                                 {techIcons[tech] ? (
+                                    <span class="tech-icon" data-tech={tech} style={`--brand: ${techIcons[tech].color}`}>
+                                       <svg viewBox="0 0 24 24" aria-hidden="true"><path d={techIcons[tech].path} /></svg>
+                                       <span class="sr-only">{tech}</span>
+                                    </span>
+                                 ) : (
+                                    <div class="flex items-center rounded-full bg-zinc-400/10 px-3 py-1 text-xs font-medium leading-5 text-zinc-300">{tech}</div>
+                                 )}
                               </li>
                            ))}
                         </ul>
@@ -460,6 +468,54 @@ import { experience, formatDuration, formatPeriod, formatPeriodLabel, jobSpan } 
   height: 100%;
   object-fit: contain;
   filter: url(#logo-duotone);
+}
+
+/* Technology icons: monochrome zinc; on hover the brand colour and a small name label */
+.tech-icon {
+  position: relative;
+  display: grid;
+  place-items: center;
+  width: 2rem;
+  height: 2rem;
+  border-radius: 0.5rem;
+  background: rgb(161 161 170 / 0.1); /* zinc-400 / 10% */
+  color: #a1a1aa; /* zinc-400 */
+  transition: color 0.2s ease, background-color 0.2s ease;
+}
+
+.tech-icon svg {
+  width: 1rem;
+  height: 1rem;
+  fill: currentColor;
+}
+
+.tech-icon::after {
+  content: attr(data-tech);
+  content: attr(data-tech) / ""; /* the sr-only text already names it */
+  position: absolute;
+  bottom: calc(100% + 6px);
+  left: 50%;
+  translate: -50% 4px;
+  padding: 2px 8px;
+  border-radius: 0.375rem;
+  background: #27272a; /* zinc-800 */
+  color: #f4f4f5; /* zinc-100 */
+  font-size: 0.75rem;
+  font-weight: 500;
+  white-space: nowrap;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.15s ease, translate 0.15s ease;
+}
+
+.tech-icon:hover {
+  color: var(--brand);
+  background: color-mix(in srgb, var(--brand) 15%, transparent);
+}
+
+.tech-icon:hover::after {
+  opacity: 1;
+  translate: -50% 0;
 }
 
 /* Entries rise in as they scroll into view (only once the script has run) */
