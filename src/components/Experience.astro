@@ -93,9 +93,11 @@ import { techIcons } from "../data/tech-icons";
                         <h3 class="mt-1.5 text-base font-medium leading-snug text-zinc-100">
                            {single ? <>{latest.title} · {job.url ? <a class="hover:text-white focus-visible:text-white" href={job.url} target="_blank" rel="noreferrer noopener">{job.company}</a> : job.company}</> : job.company}
                         </h3>
-                        <p class="mt-0.5 text-sm text-zinc-500">
-                           {single && latest.type ? `${latest.type} · ${job.location}` : job.location}
-                        </p>
+                        {(job.location || (single && latest.type)) && (
+                           <p class="mt-0.5 text-sm text-zinc-500">
+                              {[single ? latest.type : undefined, job.location].filter(Boolean).join(" · ")}
+                           </p>
+                        )}
 
                         {!single && (
                            <ol class="relative mt-3 space-y-3 pl-4 before:absolute before:top-2 before:bottom-2 before:left-[3px] before:w-px before:bg-zinc-700" aria-label="Roles">
@@ -134,7 +136,7 @@ import { techIcons } from "../data/tech-icons";
                               <li>
                                  {techIcons[tech] ? (
                                     <span class="tech-icon" data-tech={tech} style={`--brand: ${techIcons[tech].color}`}>
-                                       <svg viewBox="0 0 24 24" aria-hidden="true"><path d={techIcons[tech].path} /></svg>
+                                       <svg viewBox="0 0 24 24" class:list={[{ "is-stroke": techIcons[tech].stroke }]} aria-hidden="true"><path d={techIcons[tech].path} /></svg>
                                        <span class="sr-only">{tech}</span>
                                     </span>
                                  ) : (
@@ -152,7 +154,8 @@ import { techIcons } from "../data/tech-icons";
          </ol>
       </div>
 
-      <div class="mt-12">
+      <!-- Room for the 80px rocket when it turns around at the end of the timeline -->
+      <div class="mt-28">
          <a class="group/link inline-flex items-baseline text-base font-semibold leading-tight text-zinc-100 hover:text-white focus-visible:text-white" href="/resume.pdf" target="_blank" rel="noreferrer noopener" aria-label="View Full Résumé (opens in a new tab)">
             <span>
                View Full{" "}
@@ -487,6 +490,14 @@ import { techIcons } from "../data/tech-icons";
   width: 1rem;
   height: 1rem;
   fill: currentColor;
+}
+
+/* Custom outline icons (e.g. the "Web" globe) are drawn with strokes */
+.tech-icon svg.is-stroke {
+  fill: none;
+  stroke: currentColor;
+  stroke-width: 1.75;
+  stroke-linecap: round;
 }
 
 .tech-icon::after {

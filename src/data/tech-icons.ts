@@ -1,6 +1,9 @@
 import {
+  siAndroid,
+  siDjango,
   siExpress,
   siFirebase,
+  siFlutter,
   siGo,
   siGraphql,
   siIos,
@@ -8,10 +11,12 @@ import {
   siJetpackcompose,
   siKotlin,
   siNextdotjs,
+  siNodedotjs,
   siPhp,
   siPython,
   siReact,
   siSvelte,
+  siSwift,
   siTypescript,
   siVuedotjs,
   type SimpleIcon,
@@ -22,6 +27,8 @@ export type TechIcon = {
   path: string;
   /** Brand colour shown on hover */
   color: string;
+  /** Draw the path as an outline instead of a filled shape */
+  stroke?: boolean;
 };
 
 /** Brand colours too dark to see on the site's dark background (e.g. Next.js is black) show as white instead */
@@ -40,6 +47,16 @@ const sparkles: TechIcon = {
     "M18 14.5Q18.5 17.5 21.5 18Q18.5 18.5 18 21.5Q17.5 18.5 14.5 18Q17.5 17.5 18 14.5Z" +
     "M19 2.5Q19.3 4.2 21 4.5Q19.3 4.8 19 6.5Q18.7 4.8 17 4.5Q18.7 4.2 19 2.5Z",
   color: "#a78bfa", // violet-400
+};
+
+/** Generic globe for "web technologies" in general (outline icon) */
+const globe: TechIcon = {
+  path:
+    "M12 2.5a9.5 9.5 0 1 0 0 19a9.5 9.5 0 1 0 0-19Z" +
+    "M2.5 12h19M4 7.5h16M4 16.5h16" +
+    "M12 2.5c-2.6 2.6-4 5.8-4 9.5s1.4 6.9 4 9.5M12 2.5c2.6 2.6 4 5.8 4 9.5s-1.4 6.9-4 9.5",
+  color: "#38bdf8", // sky-400
+  stroke: true,
 };
 
 /**
@@ -63,4 +80,10 @@ export const techIcons: Record<string, TechIcon> = {
   GraphQL: icon(siGraphql),
   Firebase: icon(siFirebase),
   LLMs: sparkles,
+  Android: icon(siAndroid),
+  Web: globe,
+  "Node.js": icon(siNodedotjs),
+  Django: icon(siDjango),
+  Flutter: icon(siFlutter),
+  Swift: icon(siSwift),
 };

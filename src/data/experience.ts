@@ -5,6 +5,9 @@ import lumai from "../assets/companies/lumai.png";
 import txekaLa from "../assets/companies/txeka-la-icon.png";
 import savanaPoint from "../assets/companies/savanapoint.png";
 import explicador from "../assets/companies/explicador.png";
+import optiServ from "../assets/companies/optiserv.svg";
+import fibecTaxi from "../assets/companies/fibec-taxi.png";
+import uniZambeze from "../assets/companies/unizambeze.png";
 
 export type Role = {
   title: string;
@@ -19,7 +22,7 @@ export type Role = {
 export type Job = {
   company: string;
   logo: ImageMetadata;
-  location: string;
+  location?: string;
   url?: string;
   /** Most recent first; several roles at the same company show as a promotion ladder */
   roles: Role[];
@@ -37,7 +40,21 @@ export const experience: Job[] = [
       { title: "Software Developer", type: "Full-time", start: "2025-04" },
       { title: "Application Development Intern", type: "Internship", start: "2024-03", end: "2025-03" },
     ],
-    tech: ["Kotlin", "Android Jetpack", "Python", "iOS", "LLMs"],
+    tech: ["Kotlin", "Android Jetpack", "Android", "Flutter", "Python", "iOS", "LLMs"],
+  },
+  {
+    company: "OptiServ",
+    logo: optiServ,
+    location: "Beira, Mozambique · Remote",
+    roles: [{ title: "Tech Consultant", start: "2024-03", end: "2025-03" }],
+    tech: ["Android", "iOS", "Web"],
+  },
+  {
+    company: "Fibec Táxi",
+    logo: fibecTaxi,
+    location: "Maputo, Mozambique · Remote",
+    roles: [{ title: "iOS Developer", start: "2024-01", end: "2024-06" }],
+    tech: ["Swift", "iOS"],
   },
   {
     company: "Grupo Lumai",
@@ -45,6 +62,13 @@ export const experience: Job[] = [
     location: "Beira, Mozambique",
     roles: [{ title: "Full Stack Developer", type: "Full-time", start: "2023-03", end: "2024-03" }],
     tech: ["Go", "TypeScript", "Express", "Svelte", "Next.js", "React"],
+  },
+  {
+    company: "Universidade Zambeze",
+    logo: uniZambeze,
+    location: "Beira, Mozambique · Hybrid",
+    roles: [{ title: "Web Developer", type: "Internship", start: "2022-10", end: "2022-12" }],
+    tech: ["Node.js", "Django"],
   },
   {
     company: "Txeka Lá",
