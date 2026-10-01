@@ -1,0 +1,70 @@
+---
+/*
+  Glitch filters for the red accents (section numbers, "sauce", the current-role dot, the contact icons).
+  Same look as the name: a cyan ghost to the left, a red ghost to the right, and a couple of slices torn sideways.
+  Sizes are fractions of each element's box, so one set works per size: "sm" for ~15px things, "word" for "sauce".
+  The `.accent-glitch` classes in global.css switch these on in short bursts; the rest of the time nothing is applied.
+*/
+type Row = { y: number; h: number; dx: number };
+const sizes: { name: string; split: number; tears: { a: Row[]; b: Row[] } }[] = [
+   {
+      name: "sm",
+      split: 0.09,
+      tears: {
+         a: [{ y: 0.28, h: 0.16, dx: 0.2 }, { y: 0.62, h: 0.14, dx: -0.16 }],
+         b: [{ y: 0.12, h: 0.14, dx: -0.18 }, { y: 0.52, h: 0.16, dx: 0.15 }],
+      },
+   },
+   {
+      name: "word",
+      split: 0.025,
+      tears: {
+         a: [{ y: 0.25, h: 0.16, dx: 0.07 }, { y: 0.6, h: 0.14, dx: -0.06 }],
+         b: [{ y: 0.1, h: 0.14, dx: -0.06 }, { y: 0.5, h: 0.16, dx: 0.07 }],
+      },
+   },
+];
+const filters = sizes.flatMap(({ name, split, tears }) => [
+   { id: `glitch-${name}-split`, split, rows: [] as Row[] },
+   { id: `glitch-${name}-a`, split, rows: tears.a },
+   { id: `glitch-${name}-b`, split, rows: tears.b },
+]);
+---
+
+<svg class="absolute size-0" aria-hidden="true">
+   {filters.map(({ id, split, rows }) => (
+      <filter id={id} x="-0.4" y="-0.3" width="1.8" height="1.6" primitiveUnits="objectBoundingBox" color-interpolation-filters="sRGB">
+         {rows.length > 0 ? (
+            <>
+               {/* Tear: cut the slices out and lay them back in, slid sideways */}
+               {rows.map((row, i) => (
+                  <>
+                     <feOffset in="SourceGraphic" dx={row.dx} dy="0" y={row.y} height={row.h} result={`row${i}`} />
+                     <feFlood flood-color="#000" y={row.y} height={row.h} result={`gap${i}`} />
+                  </>
+               ))}
+               <feMerge result="gaps">{rows.map((_, i) => <feMergeNode in={`gap${i}`} />)}</feMerge>
+               <feComposite in="SourceGraphic" in2="gaps" operator="out" result="holed" />
+               <feMerge result="torn">
+                  <feMergeNode in="holed" />
+                  {rows.map((_, i) => <feMergeNode in={`row${i}`} />)}
+               </feMerge>
+            </>
+         ) : (
+            <feOffset in="SourceGraphic" dx="0" dy="0" result="torn" />
+         )}
+         {/* Cyan ghost pulled left, red ghost pushed right, the shape on top */}
+         <feFlood style="flood-color: var(--glitch-blue)" result="cyanFill" />
+         <feComposite in="cyanFill" in2="torn" operator="in" result="cyan" />
+         <feOffset in="cyan" dx={-split} dy="0" result="cyanShift" />
+         <feFlood style="flood-color: var(--glitch-red)" result="redFill" />
+         <feComposite in="redFill" in2="torn" operator="in" result="red" />
+         <feOffset in="red" dx={split} dy="0" result="redShift" />
+         <feMerge>
+            <feMergeNode in="cyanShift" />
+            <feMergeNode in="redShift" />
+            <feMergeNode in="torn" />
+         </feMerge>
+      </filter>
+   ))}
+</svg>

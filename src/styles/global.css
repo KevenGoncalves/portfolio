@@ -83,3 +83,41 @@ html {
   animation: none;
   mix-blend-mode: normal;
 }
+
+/* Accent glitch: red accents stay plain red, and every 7s burst into the name's glitch for ~0.3s
+   (cyan/red ghosts + torn slices; filters in AccentGlitch.astro). Each element sets its own
+   --glitch-delay so they don't all fire together. "-word" is the set sized for "sauce". */
+.accent-glitch {
+  --glitch-a: url(#glitch-sm-a);
+  --glitch-b: url(#glitch-sm-b);
+  --glitch-split: url(#glitch-sm-split);
+  animation: accent-glitch 7s steps(1, end) var(--glitch-delay, 0s) infinite;
+}
+
+.accent-glitch-word {
+  --glitch-a: url(#glitch-word-a);
+  --glitch-b: url(#glitch-word-b);
+  --glitch-split: url(#glitch-word-split);
+}
+
+@keyframes accent-glitch {
+  0%, 100% { filter: none; }
+  94.6% { filter: var(--glitch-a); }
+  95.95% { filter: var(--glitch-b); }
+  97.3% { filter: var(--glitch-split); }
+  98.65% { filter: none; }
+}
+
+/* One burst, for things that only appear briefly (the contact icons on hover) */
+@keyframes accent-glitch-once {
+  0% { filter: var(--glitch-a); }
+  25% { filter: var(--glitch-b); }
+  50% { filter: var(--glitch-split); }
+  75%, 100% { filter: none; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .accent-glitch {
+    animation: none;
+  }
+}

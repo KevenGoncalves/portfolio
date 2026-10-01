@@ -1,6 +1,7 @@
 ---
 import '../styles/global.css'
 import { langPath, useTranslations, type Lang } from '../i18n/ui'
+import AccentGlitch from '../components/AccentGlitch.astro'
 import PageReveal from '../components/PageReveal.astro'
 import SeoMeta from '../components/SeoMeta.astro'
 import ThemeInit from '../components/ThemeInit.astro'
@@ -39,6 +40,7 @@ const t = useTranslations(lang);
 		)}
 	</head>
 	<body>
+		<AccentGlitch />
 		<slot />
 	</body>
 </html>

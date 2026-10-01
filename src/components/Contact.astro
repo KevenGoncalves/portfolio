@@ -126,20 +126,35 @@ const directContacts = [
    left: -20px;
    width: 15px;
    height: 15px;
-   background: var(--color-red-400);
-   mask: var(--icon) center / contain no-repeat;
-   -webkit-mask: var(--icon) center / contain no-repeat;
+   background: var(--icon) center / contain no-repeat;
+   --glitch-a: url(#glitch-sm-a);
+   --glitch-b: url(#glitch-sm-b);
+   --glitch-split: url(#glitch-sm-split);
    transform: translateY(-50%) scale(0);
    transition: transform 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
 }
 
-/* Outline icons used as masks, so they take the red background colour */
+/* Outline icons drawn in the accent red (#ff6467 dark, #fb2c36 light). Images rather than a mask,
+   so the glitch ghosts aren't masked away */
 .contact-value[data-icon="mail"] {
-   --icon: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='black' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Crect x='3' y='5' width='18' height='14' rx='2.5'/%3E%3Cpath d='m4 7 8 6 8-6'/%3E%3C/svg%3E");
+   --icon: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23ff6467' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Crect x='3' y='5' width='18' height='14' rx='2.5'/%3E%3Cpath d='m4 7 8 6 8-6'/%3E%3C/svg%3E");
 }
 
 .contact-value[data-icon="phone"] {
-   --icon: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='black' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M6.6 3.5h2.6l1.6 4-2.1 1.3a11 11 0 0 0 6.5 6.5l1.3-2.1 4 1.6v2.6a2 2 0 0 1-2.2 2A16.5 16.5 0 0 1 4.6 5.7a2 2 0 0 1 2-2.2Z'/%3E%3C/svg%3E");
+   --icon: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23ff6467' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M6.6 3.5h2.6l1.6 4-2.1 1.3a11 11 0 0 0 6.5 6.5l1.3-2.1 4 1.6v2.6a2 2 0 0 1-2.2 2A16.5 16.5 0 0 1 4.6 5.7a2 2 0 0 1 2-2.2Z'/%3E%3C/svg%3E");
+}
+
+:global(:root[data-theme="light"]) .contact-value[data-icon="mail"] {
+   --icon: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23fb2c36' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Crect x='3' y='5' width='18' height='14' rx='2.5'/%3E%3Cpath d='m4 7 8 6 8-6'/%3E%3C/svg%3E");
+}
+
+:global(:root[data-theme="light"]) .contact-value[data-icon="phone"] {
+   --icon: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23fb2c36' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M6.6 3.5h2.6l1.6 4-2.1 1.3a11 11 0 0 0 6.5 6.5l1.3-2.1 4 1.6v2.6a2 2 0 0 1-2.2 2A16.5 16.5 0 0 1 4.6 5.7a2 2 0 0 1 2-2.2Z'/%3E%3C/svg%3E");
+}
+
+/* The icon glitches once as it pops in */
+.contact-item:hover .contact-value::before {
+   animation: accent-glitch-once 0.4s steps(1, end) 0.2s;
 }
 
 .contact-item:hover .contact-value,
@@ -182,6 +197,10 @@ const directContacts = [
    .contact-item:hover .contact-line,
    .contact-line:has(.contact-value:focus-visible) {
       transform: none;
+   }
+
+   .contact-item:hover .contact-value::before {
+      animation: none;
    }
 }
 </style>
