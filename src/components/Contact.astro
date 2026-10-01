@@ -93,7 +93,8 @@ const directContacts = [
       <div class="flex flex-wrap items-center gap-4">
          <button
             type="submit"
-            class="group/send inline-flex items-center gap-2 rounded-md bg-zinc-100 px-5 py-2.5 text-sm font-semibold text-zinc-900 transition hover:bg-white focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-zinc-400 disabled:cursor-not-allowed disabled:opacity-60"
+            class="send-button accent-glitch accent-glitch-word group/send inline-flex items-center gap-2 rounded-md bg-zinc-100 px-5 py-2.5 text-sm font-semibold text-zinc-900 transition hover:bg-white focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-zinc-400 disabled:cursor-not-allowed disabled:opacity-60"
+            style="--glitch-delay: -5.9s"
             data-contact-submit
          >
             <span data-contact-label>{t("contact.send")}</span>
@@ -152,6 +153,11 @@ const directContacts = [
    --icon: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23fb2c36' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M6.6 3.5h2.6l1.6 4-2.1 1.3a11 11 0 0 0 6.5 6.5l1.3-2.1 4 1.6v2.6a2 2 0 0 1-2.2 2A16.5 16.5 0 0 1 4.6 5.7a2 2 0 0 1 2-2.2Z'/%3E%3C/svg%3E");
 }
 
+/* Send button: besides its periodic burst (accent-glitch), it glitches once when hovered */
+.send-button:hover {
+   animation: accent-glitch-once 0.4s steps(1, end);
+}
+
 /* The icon glitches once as it pops in */
 .contact-item:hover .contact-value::before {
    animation: accent-glitch-once 0.4s steps(1, end) 0.2s;
@@ -199,7 +205,8 @@ const directContacts = [
       transform: none;
    }
 
-   .contact-item:hover .contact-value::before {
+   .contact-item:hover .contact-value::before,
+   .send-button:hover {
       animation: none;
    }
 }

@@ -59,7 +59,8 @@ const resumeLast = resumeWords.pop();
             </svg>
          </p>
          <span class="timeline-rocket" aria-hidden="true">
-            <svg viewBox="0 0 24 80" fill="none">
+            <!-- The glitch sits on the drawing, not the wrapper: the wrapper's light-theme invert filter must stay untouched -->
+            <svg class="accent-glitch" viewBox="0 0 24 80" fill="none" style="--glitch-delay: -1s">
                <!-- Flame (flat layers): red outer, orange middle, pale yellow core -->
                <g class="rocket-thrust">
                   <g class="rocket-flame">
