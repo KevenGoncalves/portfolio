@@ -102,7 +102,7 @@ const resumeLast = resumeWords.pop();
                <span class:list={["timeline-dot", { "is-current": span.current }]} data-timeline-dot aria-hidden="true"></span>
                <div class="group relative pb-1 transition-all lg:hover:!opacity-100 lg:group-hover/list:opacity-50">
                   <div class="absolute -inset-x-4 -inset-y-4 z-0 hidden rounded-md transition motion-reduce:transition-none lg:-inset-x-6 lg:block lg:group-hover:bg-zinc-800/50 lg:group-hover:shadow-[inset_0_1px_0_0_rgba(212,212,216,0.1)] lg:group-hover:drop-shadow-lg"></div>
-                  <div class="relative z-10 flex gap-4">
+                  <div class="relative z-10 flex gap-5 sm:gap-6">
                      <div class="company-logo" aria-hidden="true">
                         <Image src={job.logo} alt="" width={112} />
                      </div>
@@ -476,8 +476,8 @@ const resumeLast = resumeWords.pop();
 /* Company logo: bare two-tone (zinc) logo via the SVG filter above, no tile behind it */
 .company-logo {
   flex-shrink: 0;
-  width: 3.5rem;
-  height: 3.5rem;
+  width: 3rem;
+  height: 3rem;
   padding: 0.2rem;
 }
 
