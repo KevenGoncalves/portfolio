@@ -175,7 +175,7 @@ const resumeLast = resumeWords.pop();
 
       <!-- Room for the 80px rocket when it turns around at the end of the timeline -->
       <div class="mt-28">
-         <a class="group/link inline-flex items-baseline text-base font-semibold leading-tight text-zinc-100 hover:text-white focus-visible:text-white" href={lang === "pt" ? "/pt/resume/" : "/resume/"} target="_blank" rel="noreferrer noopener" aria-label={`${t("experience.resume")} ${t("newTab")}`}>
+         <a class="group/link inline-flex items-baseline text-base font-semibold leading-tight text-zinc-100 hover:text-white focus-visible:text-white" href={lang === "pt" ? "/pt/resume/" : "/resume/"} data-reveal>
             <span>
                {resumeWords.join(" ")}{" "}
                <span class="inline-block">

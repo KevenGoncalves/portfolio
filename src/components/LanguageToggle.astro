@@ -28,6 +28,7 @@ const codes = Object.keys(languages) as Lang[];
          aria-current={code === lang ? "page" : undefined}
          class="language-option relative z-10 w-10 rounded-full py-1 text-center text-xs font-bold tracking-widest"
          data-lang-link
+         data-reveal
          data-index={index}
       >
          {languages[code]}

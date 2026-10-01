@@ -72,6 +72,11 @@ html {
   filter: invert(1) hue-rotate(180deg);
 }
 
+/* Page changes (language, résumé) animate too: same circular reveal, run from PageReveal.astro */
+@view-transition {
+  navigation: auto;
+}
+
 /* Theme switch: the new theme is revealed by a growing circle (animated from ThemeToggle.astro) */
 ::view-transition-old(root),
 ::view-transition-new(root) {

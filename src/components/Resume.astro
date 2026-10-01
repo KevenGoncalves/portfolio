@@ -5,6 +5,7 @@ import { achievements, bullets, contacts, education, headline, languages, locati
 import { langPath, localize, useTranslations, type Lang } from "../i18n/ui";
 import LanguageToggle from "./LanguageToggle.astro";
 import ThemeToggle from "./ThemeToggle.astro";
+import PageReveal from "./PageReveal.astro";
 
 interface Props {
    lang: Lang;
@@ -36,6 +37,7 @@ const metaLine = (job: Job, type?: EmploymentType) =>
             if (localStorage.getItem("theme") === "light") document.documentElement.dataset.theme = "light";
          } catch {}
       </script>
+      <PageReveal />
       <meta name="viewport" content="width=device-width" />
       <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
       <link rel="preconnect" href="https://fonts.googleapis.com" />
@@ -46,7 +48,7 @@ const metaLine = (job: Job, type?: EmploymentType) =>
    <body class="resume-body font-sans text-zinc-700 antialiased">
       <!-- Screen-only toolbar: back to the site, the site's theme and language toggles, PDF download -->
       <nav class="toolbar mx-auto flex max-w-[210mm] flex-wrap items-center justify-between gap-3 px-4 py-5 text-sm print:hidden">
-         <a href={langPath[lang]} class="inline-flex items-center gap-1.5 font-medium text-zinc-400 transition hover:text-zinc-100">
+         <a href={langPath[lang]} data-reveal class="inline-flex items-center gap-1.5 font-medium text-zinc-400 transition hover:text-zinc-100">
             <svg viewBox="0 0 20 20" fill="currentColor" class="size-4" aria-hidden="true"><path fill-rule="evenodd" d="M17 10a.75.75 0 0 1-.75.75H5.612l4.158 3.96a.75.75 0 1 1-1.04 1.08l-5.5-5.25a.75.75 0 0 1 0-1.08l5.5-5.25a.75.75 0 1 1 1.04 1.08L5.612 9.25H16.25A.75.75 0 0 1 17 10Z" clip-rule="evenodd"></path></svg>
             {t("resume.back")}
          </a>

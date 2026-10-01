@@ -1,6 +1,7 @@
 ---
 import '../styles/global.css'
 import { langPath, languages, useTranslations, type Lang } from '../i18n/ui'
+import PageReveal from '../components/PageReveal.astro'
 
 interface Props {
 	lang: Lang;
@@ -20,6 +21,7 @@ const t = useTranslations(lang);
 				if (localStorage.getItem("theme") === "light") document.documentElement.dataset.theme = "light";
 			} catch {}
 		</script>
+		<PageReveal />
 		<meta name="viewport" content="width=device-width" />
 		<link rel="icon" type="image/svg+xml" href="/favicon.svg" />
 		<link rel="icon" type="image/png" sizes="32x32" href="/favicon-32.png" />
