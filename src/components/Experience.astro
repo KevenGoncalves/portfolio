@@ -1,13 +1,12 @@
 ---
+import SectionHeading from "./SectionHeading.astro";
 import { Image } from "astro:assets";
 import { experience, formatDuration, formatPeriod, formatPeriodLabel, jobSpan } from "../data/experience";
 import { techIcons } from "../data/tech-icons";
 ---
 
 <section id="experience" class="mb-16 scroll-mt-16 md:mb-24 lg:mb-36 lg:scroll-mt-24" aria-label="Work experience">
-   <div class="sticky top-0 z-20 -mx-6 mb-4 bg-zinc-900/75 px-6 py-5 backdrop-blur md:-mx-12 md:px-12 lg:sr-only lg:relative lg:top-auto lg:mx-auto lg:w-full lg:px-0 lg:py-0 lg:opacity-0">
-      <h2 class="text-sm font-bold uppercase tracking-widest text-zinc-100 lg:sr-only">Experience</h2>
-   </div>
+   <SectionHeading number="02" title="Experience" />
    <div>
       <!-- Two-tone filter for company logos (transparent backgrounds): darker colours → zinc-400, brighter → zinc-100 -->
       <svg class="absolute size-0" aria-hidden="true">
@@ -20,7 +19,7 @@ import { techIcons } from "../data/tech-icons";
             </feComponentTransfer>
          </filter>
       </svg>
-      <div class="timeline relative lg:-mt-16" data-timeline>
+      <div class="timeline relative" data-timeline>
          <span class="timeline-track" aria-hidden="true"></span>
          <span class="timeline-progress" aria-hidden="true"></span>
          <span class="timeline-pad" aria-hidden="true">
