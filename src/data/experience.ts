@@ -1,7 +1,8 @@
 import type { ImageMetadata } from "astro";
 import cornelder from "../assets/companies/cornelder.png";
 import lumai from "../assets/companies/lumai.png";
-import txekaLa from "../assets/companies/txeka-la.png";
+// The full Txeka-lá wordmark (txeka-la.png) is too wide for the square tile, so the tile uses its icon
+import txekaLa from "../assets/companies/txeka-la-icon.png";
 import savanaPoint from "../assets/companies/savanapoint.png";
 import explicador from "../assets/companies/explicador.png";
 

@@ -8,14 +8,14 @@ import { experience, formatDuration, formatPeriod, formatPeriodLabel, jobSpan } 
       <h2 class="text-sm font-bold uppercase tracking-widest text-zinc-100 lg:sr-only">Experience</h2>
    </div>
    <div>
-      <!-- Two-tone filter for company logos: dark parts → zinc-200, light parts → zinc-900 -->
+      <!-- Two-tone filter for company logos (transparent backgrounds): darker colours → zinc-400, brighter → zinc-100 -->
       <svg class="absolute size-0" aria-hidden="true">
          <filter id="logo-duotone" color-interpolation-filters="sRGB">
             <feColorMatrix type="matrix" values="0.2126 0.7152 0.0722 0 0  0.2126 0.7152 0.0722 0 0  0.2126 0.7152 0.0722 0 0  0 0 0 1 0" />
             <feComponentTransfer>
-               <feFuncR type="table" tableValues="0.894 0.894 0.094" />
-               <feFuncG type="table" tableValues="0.894 0.894 0.094" />
-               <feFuncB type="table" tableValues="0.906 0.906 0.106" />
+               <feFuncR type="table" tableValues="0.55 0.957" />
+               <feFuncG type="table" tableValues="0.55 0.957" />
+               <feFuncB type="table" tableValues="0.58 0.961" />
             </feComponentTransfer>
          </filter>
       </svg>
@@ -82,7 +82,7 @@ import { experience, formatDuration, formatPeriod, formatPeriodLabel, jobSpan } 
                   <div class="absolute -inset-x-4 -inset-y-4 z-0 hidden rounded-md transition motion-reduce:transition-none lg:-inset-x-6 lg:block lg:group-hover:bg-zinc-800/50 lg:group-hover:shadow-[inset_0_1px_0_0_rgba(212,212,216,0.1)] lg:group-hover:drop-shadow-lg"></div>
                   <div class="relative z-10 flex gap-4">
                      <div class="company-logo" aria-hidden="true">
-                        <Image src={job.logo} alt="" width={48} height={48} />
+                        <Image src={job.logo} alt="" width={96} />
                      </div>
 
                      <div class="min-w-0 flex-1">
@@ -448,7 +448,7 @@ import { experience, formatDuration, formatPeriod, formatPeriodLabel, jobSpan } 
   flex-shrink: 0;
   width: 2.5rem;
   height: 2.5rem;
-  overflow: hidden;
+  padding: 0.4rem;
   border: 1px solid #27272a; /* zinc-800 */
   border-radius: 0.5rem;
   background: #18181b; /* zinc-900 */
@@ -458,7 +458,7 @@ import { experience, formatDuration, formatPeriod, formatPeriodLabel, jobSpan } 
   display: block;
   width: 100%;
   height: 100%;
-  object-fit: cover;
+  object-fit: contain;
   filter: url(#logo-duotone);
 }
 
