@@ -11,17 +11,57 @@ interface Props {
 const { lang } = Astro.props;
 const t = useTranslations(lang);
 
-// One optimised photo, used by the <img> and by the glitch copies (so it's only downloaded once)
 const photo = await getImage({ src: ProfileImage });
 // It's at the top of the page, so it loads right away (Astro defaults images to lazy)
 const { loading: _lazy, ...photoAttributes } = photo.attributes;
+
+// Photo glitch filters, in fractions of the photo's size so they scale with it.
+// Every filter splits the colour channels so the person gets the same edges as the name (cyan left, red right).
+// The photo is dark on light (the opposite of the name), so the red channel moves left and cyan moves right.
+// The "tear" ones also slide a couple of horizontal slices sideways.
+const SPLIT = 0.008; // ≈2px on the photo
+const photoTears = [
+  { id: "photo-tear-a", rows: [{ y: 0.18, h: 0.06, dx: -0.04 }, { y: 0.55, h: 0.05, dx: 0.035 }] },
+  { id: "photo-tear-b", rows: [{ y: 0.08, h: 0.05, dx: 0.03 }, { y: 0.68, h: 0.07, dx: -0.045 }] },
+  { id: "photo-tear-c", rows: [{ y: 0.32, h: 0.04, dx: -0.025 }, { y: 0.8, h: 0.04, dx: 0.02 }] },
+];
+const photoFilters = [{ id: "photo-split", rows: [] as { y: number; h: number; dx: number }[] }, ...photoTears];
 ---
 
 <header class="lg:sticky lg:top-0 lg:flex lg:max-h-screen lg:w-[48%] lg:flex-col lg:justify-between lg:overflow-y-auto lg:py-[clamp(3rem,8vh,6rem)]">
   <div>
     <div class="relative mb-10 max-w-56 sm:max-w-64 lg:mb-8 lg:max-w-[min(18rem,26vh)] lg:short:max-w-40">
         <div class="absolute inset-0 border border-zinc-500 translate-x-4 translate-y-4"></div>
-        <div class="photo-glitch relative bg-zinc-200" style={`--photo: url("${photo.src}")`}>
+        <svg class="absolute size-0" aria-hidden="true">
+          {photoFilters.map(({ id, rows }) => (
+            <filter id={id} x="-0.08" y="0" width="1.16" height="1" primitiveUnits="objectBoundingBox" color-interpolation-filters="sRGB">
+              {/* Red channel pulled left, green+blue (cyan) pushed right, added back together */}
+              <feColorMatrix in="SourceGraphic" type="matrix" values="1 0 0 0 0  0 0 0 0 0  0 0 0 0 0  0 0 0 1 0" result="red" />
+              <feOffset in="red" dx={-SPLIT} dy="0" result="redShift" />
+              <feColorMatrix in="SourceGraphic" type="matrix" values="0 0 0 0 0  0 1 0 0 0  0 0 1 0 0  0 0 0 1 0" result="cyan" />
+              <feOffset in="cyan" dx={SPLIT} dy="0" result="cyanShift" />
+              <feBlend in="redShift" in2="cyanShift" mode="screen" result="split" />
+              {rows.length > 0 && (
+                <>
+                  {/* Tear: cut the slices out and lay them back in, slid sideways */}
+                  {rows.map((row, i) => (
+                    <>
+                      <feFlood flood-color="#000" x="-0.1" width="1.2" y={row.y} height={row.h} result={`gap${i}`} />
+                      <feOffset in="split" dx={row.dx} dy="0" x="-0.1" width="1.2" y={row.y} height={row.h} result={`row${i}`} />
+                    </>
+                  ))}
+                  <feMerge result="gaps">{rows.map((_, i) => <feMergeNode in={`gap${i}`} />)}</feMerge>
+                  <feComposite in="split" in2="gaps" operator="out" result="holed" />
+                  <feMerge>
+                    <feMergeNode in="holed" />
+                    {rows.map((_, i) => <feMergeNode in={`row${i}`} />)}
+                  </feMerge>
+                </>
+              )}
+            </filter>
+          ))}
+        </svg>
+        <div class="photo-glitch relative bg-zinc-200">
           <img
             src={photo.src}
             {...photoAttributes}
@@ -149,76 +189,30 @@ const { loading: _lazy, ...photoAttributes } = photo.attributes;
   color: var(--color-zinc-100);
 }
 
-/* Photo: RGB-split glitch on hover. Two copies of the photo (tinted cyan and red, screened over it)
-   tear apart in horizontal slices while the photo jolts, then it snaps back to the clean photo. */
+/* Photo: the same glitch as the name. Its colour channels are always split (cyan edge left, red edge right),
+   and on the name's 3.6s cycle a few slices tear sideways (filters defined above the photo).
+   Clipped to the photo so the shifted channels and slices don't spill past its frame */
 .photo-glitch {
   overflow: hidden;
 }
 
-.photo-glitch::before,
-.photo-glitch::after {
-  content: "";
-  position: absolute;
-  inset: 0;
-  background: var(--photo) center / cover no-repeat;
-  background-blend-mode: luminosity; /* the photo's light and shade, in the tint colour */
-  mix-blend-mode: screen;
-  opacity: 0;
-  pointer-events: none;
+.photo-glitch img {
+  filter: grayscale(1) url(#photo-split);
+  /* Trim the single-channel strips the split leaves down the photo's own left/right edges */
+  clip-path: inset(0 1%);
+  animation: photo-tear 3.6s steps(1, end) infinite;
 }
 
-.photo-glitch::before {
-  background-color: var(--glitch-blue);
-}
-
-.photo-glitch::after {
-  background-color: var(--glitch-red);
-}
-
-.photo-glitch:hover::before {
-  animation: photo-glitch-cyan 0.6s steps(1, end);
-}
-
-.photo-glitch:hover::after {
-  animation: photo-glitch-red 0.6s steps(1, end);
-}
-
-.photo-glitch:hover img {
-  animation: photo-glitch-jolt 0.6s steps(1, end);
-}
-
-@keyframes photo-glitch-cyan {
-  0% { opacity: 0.8; transform: translateX(-12px); clip-path: inset(8% 0 62% 0); }
-  15% { transform: translateX(9px); clip-path: inset(55% 0 20% 0); }
-  30% { transform: translateX(-7px); clip-path: inset(20% 0 45% 0); }
-  45% { transform: translateX(5px); clip-path: inset(70% 0 6% 0); }
-  60% { opacity: 0.6; transform: translateX(-6px); clip-path: inset(0 0 0 0); }
-  80% { opacity: 0.35; transform: translateX(-3px); clip-path: inset(0 0 0 0); }
-  100% { opacity: 0; transform: none; }
-}
-
-@keyframes photo-glitch-red {
-  0% { opacity: 0.8; transform: translateX(10px); clip-path: inset(40% 0 35% 0); }
-  15% { transform: translateX(-11px); clip-path: inset(12% 0 70% 0); }
-  30% { transform: translateX(8px); clip-path: inset(62% 0 14% 0); }
-  45% { transform: translateX(-6px); clip-path: inset(30% 0 52% 0); }
-  60% { opacity: 0.6; transform: translateX(6px); clip-path: inset(0 0 0 0); }
-  80% { opacity: 0.35; transform: translateX(3px); clip-path: inset(0 0 0 0); }
-  100% { opacity: 0; transform: none; }
-}
-
-@keyframes photo-glitch-jolt {
-  0% { transform: translateX(4px) skewX(-3deg); clip-path: polygon(0 0, 100% 0, 100% 30%, 0 30%, 0 38%, 100% 38%, 100% 100%, 0 100%); }
-  15% { transform: translateX(-5px) skewX(2deg); clip-path: polygon(0 0, 100% 0, 100% 58%, 0 58%, 0 66%, 100% 66%, 100% 100%, 0 100%); }
-  30% { transform: translateX(3px); clip-path: polygon(0 0, 100% 0, 100% 14%, 0 14%, 0 19%, 100% 19%, 100% 100%, 0 100%); }
-  45% { transform: translateX(-2px); clip-path: none; }
-  60%, 100% { transform: none; clip-path: none; }
+@keyframes photo-tear {
+  0%, 86%, 100% { filter: grayscale(1) url(#photo-split); transform: none; }
+  88% { filter: grayscale(1) url(#photo-tear-a); transform: translateX(2px); }
+  91% { filter: grayscale(1) url(#photo-tear-b); transform: translateX(-2px); }
+  94% { filter: grayscale(1) url(#photo-tear-c); transform: none; }
 }
 
 @media (prefers-reduced-motion: reduce) {
-  .photo-glitch:hover::before,
-  .photo-glitch:hover::after,
-  .photo-glitch:hover img {
+  /* Keep the colour split, skip the tearing */
+  .photo-glitch img {
     animation: none;
   }
 }
