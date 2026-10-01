@@ -108,7 +108,12 @@ html {
   98.65% { filter: none; }
 }
 
-/* One burst, for things that only appear briefly (the contact icons on hover) */
+/* Controls also glitch once when hovered (on top of their periodic burst) */
+.accent-glitch-hover:hover {
+  animation: accent-glitch-once 0.4s steps(1, end);
+}
+
+/* One burst, for things that only appear briefly (the contact icons on hover) and hovered controls */
 @keyframes accent-glitch-once {
   0% { filter: var(--glitch-a); }
   25% { filter: var(--glitch-b); }
@@ -117,7 +122,8 @@ html {
 }
 
 @media (prefers-reduced-motion: reduce) {
-  .accent-glitch {
+  .accent-glitch,
+  .accent-glitch-hover:hover {
     animation: none;
   }
 }
