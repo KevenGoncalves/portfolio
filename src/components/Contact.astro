@@ -12,6 +12,11 @@ const t = useTranslations(lang);
 const fieldClass =
    "mt-2 block w-full rounded-md border border-zinc-800 bg-zinc-900/60 px-3.5 py-2.5 text-sm text-zinc-100 placeholder:text-zinc-600 transition focus:border-zinc-500 focus:outline-none focus:ring-2 focus:ring-zinc-500/20";
 const labelClass = "text-xs font-semibold uppercase tracking-wide text-zinc-500";
+
+const directContacts = [
+   { label: t("contact.emailLabel"), value: "keven.jm.goncalves@gmail.com", href: "mailto:keven.jm.goncalves@gmail.com", icon: "mail" },
+   { label: t("contact.phoneLabel"), value: "+258 84 38 200 84", href: "tel:+258843820084", icon: "phone" },
+] as const;
 ---
 
 <section id="contact" class="mb-16 scroll-mt-16 md:mb-24 lg:mb-36 lg:scroll-mt-24" aria-label={t("contact.label")}>
@@ -20,6 +25,44 @@ const labelClass = "text-xs font-semibold uppercase tracking-wide text-zinc-500"
    <p class="mb-8">
       {t("contact.intro")}
    </p>
+
+   <!-- Direct contact: email and phone, each clickable with a copy button (the email may break after the @ on narrow phones) -->
+   <h3 class="sr-only">{t("contact.direct")}</h3>
+   <ul class="mb-10 grid gap-3">
+      {directContacts.map((contact) => (
+         <li class="group/contact relative flex items-center gap-3 rounded-lg border border-zinc-800 bg-zinc-900/40 p-3.5 transition hover:border-zinc-600 hover:bg-zinc-900/70">
+            <span class="grid size-10 shrink-0 place-items-center rounded-md bg-zinc-800 text-zinc-300 transition group-hover/contact:text-zinc-100" aria-hidden="true">
+               {contact.icon === "mail" ? (
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" class="size-5"><rect x="3" y="5" width="18" height="14" rx="2.5"></rect><path d="m4 7 8 6 8-6"></path></svg>
+               ) : (
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" class="size-5"><path d="M6.6 3.5h2.6l1.6 4-2.1 1.3a11 11 0 0 0 6.5 6.5l1.3-2.1 4 1.6v2.6a2 2 0 0 1-2.2 2A16.5 16.5 0 0 1 4.6 5.7a2 2 0 0 1 2-2.2Z"></path></svg>
+               )}
+            </span>
+            <a href={contact.href} class="min-w-0 flex-1 after:absolute after:inset-0 after:rounded-lg focus-visible:outline-none">
+               <span class={`${labelClass} block`}>{contact.label}</span>
+               <span class="block text-sm font-medium text-zinc-100 transition group-hover/contact:text-white">{contact.value.includes("@") ? <>{contact.value.split("@")[0]}@<wbr />{contact.value.split("@")[1]}</> : contact.value}</span>
+            </a>
+            <button
+               type="button"
+               class="relative z-10 grid size-8 shrink-0 place-items-center rounded-md text-zinc-500 transition hover:bg-zinc-800 hover:text-zinc-100 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-zinc-500"
+               aria-label={`${t("contact.copy")} ${contact.label.toLowerCase()}`}
+               title={t("contact.copy")}
+               data-copy={contact.value}
+               data-copied-label={t("contact.copied")}
+            >
+               <svg class="copy-icon size-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="9" y="9" width="11" height="11" rx="2"></rect><path d="M5 15V6a2 2 0 0 1 2-2h9"></path></svg>
+               <svg class="check-icon hidden size-4 text-zinc-100" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m5 12.5 4.5 4.5L19 7.5"></path></svg>
+            </button>
+         </li>
+      ))}
+   </ul>
+
+   <!-- "or send a message" divider before the form -->
+   <div class="mb-8 flex items-center gap-4" aria-hidden="true">
+      <span class="h-px flex-1 bg-zinc-800"></span>
+      <span class="text-xs font-semibold uppercase tracking-widest text-zinc-500">{t("contact.or")}</span>
+      <span class="h-px flex-1 bg-zinc-800"></span>
+   </div>
 
    <!-- Status messages for the script, in the page's language -->
    <form
@@ -68,6 +111,42 @@ const labelClass = "text-xs font-semibold uppercase tracking-wide text-zinc-500"
       </div>
    </form>
 </section>
+
+<script>
+   // Copy buttons on the email / phone tiles: swap to a check mark and announce "Copied!" briefly
+   const copyText = async (text: string) => {
+      try {
+         await navigator.clipboard.writeText(text);
+         return true;
+      } catch {
+         // Clipboard API blocked (some embedded browsers): fall back to a hidden textarea + execCommand
+         const area = document.createElement("textarea");
+         area.value = text;
+         area.setAttribute("readonly", "");
+         area.style.cssText = "position:fixed;opacity:0;pointer-events:none";
+         document.body.append(area);
+         area.select();
+         const ok = document.execCommand("copy");
+         area.remove();
+         return ok;
+      }
+   };
+
+   document.querySelectorAll<HTMLButtonElement>("[data-copy]").forEach((button) => {
+      const original = button.getAttribute("aria-label") ?? "";
+      button.addEventListener("click", async () => {
+         if (!(await copyText(button.dataset.copy ?? ""))) return; // the tile itself still opens mail / phone
+         button.querySelector(".copy-icon")?.classList.add("hidden");
+         button.querySelector(".check-icon")?.classList.remove("hidden");
+         button.setAttribute("aria-label", button.dataset.copiedLabel ?? "");
+         setTimeout(() => {
+            button.querySelector(".copy-icon")?.classList.remove("hidden");
+            button.querySelector(".check-icon")?.classList.add("hidden");
+            button.setAttribute("aria-label", original);
+         }, 1600);
+      });
+   });
+</script>
 
 <script>
    import emailjs from "@emailjs/browser";
