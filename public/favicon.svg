@@ -1,9 +1,25 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" fill="none">
-  <!-- KG monogram: white geometric letters on dark zinc, the G's bar in the site's red -->
+<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 0 64 64" fill="none">
+  <!-- KG monogram with the site's glitch: white letters (the G's bar in the accent red), a cyan ghost to the left,
+       a red ghost to the right, and a slice through the middle torn sideways -->
+  <defs>
+    <g id="letters" stroke-width="5" stroke-linecap="round" stroke-linejoin="round">
+      <path d="M14 18v28M27 18 16.5 30.5M20 27l8.5 19M53.3 23.7A12 12 0 1 0 56.6 35.1"/>
+    </g>
+    <g id="bar" stroke-width="5" stroke-linecap="round">
+      <path d="M56.6 35.1H46.5"/>
+    </g>
+    <g id="glitched">
+      <use href="#letters" xlink:href="#letters" x="-2.5" stroke="#00f0ff"/>
+      <use href="#bar" xlink:href="#bar" x="-2.5" stroke="#00f0ff"/>
+      <use href="#letters" xlink:href="#letters" x="2.5" stroke="#ff6467"/>
+      <use href="#bar" xlink:href="#bar" x="2.5" stroke="#ff6467"/>
+      <use href="#letters" xlink:href="#letters" stroke="#f4f4f5"/>
+      <use href="#bar" xlink:href="#bar" stroke="#ff6467"/>
+    </g>
+    <clipPath id="tear"><rect x="0" y="28" width="64" height="6"/></clipPath>
+    <clipPath id="rest"><path d="M0 0h64v28H0zM0 34h64v30H0z"/></clipPath>
+  </defs>
   <rect x="1" y="1" width="62" height="62" rx="14" fill="#09090b" stroke="#3f3f46" stroke-width="2"/>
-  <g stroke-width="5" stroke-linecap="round" stroke-linejoin="round">
-    <path d="M14 18v28M27 18 16.5 30.5M20 27l8.5 19" stroke="#f4f4f5"/>
-    <path d="M53.3 23.7A12 12 0 1 0 56.6 35.1" stroke="#f4f4f5"/>
-    <path d="M56.6 35.1H46.5" stroke="#ff6467"/>
-  </g>
+  <g clip-path="url(#rest)"><use href="#glitched" xlink:href="#glitched"/></g>
+  <g clip-path="url(#tear)"><use href="#glitched" xlink:href="#glitched" x="4.5"/></g>
 </svg>

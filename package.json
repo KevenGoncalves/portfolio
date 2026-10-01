@@ -4,10 +4,10 @@
   "version": "0.0.1",
   "scripts": {
     "dev": "astro dev",
-    "build": "astro build",
+    "build": "astro build && node scripts/resume-pdf.mjs",
     "preview": "astro preview",
     "astro": "astro",
-    "resume:pdf": "astro build && node scripts/resume-pdf.mjs && astro build",
+    "resume:pdf": "node scripts/resume-pdf.mjs",
     "og:image": "node scripts/og-image.mjs"
   },
   "dependencies": {
