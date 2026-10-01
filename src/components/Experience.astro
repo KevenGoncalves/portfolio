@@ -242,11 +242,41 @@ import { experience } from "../data/experience";
   background: linear-gradient(to bottom, #3f3f46 0%, #27272a 12%, #27272a 85%, transparent 100%); /* zinc-700 → zinc-800 */
 }
 
+/* Trail: starts at the base of the launch pad and glows white behind the rocket */
 .timeline-progress {
-  top: var(--start);
-  /* Ends 12px short of the nose tip, hidden under the rocket */
-  height: max(0px, calc(var(--progress, 0) * (100% - var(--start)) - 12px));
-  background: linear-gradient(to bottom, #52525b, #f4f4f5); /* zinc-600 → zinc-100 */
+  top: 7px; /* bottom of the pad's platform */
+  left: 6.5px;
+  width: 2px;
+  /* From the pad down to 12px short of the nose tip (hidden under the rocket);
+     the nose tip sits at --start + progress × (timeline height − --start) */
+  height: max(0px, calc(var(--start) - 7px - 12px + var(--progress, 0) * (100% - var(--start))));
+  border-radius: 9999px;
+  background: linear-gradient(to bottom, rgb(161 161 170 / 0.6) 0%, rgb(212 212 216 / 0.8) 40%, #fafafa 100%); /* zinc-400 → zinc-50 */
+  filter: drop-shadow(0 0 4px rgb(250 250 250 / 0.45));
+  overflow: hidden; /* keeps the pulse inside the trail */
+}
+
+/* Light pulse running down the trail, fading out as it reaches the rocket's engine */
+.timeline-progress::after {
+  content: "";
+  position: absolute;
+  left: 50%;
+  width: 2px;
+  height: 72px;
+  translate: -50% 0;
+  border-radius: 9999px;
+  background: linear-gradient(to bottom, transparent, #ffffff, transparent);
+  opacity: 0;
+  animation: trail-pulse 3s cubic-bezier(0.4, 0, 0.2, 1) infinite;
+}
+
+/* The trail ends 12px inside the nose; the engine sits 68px above that,
+   so the pulse's bottom edge stops at 100% - 68px (top = 100% - 68px - 72px) */
+@keyframes trail-pulse {
+  0% { top: -72px; opacity: 0; }
+  15% { opacity: 1; }
+  75% { opacity: 1; }
+  100% { top: calc(100% - 140px); opacity: 0; }
 }
 
 /* Rocket flying down the rail, nose at the tip of the progress line */
@@ -417,6 +447,7 @@ import { experience } from "../data/experience";
   }
 
   .rocket-flame,
+  .timeline-progress::after,
   .pad-beacon,
   .hint-arrow,
   .is-reached .timeline-dot::after,
@@ -434,6 +465,7 @@ import { experience } from "../data/experience";
     let frame = 0;
     let lastScrollY = window.scrollY;
     let coastTimer = 0;
+    const reduceMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
 
     // Fill the rail up to 40% of the viewport height and light up the bullets it has passed
     const update = () => {
@@ -470,8 +502,6 @@ import { experience } from "../data/experience";
     window.addEventListener("scroll", schedule, { passive: true });
     window.addEventListener("resize", schedule);
     update();
-
-    const reduceMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
 
     if (!reduceMotion && "IntersectionObserver" in window) {
       timeline.classList.add("reveal-ready");
