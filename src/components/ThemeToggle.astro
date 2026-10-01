@@ -1,0 +1,66 @@
+---
+import { useTranslations, type Lang } from "../i18n/ui";
+
+interface Props {
+   lang: Lang;
+}
+
+const { lang } = Astro.props;
+const t = useTranslations(lang);
+---
+
+<!-- Sun shows in the dark theme (switch to light), moon in the light theme (switch to dark) -->
+<button
+   type="button"
+   class="theme-toggle grid size-9 place-items-center rounded-full border border-zinc-800 bg-zinc-900/70 text-zinc-400 backdrop-blur transition hover:text-zinc-100 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-zinc-500"
+   aria-label={t("theme.toLight")}
+   data-label-to-light={t("theme.toLight")}
+   data-label-to-dark={t("theme.toDark")}
+   data-theme-toggle
+>
+   <svg class="icon-sun size-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true">
+      <circle cx="12" cy="12" r="4"></circle>
+      <path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M4.93 19.07l1.41-1.41M17.66 6.34l1.41-1.41"></path>
+   </svg>
+   <svg class="icon-moon size-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+      <path d="M20.5 14.5A8.5 8.5 0 0 1 9.5 3.5a8.5 8.5 0 1 0 11 11Z"></path>
+   </svg>
+</button>
+
+<style>
+.icon-moon {
+   display: none;
+}
+
+:global(:root[data-theme="light"]) .icon-sun {
+   display: none;
+}
+
+:global(:root[data-theme="light"]) .icon-moon {
+   display: block;
+}
+</style>
+
+<script>
+   const button = document.querySelector<HTMLButtonElement>("[data-theme-toggle]");
+
+   if (button) {
+      const root = document.documentElement;
+      const syncLabel = () => {
+         const light = root.dataset.theme === "light";
+         button.setAttribute("aria-label", (light ? button.dataset.labelToDark : button.dataset.labelToLight) ?? "");
+      };
+
+      syncLabel();
+      button.addEventListener("click", () => {
+         const next = root.dataset.theme === "light" ? "dark" : "light";
+         root.dataset.theme = next;
+         try {
+            localStorage.setItem("theme", next);
+         } catch {
+            // Private mode or storage blocked: the theme still switches for this visit
+         }
+         syncLabel();
+      });
+   }
+</script>

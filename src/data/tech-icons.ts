@@ -31,11 +31,11 @@ export type TechIcon = {
   stroke?: boolean;
 };
 
-/** Brand colours too dark to see on the site's dark background (e.g. Next.js is black) show as white instead */
+/** Brand colours too dark to see on the dark theme (e.g. Next.js is black) use the theme's text colour instead */
 const visibleColor = (hex: string) => {
   const [r, g, b] = [0, 2, 4].map((i) => parseInt(hex.slice(i, i + 2), 16) / 255);
   const luminance = 0.2126 * r + 0.7152 * g + 0.0722 * b;
-  return luminance < 0.15 ? "#f4f4f5" : `#${hex}`;
+  return luminance < 0.15 ? "var(--color-zinc-100)" : `#${hex}`; // zinc-100 flips with the theme
 };
 
 const icon = (si: SimpleIcon): TechIcon => ({ path: si.path, color: visibleColor(si.hex) });

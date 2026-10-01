@@ -5,3 +5,58 @@
 @theme {
   --font-sans: "Poppins";
 }
+
+/*
+  Themes. The site is built on Tailwind's zinc greys, so the light theme simply flips the zinc scale
+  (950 ↔ 50, 900 ↔ 100, …): every zinc utility and every var(--color-zinc-*) switches automatically.
+  The theme is set on <html data-theme="…"> before the page paints (see Layout.astro).
+*/
+:root {
+  color-scheme: dark;
+  --color-zinc-50: oklch(98.5% 0 0);
+  --color-zinc-100: oklch(96.7% 0.001 286.375);
+  --color-zinc-200: oklch(92% 0.004 286.32);
+  --color-zinc-300: oklch(87.1% 0.006 286.286);
+  --color-zinc-400: oklch(70.5% 0.015 286.067);
+  --color-zinc-500: oklch(55.2% 0.016 285.938);
+  --color-zinc-600: oklch(44.2% 0.017 285.786);
+  --color-zinc-700: oklch(37% 0.013 285.805);
+  --color-zinc-800: oklch(27.4% 0.006 286.033);
+  --color-zinc-900: oklch(21% 0.006 285.885);
+  --color-zinc-950: oklch(14.1% 0.005 285.823);
+  --color-white: #fff;
+  --color-black: #000;
+  /* Sliding background stripes (Background.astro) */
+  --page-a: #000;
+  --page-b: #1a1a1b;
+}
+
+:root[data-theme="light"] {
+  color-scheme: light;
+  --color-zinc-50: oklch(14.1% 0.005 285.823);
+  --color-zinc-100: oklch(21% 0.006 285.885);
+  --color-zinc-200: oklch(27.4% 0.006 286.033);
+  --color-zinc-300: oklch(37% 0.013 285.805);
+  --color-zinc-400: oklch(44.2% 0.017 285.786);
+  --color-zinc-500: oklch(55.2% 0.016 285.938);
+  --color-zinc-600: oklch(70.5% 0.015 286.067);
+  --color-zinc-700: oklch(87.1% 0.006 286.286);
+  --color-zinc-800: oklch(92% 0.004 286.32);
+  --color-zinc-900: oklch(96.7% 0.001 286.375);
+  --color-zinc-950: oklch(98.5% 0 0);
+  --color-white: oklch(14.1% 0.005 285.823);
+  --color-black: #fff;
+  /* Slightly deeper red so red text stays readable on white */
+  --color-red-400: oklch(63.7% 0.237 25.331);
+  --page-a: #fafafa;
+  --page-b: #f1f1f3;
+}
+
+html {
+  background: var(--page-a);
+}
+
+/* Project illustrations were drawn on dark: invert them in the light theme, keeping their hues */
+:root[data-theme="light"] .project-art {
+  filter: invert(1) hue-rotate(180deg);
+}

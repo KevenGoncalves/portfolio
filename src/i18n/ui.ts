@@ -12,6 +12,8 @@ export const ui = {
   en: {
     "meta.description": "Keven Gonçalves, backend and mobile developer in Mozambique.",
     "lang.switch": "Change language",
+    "theme.toLight": "Switch to light theme",
+    "theme.toDark": "Switch to dark theme",
     "header.role": "Backend & Mobile Developer",
     "header.tagline.before": "I make",
     "header.tagline.after": ", but not in the kitchen",
@@ -58,6 +60,8 @@ export const ui = {
   pt: {
     "meta.description": "Keven Gonçalves, desenvolvedor backend e mobile em Moçambique.",
     "lang.switch": "Mudar de idioma",
+    "theme.toLight": "Mudar para o tema claro",
+    "theme.toDark": "Mudar para o tema escuro",
     "header.role": "Desenvolvedor Backend & Mobile",
     "header.tagline.before": "Eu faço",
     "header.tagline.after": ", mas não na cozinha",
