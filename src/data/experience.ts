@@ -1,5 +1,6 @@
 import type { ImageMetadata } from "astro";
 import type { Lang, Localized } from "../i18n/ui";
+// Emblem only: the full logo with the "Cornelder" wordmark (cornelder-full.png) is too tall for the small logo slot
 import cornelder from "../assets/companies/cornelder.png";
 import lumai from "../assets/companies/lumai.png";
 // The full Txeka-lá wordmark (txeka-la.png) is too wide for the square tile, so the tile uses its icon
