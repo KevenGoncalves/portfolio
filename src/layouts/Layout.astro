@@ -1,5 +1,6 @@
 ---
 import '../styles/global.css'
+import { Font } from 'astro:assets'
 import { langPath, useTranslations, type Lang } from '../i18n/ui'
 import AccentGlitch from '../components/AccentGlitch.astro'
 import PageReveal from '../components/PageReveal.astro'
@@ -29,10 +30,9 @@ const t = useTranslations(lang);
 		<link rel="icon" type="image/png" sizes="32x32" href="/favicon-32.png" />
 		<link rel="apple-touch-icon" href="/apple-touch-icon.png" />
 		<meta name="generator" content={Astro.generator} />
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <!-- Only the weights the site uses: Oxanium 600–800 (name, numbers, "sauce", 404), Poppins 400–700, no italics -->
-    <link href="https://fonts.googleapis.com/css2?family=Oxanium:wght@600..800&family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
+		<!-- Self-hosted fonts (see astro.config.mjs); the regular body weight and the headline font are preloaded -->
+		<Font cssVariable="--font-poppins" preload={[{ weight: '400' }]} />
+		<Font cssVariable="--font-oxanium" preload />
 		<title>Keven Gonçalves</title>
 		{noindex ? (
 			<meta name="robots" content="noindex" />

@@ -12,7 +12,7 @@ const glitchDelay = `${-(parseInt(number, 10) - 1) * 1.75}s`;
 
 <!-- Sticky blurred bar on small screens; a plain heading with a fading rule on desktop -->
 <div class="sticky top-0 z-20 -mx-6 mb-4 flex items-center gap-3 bg-zinc-900/75 px-6 py-5 backdrop-blur md:-mx-12 md:px-12 lg:static lg:z-auto lg:mx-0 lg:mb-10 lg:bg-transparent lg:px-0 lg:py-0 lg:backdrop-blur-none">
-  <span class="accent-glitch inline-block font-[Oxanium] text-xs font-semibold text-red-400" style={`--glitch-delay: ${glitchDelay}`} aria-hidden="true">{number}</span>
+  <span class="accent-glitch inline-block font-display text-xs font-semibold text-red-400" style={`--glitch-delay: ${glitchDelay}`} aria-hidden="true">{number}</span>
   <h2 class="text-sm font-bold uppercase tracking-widest text-zinc-100">{title}</h2>
   <span class="h-px flex-1 bg-gradient-to-r from-zinc-700 to-transparent" aria-hidden="true"></span>
 </div>

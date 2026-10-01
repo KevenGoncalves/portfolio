@@ -1,5 +1,6 @@
 ---
 import "../styles/global.css";
+import { Font } from "astro:assets";
 import { experience, formatPeriod, jobSpan, type EmploymentType, type Job } from "../data/experience";
 import { achievements, bullets, contacts, education, headline, languages, location, skills } from "../data/resume";
 import { langPath, localize, useTranslations, type Lang } from "../i18n/ui";
@@ -38,9 +39,8 @@ const metaLine = (job: Job, type?: EmploymentType) =>
       <PageReveal />
       <meta name="viewport" content="width=device-width" />
       <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
-      <link rel="preconnect" href="https://fonts.googleapis.com" />
-      <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-      <link href="https://fonts.googleapis.com/css2?family=Oxanium:wght@600;700&family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet" />
+      <Font cssVariable="--font-poppins" preload={[{ weight: "400" }]} />
+      <Font cssVariable="--font-oxanium" preload />
       <title>Keven Gonçalves — {t("resume.title")}</title>
       <SeoMeta lang={lang} title={`Keven Gonçalves — ${t("resume.title")}`} description={localize(headline, lang)} paths={resumePath} />
    </head>
@@ -65,7 +65,7 @@ const metaLine = (job: Job, type?: EmploymentType) =>
       <article class="sheet">
          <header class="grid grid-cols-[1fr_auto] items-start gap-10">
             <div>
-               <h1 class="font-[Oxanium] text-[34px] leading-none font-bold tracking-tight text-zinc-900">Keven Gonçalves</h1>
+               <h1 class="font-display text-[34px] leading-none font-bold tracking-tight text-zinc-900">Keven Gonçalves</h1>
                <p class="mt-2 text-[13px] font-semibold text-red-400">{t("header.role")}</p>
                <p class="mt-2 max-w-[118mm] text-[10.5px] leading-[1.6] text-zinc-600">{localize(headline, lang)}</p>
             </div>

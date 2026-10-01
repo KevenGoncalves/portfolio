@@ -22,6 +22,10 @@ const metaLine = (job: Job, type?: EmploymentType) =>
       .filter(Boolean)
       .join(" · ");
 
+// Each technology's icon is drawn once (as an SVG <symbol>) and reused by every job that lists it
+const iconId = (tech: string) => `tech-${tech.toLowerCase().replace(/[^a-z0-9]+/g, "-")}`;
+const usedTech = [...new Set(experience.flatMap((job) => job.tech))].filter((tech) => techIcons[tech]);
+
 // "View Full Résumé": the last word stays on one line with the arrow
 const resumeWords = t("experience.resume").split(" ");
 const resumeLast = resumeWords.pop();
@@ -40,6 +44,11 @@ const resumeLast = resumeWords.pop();
                <feFuncB type="table" tableValues="0.58 0.961" />
             </feComponentTransfer>
          </filter>
+      </svg>
+      <svg class="absolute size-0" aria-hidden="true">
+         {usedTech.map((tech) => (
+            <symbol id={iconId(tech)} viewBox="0 0 24 24"><path d={techIcons[tech].path} /></symbol>
+         ))}
       </svg>
       <div class="timeline relative" data-timeline>
          <span class="timeline-track" aria-hidden="true"></span>
@@ -105,7 +114,7 @@ const resumeLast = resumeWords.pop();
                   <div class="absolute -inset-x-4 -inset-y-4 z-0 hidden rounded-md transition motion-reduce:transition-none lg:-inset-x-6 lg:block lg:group-hover:bg-zinc-800/50 lg:group-hover:shadow-[inset_0_1px_0_0_rgba(212,212,216,0.1)] lg:group-hover:drop-shadow-lg"></div>
                   <div class="relative z-10 flex gap-5 sm:gap-6">
                      <div class="company-logo" aria-hidden="true">
-                        <Image src={job.logo} alt="" width={112} />
+                        <Image src={job.logo} alt="" width={48} densities={[1, 2]} quality={60} />
                      </div>
 
                      <div class="min-w-0 flex-1">
@@ -156,7 +165,7 @@ const resumeLast = resumeWords.pop();
                               <li>
                                  {techIcons[tech] ? (
                                     <span class="tech-icon" data-tech={tech} style={`--brand: ${techIcons[tech].color}`}>
-                                       <svg viewBox="0 0 24 24" class:list={[{ "is-stroke": techIcons[tech].stroke }]} aria-hidden="true"><path d={techIcons[tech].path} /></svg>
+                                       <svg class:list={[{ "is-stroke": techIcons[tech].stroke }]} aria-hidden="true"><use href={`#${iconId(tech)}`} /></svg>
                                        <span class="sr-only">{tech}</span>
                                     </span>
                                  ) : (
@@ -591,23 +600,28 @@ const resumeLast = resumeWords.pop();
   if (timeline) {
     const items = [...timeline.querySelectorAll<HTMLElement>("[data-timeline-item]")];
     let frame = 0;
-    let lastScrollY = window.scrollY;
+    let lastScrollY: number | null = null; // read on the first frame, not while the page is still loading
     let coastTimer = 0;
     const reduceMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
 
     // Fill the rail up to 40% of the viewport height and light up the bullets it has passed
     const update = () => {
       frame = 0;
+      // Read all positions first, then write: writing styles before reading layout forces extra reflows
       const anchor = window.innerHeight * 0.4;
       const rect = timeline.getBoundingClientRect();
       const start = parseFloat(getComputedStyle(timeline).getPropertyValue("--start")) || 0;
       const progress = Math.min(Math.max((anchor - rect.top - start) / (rect.height - start), 0), 1);
+      const reached = items.map((item) => {
+        const dot = item.querySelector("[data-timeline-dot]");
+        return dot ? dot.getBoundingClientRect().top < anchor : false;
+      });
 
       timeline.style.setProperty("--progress", progress.toFixed(4));
       timeline.classList.toggle("is-docked", progress === 0);
 
       // Faster scrolling = bigger flame; it settles back once scrolling stops
-      const delta = window.scrollY - lastScrollY;
+      const delta = lastScrollY === null ? 0 : window.scrollY - lastScrollY;
       const speed = Math.abs(delta);
       lastScrollY = window.scrollY;
 
@@ -617,10 +631,7 @@ const resumeLast = resumeWords.pop();
       clearTimeout(coastTimer);
       coastTimer = window.setTimeout(() => timeline.style.setProperty("--thrust", "0"), 120);
 
-      for (const item of items) {
-        const dot = item.querySelector("[data-timeline-dot]");
-        if (dot) item.classList.toggle("is-reached", dot.getBoundingClientRect().top < anchor);
-      }
+      items.forEach((item, index) => item.classList.toggle("is-reached", reached[index]));
     };
 
     const schedule = () => {
@@ -629,7 +640,7 @@ const resumeLast = resumeWords.pop();
 
     window.addEventListener("scroll", schedule, { passive: true });
     window.addEventListener("resize", schedule);
-    update();
+    schedule(); // first position on the next frame, not during page load
 
     if (!reduceMotion && "IntersectionObserver" in window) {
       timeline.classList.add("reveal-ready");

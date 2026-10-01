@@ -51,5 +51,9 @@ try {
     console.log(pageCount > 1 ? `⚠ ${page.file}: ${pageCount} pages (expected 1)` : `✓ ${page.file}`);
   }
 } finally {
+  // Astro's preview server keeps running in the background, so stop it explicitly
   preview.kill();
+  try {
+    execFileSync("pnpm", ["astro", "preview", "stop"], { stdio: "ignore" });
+  } catch {}
 }
