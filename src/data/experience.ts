@@ -96,7 +96,7 @@ export const experience: Job[] = [
     company: "Explicador Inc",
     logo: explicador,
     location: { city: "Maputo" },
-    roles: [{ title: { en: "Software Quality Assurance Tester", pt: "Testador de Software (QA)" }, type: "internship", start: "2021-03", end: "2022-09" }],
+    roles: [{ title: { en: "Software Quality Assurance Tester", pt: "Testador de Software (QA)" }, type: "internship", start: "2021-03", end: "2021-09" }],
     tech: ["Jenkins", "Vue.js", "Firebase"],
   },
 ];
