@@ -82,7 +82,7 @@ import { experience, formatDuration, formatPeriod, formatPeriodLabel, jobSpan } 
                   <div class="absolute -inset-x-4 -inset-y-4 z-0 hidden rounded-md transition motion-reduce:transition-none lg:-inset-x-6 lg:block lg:group-hover:bg-zinc-800/50 lg:group-hover:shadow-[inset_0_1px_0_0_rgba(212,212,216,0.1)] lg:group-hover:drop-shadow-lg"></div>
                   <div class="relative z-10 flex gap-4">
                      <div class="company-logo" aria-hidden="true">
-                        <Image src={job.logo} alt="" width={96} />
+                        <Image src={job.logo} alt="" width={112} />
                      </div>
 
                      <div class="min-w-0 flex-1">
@@ -446,11 +446,11 @@ import { experience, formatDuration, formatPeriod, formatPeriodLabel, jobSpan } 
 /* Company logo tile, rendered two-tone (zinc) with the SVG filter above */
 .company-logo {
   flex-shrink: 0;
-  width: 2.5rem;
-  height: 2.5rem;
-  padding: 0.4rem;
+  width: 3.5rem;
+  height: 3.5rem;
+  padding: 0.5rem;
   border: 1px solid #27272a; /* zinc-800 */
-  border-radius: 0.5rem;
+  border-radius: 0.7rem;
   background: #18181b; /* zinc-900 */
 }
 
