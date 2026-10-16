@@ -1,11 +1,10 @@
 <!--
   GitHub profile README for KevenGoncalves/KevenGoncalves.
   The banner and contact cards are generated from the portfolio: `pnpm build && pnpm github:banner` (scripts/github-banner.mjs).
-  TODO: replace https://kevengoncalves.example with the portfolio's real address once it's deployed (banner link + portfolio card).
 -->
 
 <p align="center">
-  <a href="https://kevengoncalves.example">
+  <a href="https://kevengoncalves.vercel.app">
     <img src="./banner.svg" alt="Keven Gonçalves — Backend & Mobile Developer. I make sauce, but not in the kitchen." width="100%" />
   </a>
 </p>
@@ -103,7 +102,7 @@ Have a project in mind, a role to fill, or just want to talk tech? My inbox is o
 <p align="center">
   <a href="mailto:keven.jm.goncalves@gmail.com"><img src="./contact-email.svg" alt="Email — keven.jm.goncalves@gmail.com" width="32%" /></a>
   <a href="https://www.linkedin.com/in/keven-gon%C3%A7alves-5867661a9/"><img src="./contact-linkedin.svg" alt="LinkedIn — in/keven-gonçalves" width="32%" /></a>
-  <a href="https://kevengoncalves.example"><img src="./contact-portfolio.svg" alt="Portfolio — projects, experience and CV" width="32%" /></a>
+  <a href="https://kevengoncalves.vercel.app"><img src="./contact-portfolio.svg" alt="Portfolio — projects, experience and CV" width="32%" /></a>
 </p>
 
 <p align="center"><sub>I make <b>sauce</b>, but not in the kitchen.</sub></p>

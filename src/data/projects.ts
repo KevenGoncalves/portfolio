@@ -5,6 +5,7 @@ import tmbTransportSystem from "../assets/projects/tmb-transport-system.svg";
 import dynamis from "../assets/projects/dynamis.svg";
 import academicoPortal from "../assets/projects/academico-portal.svg";
 import companyWebsites from "../assets/projects/company-websites.svg";
+import lig from "../assets/projects/lig.svg";
 
 export type Project = {
   title: Localized;
@@ -21,6 +22,19 @@ export type Project = {
 const same = (text: string): Localized => ({ en: text, pt: text });
 
 export const projects: Project[] = [
+  {
+    title: same("Lig"),
+    url: "https://github.com/KevenGoncalves/lig",
+    description: {
+      en: "IDE-style autocomplete for the Linux terminal, written in Rust: subcommands, options, branches and packages in a popup as you type, for zsh and bash.",
+      pt: "Autocompletar ao estilo de um IDE para o terminal Linux, escrito em Rust: subcomandos, opções, branches e pacotes num popup enquanto escreve, em zsh e bash.",
+    },
+    image: lig,
+    imageAlt: {
+      en: "Illustration of a terminal with a suggestion popup under the cursor, next to the Tab and Enter keys",
+      pt: "Ilustração de um terminal com um popup de sugestões sob o cursor, ao lado das teclas Tab e Enter",
+    },
+  },
   {
     title: same("JHC Stowage System"),
     url: "https://app.jhcxigolo.co.mz/",

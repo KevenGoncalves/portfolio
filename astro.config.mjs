@@ -5,10 +5,9 @@ import tailwindcss from '@tailwindcss/vite';
 
 // https://astro.build/config
 export default defineConfig({
-  // TODO: replace with the real address once the domain is decided. It's used for link previews
-  // (Open Graph image/URL), canonical + EN/PT alternate links, sitemap.xml and robots.txt.
-  // ".example" can never be a real site, so it's obvious if this is still a placeholder.
-  site: 'https://kevengoncalves.example',
+  // The deployed address. It's used for link previews (Open Graph image/URL), canonical + EN/PT
+  // alternate links, sitemap.xml and robots.txt, so update it if the site moves to its own domain.
+  site: 'https://kevengoncalves.vercel.app',
   // Fonts are downloaded from Google at build time and served from this site (no render-blocking
   // third-party request), with preloads and metric-matched fallbacks so text doesn't jump when they load.
   // Only the weights the site uses: Poppins 400–700 (body), Oxanium 600–800 (name, numbers, "sauce", 404).

@@ -1,0 +1,55 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 480 270" fill="none">
+  <defs>
+    <pattern id="dots" width="16" height="16" patternUnits="userSpaceOnUse"><circle cx="2" cy="2" r="1" fill="#1f1f23"/></pattern>
+  </defs>
+  <rect width="480" height="270" fill="#09090b"/>
+  <rect width="480" height="270" fill="url(#dots)"/>
+
+  <!-- terminal window -->
+  <rect x="40" y="34" width="306" height="204" rx="12" fill="#111113" stroke="#71717a" stroke-width="2.5"/>
+  <path d="M41.25 62h303.5" stroke="#27272a" stroke-width="1.5"/>
+  <circle cx="58" cy="48" r="4" fill="#ff6467"/>
+  <circle cx="72" cy="48" r="4" fill="#3f3f46"/>
+  <circle cx="86" cy="48" r="4" fill="#3f3f46"/>
+  <rect x="166" y="45.5" width="54" height="5" rx="2.5" fill="#3f3f46"/>
+
+  <!-- earlier output -->
+  <path d="M56 78l5 4l-5 4" stroke="#52525b" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+  <rect x="68" y="79" width="22" height="6" rx="3" fill="#52525b"/>
+  <rect x="96" y="79" width="40" height="6" rx="3" fill="#3f3f46"/>
+  <rect x="56" y="93" width="96" height="5" rx="2.5" fill="#27272a"/>
+  <rect x="56" y="104" width="70" height="5" rx="2.5" fill="#27272a"/>
+
+  <!-- prompt being typed: "git ch" and the cursor -->
+  <path d="M56 120l5 4l-5 4" stroke="#ff6467" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+  <rect x="68" y="121" width="22" height="6" rx="3" fill="#e4e4e7"/>
+  <rect x="96" y="121" width="16" height="6" rx="3" fill="#e4e4e7"/>
+  <rect x="115" y="118" width="7" height="12" rx="1" fill="#ff6467"/>
+
+  <!-- suggestion popup under the cursor -->
+  <rect x="96" y="138" width="232" height="86" rx="8" fill="#18181b" stroke="#52525b" stroke-width="1.5"/>
+    <!-- selected suggestion -->
+    <rect x="102" y="144" width="220" height="20" rx="5" fill="#ff6467" fill-opacity="0.15" stroke="#ff6467" stroke-width="1.5"/>
+    <rect x="109" y="150" width="8" height="8" rx="2" fill="#ff6467"/>
+    <rect x="124" y="151" width="44" height="6" rx="3" fill="#ff6467"/>
+    <rect x="186" y="151.5" width="96" height="5" rx="2.5" fill="#ff6467" fill-opacity="0.5"/>
+    <!-- the rest -->
+    <rect x="109" y="172" width="8" height="8" rx="2" fill="#3f3f46"/>
+    <rect x="124" y="173" width="52" height="6" rx="3" fill="#a1a1aa"/>
+    <rect x="186" y="173.5" width="110" height="5" rx="2.5" fill="#3f3f46"/>
+    <rect x="109" y="190" width="8" height="8" rx="2" fill="#3f3f46"/>
+    <rect x="124" y="191" width="36" height="6" rx="3" fill="#a1a1aa"/>
+    <rect x="186" y="191.5" width="80" height="5" rx="2.5" fill="#3f3f46"/>
+    <rect x="109" y="208" width="8" height="8" rx="2" fill="#3f3f46"/>
+    <rect x="124" y="209" width="40" height="6" rx="3" fill="#a1a1aa"/>
+    <rect x="186" y="209.5" width="100" height="5" rx="2.5" fill="#3f3f46"/>
+
+  <!-- keys: Tab to move, Enter to accept -->
+  <rect x="374" y="96" width="70" height="44" rx="9" fill="#27272a"/>
+  <rect x="374" y="92" width="70" height="44" rx="9" fill="#e4e4e7"/>
+  <path d="M392 114h30M414 106l8 8l-8 8M426 104v20" stroke="#09090b" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/>
+
+  <rect x="374" y="160" width="70" height="44" rx="9" fill="#7f1d1d"/>
+  <rect x="374" y="156" width="70" height="44" rx="9" fill="#ff6467"/>
+  <path d="M424 168v12h-30M402 172l-8 8l8 8" stroke="#09090b" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/>
+</svg>
